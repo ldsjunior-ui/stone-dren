@@ -1,0 +1,47 @@
+/* Stone Dren · cenas 3D (scenes.js). Sem as classes de "pronto", nada muda na página:
+ * o hero continua com a foto + chuva 2D e o corte continua no SVG. */
+
+/* ---------- HERO ---------- */
+#hero3d{
+  position:absolute; inset:0; width:100%; height:100%;
+  z-index:-2; pointer-events:none; display:block;
+  opacity:0; transition:opacity 1.4s var(--ease-out);
+}
+.has-hero3d #hero3d{opacity:1;}
+/* enquanto a cena 3D cobre a foto, a foto não precisa ser composta */
+.has-hero3d .hero::before{transition:opacity 1.4s; opacity:0;}
+/* a chuva 2D (quadro parado com movimento reduzido) não fica por cima da cena 3D; volta sozinha sem a classe */
+.has-hero3d #hero-rain{visibility:hidden;}
+
+/* ---------- CORTE EXPLODIDO ---------- */
+#layers3d{display:none;}
+.layers.is-3d #layers3d{
+  display:block; width:100%; height:auto; aspect-ratio:560 / 520;
+  cursor:grab; touch-action:pan-y; outline:none;
+}
+.layers.is-3d.is-dragging #layers3d{cursor:grabbing;}
+.layers.is-3d .layers-svg{display:none;}
+.layers.is-3d{
+  background:
+    radial-gradient(ellipse 70% 55% at 42% 58%, rgba(198,138,46,.10), transparent 70%),
+    radial-gradient(ellipse 90% 70% at 50% 40%, #0e1a30 0%, var(--navy-deep) 75%);
+}
+
+.l3d-labels{position:absolute; left:0; top:0; width:100%; aspect-ratio:560 / 520; margin:0; padding:0; list-style:none; pointer-events:none;}
+.l3d-label{
+  position:absolute; left:0; top:0; will-change:transform;
+  font-family:var(--font); font-size:12px; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--ink); line-height:1.25; width:max-content; max-width:150px;
+  text-shadow:0 1px 8px rgba(6,11,20,.9);
+}
+.l3d-txt{display:block;}
+/* segunda linha menor (ex.: "só em garagem" na laje com malha) */
+.l3d-sub{display:block; margin-top:3px; font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:none; color:var(--ink-dim); line-height:1.25;}
+.l3d-line{position:absolute; left:0; top:0; width:100px; height:1px; transform-origin:0 50%; background:linear-gradient(90deg, rgba(217,174,94,.95), rgba(217,174,94,.35));}
+.l3d-dot{position:absolute; left:0; top:0; width:6px; height:6px; border-radius:50%; background:var(--gold-2); box-shadow:0 0 0 3px rgba(217,174,94,.18);}
+.l3d-label[data-layer="0"] .l3d-txt{color:var(--gold-3);}
+
+/* celular: mesmo piso de 12px dos sobretítulos da página, com menos espaçamento para caber na coluna */
+@media (max-width:480px){
+  .l3d-label{font-size:12px; letter-spacing:.06em; line-height:1.2; max-width:160px;}
+}

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Saco valvulado Stone DREN CINZA">
+<defs>
+<clipPath id="saco-pedra-cinza-clipfill"><path d="M112 58 C160 51 240 51 288 58 C310 62 321 78 324 104 C331 170 331 250 323 322 C320 338 308 346 290 348 C240 353 160 353 110 348 C92 346 80 338 77 322 C69 250 69 170 76 104 C79 78 90 62 112 58 Z"/></clipPath>
+<clipPath id="saco-pedra-cinza-clipbody"><path d="M88 45 C150 38 250 38 312 45 Q319 46 320 53 C336 130 336 270 322 349 Q321 356 314 357 C250 364 150 364 86 357 Q79 356 78 349 C64 270 64 130 80 53 Q81 46 88 45 Z"/></clipPath>
+<filter id="saco-pedra-cinza-soft" x="-30%" y="-200%" width="160%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
+<filter id="saco-pedra-cinza-contact" x="-30%" y="-300%" width="160%" height="700%"><feGaussianBlur stdDeviation="2.4"/></filter>
+<filter id="saco-pedra-cinza-blur2" x="-50%" y="-20%" width="200%" height="140%"><feGaussianBlur stdDeviation="2"/></filter>
+<filter id="saco-pedra-cinza-blur1" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="0.8"/></filter>
+<filter id="saco-pedra-cinza-blur4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+<radialGradient id="saco-pedra-cinza-vol" cx="192" cy="186" r="182" fx="176" fy="160" gradientUnits="userSpaceOnUse" gradientTransform="translate(192 186) scale(.92 1.06) translate(-192 -186)"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity=".05"/><stop offset=".82" stop-color="#000" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>
+<linearGradient id="saco-pedra-cinza-side" x1="64" y1="0" x2="336" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" stop-opacity=".32"/><stop offset=".16" stop-color="#000" stop-opacity=".03"/><stop offset=".7" stop-color="#000" stop-opacity="0"/><stop offset=".9" stop-color="#000" stop-opacity=".16"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-topsh" x1="0" y1="58" x2="0" y2="104" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" stop-opacity=".5"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-botsh" x1="0" y1="350" x2="0" y2="306" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-film" x1="70" y1="50" x2="330" y2="352" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".35" stop-color="#fff" stop-opacity=".05"/><stop offset=".7" stop-color="#fff" stop-opacity=".02"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-clear" x1="0" y1="40" x2="0" y2="360" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e9eef4" stop-opacity=".30"/><stop offset=".5" stop-color="#e9eef4" stop-opacity=".16"/><stop offset="1" stop-color="#e9eef4" stop-opacity=".28"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-band" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#fff" stop-opacity=".75"/><stop offset=".6" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-sheen" x1="90" y1="60" x2="230" y2="250" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-seal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f6f9" stop-opacity=".55"/><stop offset=".5" stop-color="#dfe5ec" stop-opacity=".32"/><stop offset="1" stop-color="#f3f6f9" stop-opacity=".5"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-valve" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f9fb" stop-opacity=".75"/><stop offset="1" stop-color="#c9d1da" stop-opacity=".45"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-label" x1="0" y1="158" x2="0" y2="268" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#16274a"/><stop offset=".45" stop-color="#0F1D33"/><stop offset="1" stop-color="#0A1526"/></linearGradient>
+<linearGradient id="saco-pedra-cinza-labelside" x1="102" y1="0" x2="298" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".12" stop-color="#000" stop-opacity="0"/><stop offset=".85" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient>
+</defs>
+<ellipse cx="200" cy="364" rx="142" ry="12" fill="rgba(0,0,0,.35)" filter="url(#saco-pedra-cinza-soft)"/>
+<ellipse cx="200" cy="360" rx="118" ry="5" fill="rgba(0,0,0,.35)" filter="url(#saco-pedra-cinza-contact)"/>
+<path d="M88 45 C150 38 250 38 312 45 Q319 46 320 53 C336 130 336 270 322 349 Q321 356 314 357 C250 364 150 364 86 357 Q79 356 78 349 C64 270 64 130 80 53 Q81 46 88 45 Z" fill="url(#saco-pedra-cinza-clear)"/>
+<g clip-path="url(#saco-pedra-cinza-clipfill)"><rect x="60" y="50" width="280" height="305" fill="#7b7468"/><image href="img/pedra-cinza.jpg" x="39.5" y="-23.5" width="321" height="453.3" preserveAspectRatio="xMidYMid slice"/></g>
+<g clip-path="url(#saco-pedra-cinza-clipfill)"><rect x="60" y="50" width="280" height="305" fill="url(#saco-pedra-cinza-vol)"/><rect x="60" y="50" width="280" height="305" fill="url(#saco-pedra-cinza-side)"/><rect x="60" y="56" width="280" height="50" fill="url(#saco-pedra-cinza-topsh)"/><rect x="60" y="300" width="280" height="52" fill="url(#saco-pedra-cinza-botsh)"/></g>
+<path d="M112 58 C160 51 240 51 288 58 C310 62 321 78 324 104 C331 170 331 250 323 322 C320 338 308 346 290 348 C240 353 160 353 110 348 C92 346 80 338 77 322 C69 250 69 170 76 104 C79 78 90 62 112 58 Z" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="3" filter="url(#saco-pedra-cinza-blur1)"/>
+<g>
+<clipPath id="saco-pedra-cinza-cliplabel"><path d="M110 158 C160 155 240 155 290 158 Q298 158 298 166 L298 260 Q298 268 290 268 C240 271 160 271 110 268 Q102 268 102 260 L102 166 Q102 158 110 158 Z"/></clipPath>
+<path d="M110 158 C160 155 240 155 290 158 Q298 158 298 166 L298 260 Q298 268 290 268 C240 271 160 271 110 268 Q102 268 102 260 L102 166 Q102 158 110 158 Z" fill="url(#saco-pedra-cinza-label)"/>
+<rect x="102" y="155" width="196" height="116" fill="url(#saco-pedra-cinza-labelside)" clip-path="url(#saco-pedra-cinza-cliplabel)" opacity=".9"/>
+<path d="M111 164 C160 161.5 240 161.5 289 164 L292 259 C240 264.5 160 264.5 111 262 Z" fill="none" stroke="#C68A2E" stroke-opacity=".75" stroke-width=".9"/>
+<text x="203.5" y="197" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="23"><tspan font-weight="500" fill="#EFE7D6">Stone </tspan><tspan font-weight="600" fill="#D9AE5E" letter-spacing=".35em">DREN</tspan></text>
+<line x1="146" y1="210" x2="254" y2="210" stroke="#C68A2E" stroke-width="1" stroke-opacity=".85"/>
+<text x="200.8" y="231" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="13.5" font-weight="700" fill="#EFE7D6" letter-spacing=".12em">PEDRA NATURAL</text>
+<text x="201.9" y="254" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="17" font-weight="700" fill="#D9AE5E" letter-spacing=".22em">CINZA</text>
+</g>
+<g clip-path="url(#saco-pedra-cinza-clipbody)">
+<path d="M88 45 C150 38 250 38 312 45 Q319 46 320 53 C336 130 336 270 322 349 Q321 356 314 357 C250 364 150 364 86 357 Q79 356 78 349 C64 270 64 130 80 53 Q81 46 88 45 Z" fill="url(#saco-pedra-cinza-film)"/>
+<path d="M70 60 L196 52 C170 110 132 190 104 300 L74 300 Z" fill="url(#saco-pedra-cinza-sheen)" filter="url(#saco-pedra-cinza-blur4)"/>
+<path d="M84 96 C80 160 80 250 86 316 L100 322 C94 250 94 160 98 92 Z" fill="#fff" fill-opacity=".42" filter="url(#saco-pedra-cinza-blur2)"/>
+<path d="M90 110 C88 170 88 240 92 300" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.6" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M314 104 C320 170 320 250 312 312" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur2)"/>
+<path d="M316 130 C320 180 320 230 315 280" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1" stroke-linecap="round"/>
+<path d="M112 62 C160 55 240 55 290 62" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<ellipse cx="128" cy="92" rx="16" ry="5" transform="rotate(-18 128 92)" fill="#fff" fill-opacity=".38" filter="url(#saco-pedra-cinza-blur2)"/>
+<ellipse cx="282" cy="330" rx="12" ry="3" transform="rotate(-8 282 330)" fill="#fff" fill-opacity=".30" filter="url(#saco-pedra-cinza-blur2)"/>
+<path d="M86 52 C95 57 104 63 118 69" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M86 52 C95 57 104 63 118 69" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M84 58 C88 68 93 79 98 92" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M84 58 C88 68 93 79 98 92" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M314 52 C305 57 296 63 282 69" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M314 52 C305 57 296 63 282 69" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M316 58 C312 68 307 79 302 92" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M316 58 C312 68 307 79 302 92" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M84 350 C93 345 103 340 116 336" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M84 350 C93 345 103 340 116 336" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M82 344 C86 335 91 326 96 316" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M82 344 C86 335 91 326 96 316" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M316 350 C307 345 297 340 284 336" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M316 350 C307 345 297 340 284 336" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M318 344 C314 335 309 326 304 316" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M318 344 C314 335 309 326 304 316" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M150 56 C170 60 190 61 206 60" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M150 56 C170 60 190 61 206 60" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M232 59 C248 62 262 64 276 64" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2" stroke-linecap="round" transform="translate(.8 1.2)" filter="url(#saco-pedra-cinza-blur1)"/>
+<path d="M232 59 C248 62 262 64 276 64" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.1" stroke-linecap="round" filter="url(#saco-pedra-cinza-blur1)"/>
+</g>
+<path d="M88 45 C150 38 250 38 312 45 Q319 46 320 53 C336 130 336 270 322 349 Q321 356 314 357 C250 364 150 364 86 357 Q79 356 78 349 C64 270 64 130 80 53 Q81 46 88 45 Z" fill="none" stroke="#1b2230" stroke-opacity=".30" stroke-width="2.4"/>
+<path d="M88 45 C150 38 250 38 312 45 Q319 46 320 53 C336 130 336 270 322 349 Q321 356 314 357 C250 364 150 364 86 357 Q79 356 78 349 C64 270 64 130 80 53 Q81 46 88 45 Z" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.1"/>
+<g clip-path="url(#saco-pedra-cinza-clipbody)">
+<path d="M128 42.6 C185 38.4 250 38.4 312 45" transform="translate(0 4.6)" fill="none" stroke="url(#saco-pedra-cinza-seal)" stroke-width="9.5"/>
+<path d="M60 357 C150 364 250 364 340 357" transform="translate(0 -4.6)" fill="none" stroke="url(#saco-pedra-cinza-seal)" stroke-width="9.5"/>
+<path d="M128 42.6 C185 38.4 250 38.4 312 45" transform="translate(0 2.4)" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width=".6"/>
+<path d="M128 42.6 C185 38.4 250 38.4 312 45" transform="translate(0 3.2)" fill="none" stroke="#1b2230" stroke-opacity=".2" stroke-width=".5"/>
+<path d="M60 357 C150 364 250 364 340 357" transform="translate(0 -2.4)" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width=".6"/>
+<path d="M60 357 C150 364 250 364 340 357" transform="translate(0 -1.5999999999999999)" fill="none" stroke="#1b2230" stroke-opacity=".2" stroke-width=".5"/>
+<path d="M128 42.6 C185 38.4 250 38.4 312 45" transform="translate(0 4.8)" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width=".6"/>
+<path d="M128 42.6 C185 38.4 250 38.4 312 45" transform="translate(0 5.6)" fill="none" stroke="#1b2230" stroke-opacity=".2" stroke-width=".5"/>
+<path d="M60 357 C150 364 250 364 340 357" transform="translate(0 -4.8)" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width=".6"/>
+<path d="M60 357 C150 364 250 364 340 357" transform="translate(0 -4.0)" fill="none" stroke="#1b2230" stroke-opacity=".2" stroke-width=".5"/>
+<path d="M128 42.6 C185 38.4 250 38.4 312 45" transform="translate(0 7.2)" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width=".6"/>
+<path d="M128 42.6 C185 38.4 250 38.4 312 45" transform="translate(0 8.0)" fill="none" stroke="#1b2230" stroke-opacity=".2" stroke-width=".5"/>
+<path d="M60 357 C150 364 250 364 340 357" transform="translate(0 -7.2)" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width=".6"/>
+<path d="M60 357 C150 364 250 364 340 357" transform="translate(0 -6.4)" fill="none" stroke="#1b2230" stroke-opacity=".2" stroke-width=".5"/>
+<path d="M128 42.6 C185 38.4 250 38.4 312 45" transform="translate(0 9.6)" fill="none" stroke="#1b2230" stroke-opacity=".28" stroke-width=".8"/>
+<path d="M60 357 C150 364 250 364 340 357" transform="translate(0 -9.6)" fill="none" stroke="#1b2230" stroke-opacity=".28" stroke-width=".8"/>
+</g>
+<path d="M93 29.5 L123 27.8 Q128.5 27.6 128.6 33 L129 47 Q110 46 92 49.5 L89 35 Q88.6 29.8 93 29.5 Z" fill="url(#saco-pedra-cinza-valve)" stroke="#1b2230" stroke-opacity=".38" stroke-width=".9"/>
+<path d="M92.5 35.6 L126 33.8" stroke="#fff" stroke-opacity=".85" stroke-width="1"/>
+<path d="M96 31.4 Q109 28.8 124 30.2 Q109 33.2 96 31.4 Z" fill="#1b2230" fill-opacity=".6"/>
+<path d="M93 42 L127.5 40.6" stroke="#1b2230" stroke-opacity=".28" stroke-width=".8"/>
+<path d="M93 43 L127.5 41.6" stroke="#fff" stroke-opacity=".55" stroke-width=".6"/>
+<path d="M90 50 C94 58 102 62 112 64" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1"/>
+</svg>

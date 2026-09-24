@@ -1,0 +1,193 @@
+/* Stone Dren · camada de efeitos e microinterações (par de effects.js).
+ * Tudo aqui é aditivo: sem effects.js a página continua legível e estática.
+ * Só transform e opacity são animados no DOM. Em prefers-reduced-motion
+ * o styles.css já desliga transições e animações; aqui os estados iniciais
+ * "escondidos" só existem quando o JS liga a classe correspondente.
+ */
+
+/* ---------- barra de progresso de rolagem ---------- */
+.scroll-progress{position:fixed; inset:0 0 auto 0; height:2px; z-index:120; pointer-events:none; overflow:hidden;}
+.scroll-progress > span{display:block; width:100%; height:100%; transform:scaleX(0); transform-origin:0 50%; background:linear-gradient(90deg, rgba(198,138,46,.55) 0%, var(--gold-2) 70%, var(--gold-3) 100%); will-change:transform;}
+
+/* ---------- header: some ao descer, volta ao subir ---------- */
+header.site.fx-autohide{transition:transform .55s var(--ease-out), border-color .3s, background .3s;}
+/* 48px a mais para a sombra do botão dourado não aparecer na borda de cima */
+header.site.fx-autohide.fx-hide{transform:translate3d(0,calc(-100% - 48px),0);}
+header.site.fx-autohide.fx-hide:has(:focus-visible){transform:none;}
+
+/* ---------- entrada do hero ----------
+ * Só CSS: começa no primeiro paint e não espera o effects.js (que em rede lenta
+ * chega segundos depois). O h1 já vem dividido do build (fx_build.py), mas no
+ * hero as palavras ficam em linha (inline): palavra em inline-block vira um bloco
+ * de texto próprio para o LCP e o h1 deixaria de ser candidato (medido no Chrome).
+ * Por isso o h1 entra como um bloco só e NUNCA nasce transparente: sobe partindo
+ * de opacidade .34, então é pintado (e conta como LCP) já no primeiro paint. A
+ * lede nunca é escondida: só sobe alguns pixels. Eyebrow, botões e faixa de
+ * números entram em sequência. Tudo termina em ~1,1 s; o effects.js lê o fim nas
+ * próprias animações, põe .fx-hero-done e avisa 'stonedren:intro-done'.
+ * Sem JS ou com reduced-motion: tudo estático e visível. */
+.hero h1.fx-split .fx-w,
+.hero h1.fx-split .fx-wi{display:inline;}
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference){
+  .hero-inner > .eyebrow{--fx-d:0ms;}
+  .hero-inner > h1{--fx-d:40ms;}
+  .hero-inner > .lede{--fx-d:140ms;}
+  .hero-inner > .btn-row{--fx-d:240ms;}
+  .hero-inner > .hero-meta{--fx-d:340ms;}
+  .hero:not(.fx-hero-done) .hero-inner > .eyebrow,
+  .hero:not(.fx-hero-done) .hero-inner > .btn-row,
+  .hero:not(.fx-hero-done) .hero-inner > .hero-meta{animation:fx-rise .6s var(--ease-out) var(--fx-d,0ms) both;}
+  .hero:not(.fx-hero-done) .hero-inner > .lede{animation:fx-rise-solid .5s var(--ease-out) var(--fx-d,0ms) both;}
+  .hero:not(.fx-hero-done) .hero-inner > .eyebrow::before{transform-origin:0 50%; animation:fx-draw .9s var(--ease-out) .12s both;}
+  .hero:not(.fx-hero-done) .hero-inner > h1{transform-origin:0 100%; animation:fx-title 1s var(--ease-out) var(--fx-d,0ms) both;}
+}
+@keyframes fx-rise{from{opacity:0; transform:translate3d(0,16px,0);}}
+@keyframes fx-rise-solid{from{transform:translate3d(0,14px,0);}}
+@keyframes fx-draw{from{transform:scaleX(0);}}
+@keyframes fx-title{from{opacity:.34; transform:translate3d(0,.34em,0) scale(.985);}}
+.hero-inner.fx-parallax{will-change:transform, opacity;}
+
+/* ---------- filete do eyebrow e régua se desenhando ---------- */
+[data-reveal] .eyebrow::before,
+[data-reveal] .hrule{transform-origin:0 50%; transition:transform 1.1s var(--ease-out) .25s;}
+[data-reveal]:not(.is-visible) .eyebrow::before,
+[data-reveal]:not(.is-visible) .hrule{transform:scaleX(0);}
+
+/* ---------- títulos palavra por palavra ----------
+ * .fx-w é a máscara (recorta só por baixo), .fx-wi é a palavra que sobe.
+ * O build já entrega os títulos divididos (fx_build.py): sem o effects.js eles
+ * ficam visíveis e estáticos. Só o título que o JS "arma" (.fx-armed, fora da
+ * tela) fica escondido até entrar. Depois da entrada a máscara sai, para nenhum
+ * acento ou sombra ficar cortado. */
+.fx-split .fx-w{display:inline-block;}
+.fx-split .fx-wi{display:inline-block; transform-origin:0 100%;}
+/* palavras coladas por &nbsp; (ou sem espaço entre tags): o pai nowrap impede a quebra entre as caixas */
+.fx-split .fx-nb{white-space:nowrap;}
+.fx-split.fx-armed:not(.fx-done) .fx-w{clip-path:inset(-.5em -.25em -.3em -.25em);}
+.fx-split.fx-armed:not(.fx-in) .fx-wi{opacity:0; transform:translate3d(0,140%,0) rotate(3deg);}
+.fx-split.fx-armed.fx-in:not(.fx-done) .fx-wi{animation:fx-word .85s var(--ease-out) calc(var(--fx-d,0ms) + var(--i,0) * 45ms) both;}
+@keyframes fx-word{from{opacity:0; transform:translate3d(0,140%,0) rotate(3deg);}}
+
+/* ---------- contador ---------- */
+.fx-count{font-variant-numeric:tabular-nums;}
+/* valor final para leitor de tela enquanto o número visível conta */
+.fx-sr{position:absolute !important; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0;}
+
+/* ---------- botões magnéticos (o JS move, sem transição de transform) ---------- */
+@media (hover:hover) and (pointer:fine){
+  .btn.fx-mag{transition:box-shadow .18s ease, border-color .2s, color .2s;}
+}
+
+/* ---------- botão fantasma: preenchimento que sobe ---------- */
+@media (hover:hover){
+  .btn-ghost{position:relative; overflow:hidden; isolation:isolate;}
+  .btn-ghost::after{content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg, rgba(217,174,94,.16), rgba(217,174,94,.06)); transform:scaleY(0); transform-origin:50% 100%; transition:transform .5s var(--ease-out);}
+  .btn-ghost:hover::after{transform:scaleY(1);}
+}
+
+/* ---------- tilt 3D com brilho ---------- */
+.fx-tilt{position:relative;}
+/* O brilho fica POR BAIXO do texto: o card vira um contexto de empilhamento e o
+ * brilho usa z-index -1 (acima do fundo e da borda do card, abaixo do conteúdo).
+ * O saco (tilt forte) fica de fora porque precisa de preserve-3d. */
+.fx-tilt:not(.fx-tilt-strong){isolation:isolate;}
+.fx-tilt.fx-tilt-live{transition:opacity .8s var(--ease-out), border-color .25s ease; will-change:transform;}
+.fx-glare{position:absolute; inset:0; z-index:-1; border-radius:inherit; overflow:hidden; pointer-events:none; opacity:0; transition:opacity .5s ease;}
+.fx-tilt-on > .fx-glare{opacity:1;}
+.fx-glow{position:absolute; left:0; top:0; width:440px; height:440px; margin:-220px 0 0 -220px; border-radius:50%; pointer-events:none; background:radial-gradient(closest-side, rgba(244,223,168,.05), rgba(244,223,168,.02) 55%, rgba(244,223,168,0) 100%);}
+.fx-tilt-live .fx-glow{will-change:transform;} /* camada de GPU só enquanto o card está ativo */
+.fx-rim{position:absolute; inset:0; border-radius:inherit; padding:1px; -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude;}
+.fx-rim .fx-glow{width:320px; height:320px; margin:-160px 0 0 -160px; background:radial-gradient(closest-side, rgba(244,223,168,.95), rgba(217,174,94,.35) 45%, rgba(217,174,94,0) 100%);}
+/* saco da loja modelo: tilt mais forte e o saco "sai" um pouco do palco */
+.fx-tilt-strong{transform-style:preserve-3d;}
+.fx-tilt-strong > [data-bag]{transition:transform .7s var(--ease-out);}
+.fx-tilt-strong.fx-tilt-on > [data-bag]{transform:translateZ(36px);}
+
+/* ---------- troca de cor do saco ---------- */
+#bagStage.fx-bag{position:relative;}
+#bagStage.fx-bag > [data-bag]{backface-visibility:hidden;}
+#bagStage.fx-bag > .fx-bag-out{position:absolute; inset:0; z-index:0; pointer-events:none;}
+
+/* ---------- spotlight que segue o cursor (por baixo do conteúdo) ---------- */
+.fx-spot{position:absolute; left:0; top:0; z-index:0; width:900px; height:900px; margin:-450px 0 0 -450px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .8s ease; background:radial-gradient(closest-side, rgba(217,174,94,.13), rgba(217,174,94,.05) 45%, rgba(217,174,94,0) 100%);}
+.fx-spot.is-on{opacity:1; will-change:transform;}
+/* com um card inclinado sob o cursor, o spotlight da seção recua para os dois brilhos não somarem */
+.fx-lift:has(.fx-tilt-on) > .fx-spot.is-on{opacity:.25;}
+.fx-lift > .container{position:relative; z-index:1;}
+
+/* ---------- faixa corrida ---------- */
+.marquee{position:relative; overflow:hidden; padding-block:18px; background:linear-gradient(180deg, var(--navy-deep), var(--navy)); border-block:1px solid var(--line); -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%); mask-image:linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);}
+.marquee-track{display:flex; width:max-content; will-change:transform;}
+.marquee-track > span{--gap:clamp(20px,2.6vw,38px); display:inline-flex; align-items:center; flex:none; white-space:nowrap; padding-left:calc(var(--gap) + .26em); font-weight:700; font-size:clamp(.8rem,1.15vw,.98rem); letter-spacing:.26em; text-transform:uppercase; color:rgba(239,231,214,.8);}
+.marquee-track > span::after{content:''; flex:none; width:6px; height:6px; margin-left:var(--gap); background:linear-gradient(135deg, var(--gold-3), var(--gold)); transform:rotate(45deg);}
+@media (max-width:720px){ .marquee{padding-block:14px;} }
+
+/* ---------- divisores de seção com brilho ---------- */
+.fx-seam{position:absolute; top:0; left:0; right:0; z-index:1; width:min(880px, 86%); height:1px; margin-inline:auto; pointer-events:none; background:linear-gradient(90deg, rgba(217,174,94,0), rgba(217,174,94,.55) 50%, rgba(217,174,94,0)); transform:scaleX(0); opacity:0; transition:transform 1.6s var(--ease-out), opacity 1.2s ease;}
+.fx-seam.is-in{transform:scaleX(1); opacity:1;}
+
+/* ---------- fluxo da rede de aplicadores ---------- */
+.flow.fx-flow li::before{opacity:.28; transform:scale(.8); transition:opacity .55s ease, transform .8s var(--ease-out); transition-delay:calc(.3s + var(--fx-i,0) * .48s);}
+.flow.fx-flow.is-drawn li::before{opacity:1; transform:none;}
+.flow.fx-flow li::after{transform:scaleX(0); transform-origin:0 50%; transition:transform .45s cubic-bezier(.65,0,.35,1); transition-delay:calc(.42s + var(--fx-i,0) * .48s);}
+.flow.fx-flow.is-drawn li::after{transform:scaleX(1);}
+.fx-step-glow{position:absolute; left:50%; top:27px; width:54px; height:54px; margin:-27px 0 0 -27px; border-radius:50%; pointer-events:none; opacity:0; background:radial-gradient(closest-side, rgba(244,223,168,.55), rgba(217,174,94,.22) 55%, rgba(217,174,94,0)); transform:scale(.6);}
+.flow.fx-flow.is-drawn .fx-step-glow{animation:fx-step-glow 1.3s var(--ease-out) calc(.3s + var(--fx-i,0) * .48s) both;}
+@keyframes fx-step-glow{0%{opacity:0; transform:scale(.6);} 30%{opacity:1; transform:scale(1.25);} 100%{opacity:0; transform:scale(1.9);}}
+@media (max-width:860px){
+  .fx-step-glow{left:27px;}
+  /* no celular os passos ficam em coluna: a linha desce de um número ao outro */
+  .flow.fx-flow li::after{display:block; left:26px; right:auto; top:62px; bottom:-22px; width:1.5px; height:auto; background:linear-gradient(180deg, var(--gold), rgba(198,138,46,.2)); transform:scaleY(0); transform-origin:50% 0;}
+  .flow.fx-flow.is-drawn li::after{transform:scaleY(1);}
+  .flow.fx-flow li:last-child::after{display:none;}
+}
+
+/* ---------- poeira dourada do CTA ---------- */
+.cta-band canvas.dust{position:absolute; inset:0; z-index:0; width:100%; height:100%; pointer-events:none;}
+
+/* ---------- FAQ: altura suave (CSS nativo quando o navegador suporta) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .faq-list.fx-faq-css details{interpolate-size:allow-keywords;}
+  .faq-list.fx-faq-css details::details-content{block-size:0; overflow:hidden; transition:block-size .5s var(--ease-out), content-visibility .5s allow-discrete;}
+  .faq-list.fx-faq-css details[open]::details-content{block-size:auto;}
+  .faq-list.fx-faq-css details > p,
+  .faq-list.fx-faq-js details > p{transition:opacity .45s ease, transform .55s var(--ease-out);}
+  .faq-list.fx-faq-css details:not([open]) > p,
+  .faq-list.fx-faq-js details.fx-closing > p{opacity:0; transform:translate3d(0,-6px,0);}
+  @starting-style{
+    .faq-list.fx-faq-css details[open] > p{opacity:0; transform:translate3d(0,-6px,0);}
+  }
+}
+@media (hover:hover){
+  .faq details{transition:border-color .3s ease;}
+  .faq details:hover{border-color:rgba(217,174,94,.35);}
+}
+
+/* ---------- microinterações pequenas ---------- */
+@media (hover:hover){
+  .sw:not([aria-pressed="true"]):hover{border-color:rgba(217,174,94,.5); transform:translateY(-2px);}
+  .prod .art svg{transition:transform .7s var(--ease-out);}
+  .prod:hover .art svg{transform:translate3d(0,-5px,0) scale(1.03);}
+  .benefit .ic{transition:transform .6s var(--ease-out);}
+  .benefit:hover .ic{transform:translate3d(0,-3px,0);}
+}
+.foot ul a{position:relative;}
+.foot ul a::after{content:''; position:absolute; left:0; right:0; bottom:-3px; height:1px; background:var(--gold-2); transform:scaleX(0); transform-origin:100% 50%; transition:transform .4s var(--ease-out);}
+.foot ul a:hover::after,
+.foot ul a:focus-visible::after{transform:scaleX(1); transform-origin:0 50%;}
+
+/* WhatsApp: três pulsos discretos depois de alguns segundos, e um giro curto no hover */
+.wa-float::before{content:''; position:absolute; inset:0; border-radius:50%; border:1.5px solid rgba(217,174,94,.75); opacity:0; pointer-events:none; animation:fx-wa-ring 3.2s var(--ease-out) 5s 3 both;}
+@keyframes fx-wa-ring{0%{opacity:.85; transform:scale(1);} 55%,100%{opacity:0; transform:scale(1.6);}}
+.wa-float svg{transition:transform .45s var(--ease-out);}
+@media (hover:hover){ .wa-float:hover svg{transform:rotate(-10deg) scale(1.06);} }
+
+/* ---------- impressão: nada fica escondido esperando animação ---------- */
+@media print{
+  .fx-split .fx-wi,
+  .hero .hero-inner > *,
+  .hero-inner.fx-parallax{opacity:1 !important; transform:none !important; transition:none !important; animation:none !important;}
+  .fx-split .fx-w{clip-path:none !important;}
+  .fx-spot, .fx-glare, .fx-seam, .fx-step-glow, .scroll-progress, .marquee, .cta-band canvas.dust{display:none !important;}
+  header.site.fx-hide{transform:none !important;}
+}

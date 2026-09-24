@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Balde RESINA EPÓXI Stone Dren 16 L">
+<defs>
+<filter id="bre-blur6" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="7"/></filter>
+<filter id="bre-blur2" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="2.6"/></filter>
+<filter id="bre-soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+<linearGradient id="bre-plast" gradientUnits="userSpaceOnUse" x1="84" y1="0" x2="316" y2="0"><stop offset="0" stop-color="#07080a"/><stop offset=".06" stop-color="#101216"/><stop offset=".17" stop-color="#23262d"/><stop offset=".26" stop-color="#3a3f49"/><stop offset=".32" stop-color="#2a2e36"/><stop offset=".46" stop-color="#1a1c22"/><stop offset=".66" stop-color="#16181d"/><stop offset=".84" stop-color="#101216"/><stop offset=".93" stop-color="#22252c"/><stop offset=".975" stop-color="#2e323b"/><stop offset="1" stop-color="#0b0c0f"/></linearGradient>
+<linearGradient id="bre-lidtop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3f49"/><stop offset=".35" stop-color="#23262d"/><stop offset=".7" stop-color="#16181d"/><stop offset="1" stop-color="#0e1013"/></linearGradient>
+<radialGradient id="bre-lidpanel" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#2e323b"/><stop offset=".6" stop-color="#1b1d23"/><stop offset="1" stop-color="#121418"/></radialGradient>
+<linearGradient id="bre-lab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F1D33"/><stop offset="1" stop-color="#0A1526"/></linearGradient>
+<linearGradient id="bre-shade" gradientUnits="userSpaceOnUse" x1="84" y1="0" x2="316" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".72"/><stop offset=".07" stop-color="#000" stop-opacity=".42"/><stop offset=".2" stop-color="#fff" stop-opacity=".07"/><stop offset=".28" stop-color="#fff" stop-opacity=".12"/><stop offset=".38" stop-color="#fff" stop-opacity="0"/><stop offset=".62" stop-color="#000" stop-opacity="0"/><stop offset=".84" stop-color="#000" stop-opacity=".28"/><stop offset=".95" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></linearGradient>
+<linearGradient id="bre-acc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9AE5E"/><stop offset=".45" stop-color="#C68A2E"/><stop offset="1" stop-color="#9A6A20"/></linearGradient>
+<linearGradient id="bre-gold" gradientUnits="userSpaceOnUse" x1="84" y1="0" x2="316" y2="0"><stop offset="0" stop-color="#C68A2E"/><stop offset=".3" stop-color="#F4DFA8"/><stop offset=".55" stop-color="#D9AE5E"/><stop offset="1" stop-color="#C68A2E"/></linearGradient>
+<linearGradient id="bre-metal" gradientUnits="userSpaceOnUse" x1="70" y1="0" x2="330" y2="0"><stop offset="0" stop-color="#7d848d"/><stop offset=".25" stop-color="#e3e7eb"/><stop offset=".5" stop-color="#a7aeb6"/><stop offset=".75" stop-color="#d5dadf"/><stop offset="1" stop-color="#6c737c"/></linearGradient>
+<linearGradient id="bre-grip" gradientUnits="userSpaceOnUse" x1="0" y1="26" x2="0" y2="46"><stop offset="0" stop-color="#4a505c"/><stop offset=".28" stop-color="#2a2e36"/><stop offset=".62" stop-color="#15171c"/><stop offset="1" stop-color="#060708"/></linearGradient>
+<linearGradient id="bre-ear" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0c0d10"/><stop offset=".45" stop-color="#2a2e36"/><stop offset="1" stop-color="#101216"/></linearGradient>
+<clipPath id="bre-clipbody"><path d="M 88 130 L 104 342 A 96 17 0 0 0 296 342 L 312 130 A 112 20.5 0 0 1 88 130 Z"/></clipPath>
+<clipPath id="bre-cliplab"><path d="M 90.26 160 A 109.74 20 0 0 0 309.74 160 L 298.11 314 A 98.11 17.46 0 0 1 101.89 314 Z"/></clipPath>
+<path id="bre-tp-brand" d="M 92.91 195 A 107.09 19.43 0 0 0 307.09 195"/>
+<path id="bre-tp-prod" d="M 95.47 229 A 104.53 18.87 0 0 0 304.53 229"/>
+<path id="bre-tp-line" d="M 96.87 247.5 A 103.13 18.56 0 0 0 303.13 247.5"/>
+<path id="bre-tp-la" d="M 96.51 242.8 A 103.49 18.64 0 0 0 303.49 242.8"/>
+<path id="bre-tp-lb" d="M 97.35 253.9 A 102.65 18.45 0 0 0 302.65 253.9"/>
+<path id="bre-tp-vol" d="M 99.4 281 A 100.6 18.01 0 0 0 300.6 281"/>
+<path id="bre-tp-fil1" d="M 90.83 167.5 A 109.17 19.88 0 0 0 309.17 167.5"/>
+<path id="bre-tp-fil2" d="M 101.32 306.5 A 98.68 17.59 0 0 0 298.68 306.5"/>
+</defs>
+<ellipse cx="200" cy="352" rx="124" ry="17" fill="rgba(0,0,0,.35)" filter="url(#bre-blur6)"/>
+<ellipse cx="200" cy="356" rx="100" ry="8" fill="rgba(0,0,0,.35)" filter="url(#bre-blur2)"/>
+<path d="M 88 130 L 104 342 A 96 17 0 0 0 296 342 L 312 130 A 112 20.5 0 0 1 88 130 Z" fill="url(#bre-plast)"/>
+<path d="M 103.25 332 A 96.75 17.17 0 0 0 296.75 332 L 296 342 A 96 17 0 0 1 104 342 Z" fill="#000" opacity=".35"/>
+<path d="M 103.25 332 A 96.75 17.17 0 0 0 296.75 332" fill="none" stroke="#3a3f49" stroke-width="1.2" opacity=".7"/>
+<path d="M 89.13 145 A 110.87 20.25 0 0 0 310.87 145" fill="none" stroke="#3d424c" stroke-width="2.4" opacity=".85"/>
+<path d="M 89.33 147.6 A 110.67 20.21 0 0 0 310.67 147.6" fill="none" stroke="#050607" stroke-width="2" opacity=".9"/>
+<path d="M 102.49 322 A 97.51 17.33 0 0 0 297.51 322" fill="none" stroke="#3d424c" stroke-width="2.4" opacity=".85"/>
+<path d="M 102.69 324.6 A 97.31 17.29 0 0 0 297.31 324.6" fill="none" stroke="#050607" stroke-width="2" opacity=".9"/>
+<path d="M 90.26 160 A 109.74 20 0 0 0 309.74 160 L 298.11 314 A 98.11 17.46 0 0 1 101.89 314 Z" fill="url(#bre-lab)"/>
+<g clip-path="url(#bre-cliplab)">
+<path d="M 98.11 264 A 101.89 18.29 0 0 0 301.89 264 L 299.77 292 A 99.77 17.83 0 0 1 100.23 292 Z" fill="url(#bre-acc)"/>
+<path d="M 98.11 264 A 101.89 18.29 0 0 0 301.89 264" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width=".8"/>
+<use href="#bre-tp-fil1" fill="none" stroke="url(#bre-gold)" stroke-width="1.3"/>
+<use href="#bre-tp-fil2" fill="none" stroke="url(#bre-gold)" stroke-width="1.3"/>
+</g>
+<path d="M 90.26 160 A 109.74 20 0 0 0 309.74 160" fill="none" stroke="#000" stroke-width="1" opacity=".5"/>
+<path d="M 101.89 314 A 98.11 17.46 0 0 0 298.11 314" fill="none" stroke="#000" stroke-width="1" opacity=".45"/>
+<text font-family="Montserrat, Arial, sans-serif" font-size="19" text-anchor="middle"><textPath href="#bre-tp-brand" startOffset="50%"><tspan font-weight="500" fill="#EFE7D6">Stone </tspan><tspan font-weight="600" fill="#D9AE5E" letter-spacing=".35em">DRE</tspan><tspan font-weight="600" fill="#D9AE5E">N</tspan></textPath></text>
+<text font-family="Montserrat, Arial, sans-serif" font-size="22" font-weight="700" fill="#EFE7D6" text-anchor="middle" letter-spacing=".02em"><textPath href="#bre-tp-prod" startOffset="50%">RESINA EPÓXI</textPath></text>
+<text font-family="Montserrat, Arial, sans-serif" font-size="10" font-weight="500" fill="#EFE7D6" fill-opacity=".84" text-anchor="middle" letter-spacing=".04em"><textPath href="#bre-tp-line" startOffset="50%">Componente A</textPath></text>
+<text font-family="Montserrat, Arial, sans-serif" font-size="16" font-weight="700" fill="#0A1526" text-anchor="middle" letter-spacing=".06em"><textPath href="#bre-tp-vol" startOffset="50%">16 L</textPath></text>
+<path d="M 90.26 160 A 109.74 20 0 0 0 309.74 160 L 298.11 314 A 98.11 17.46 0 0 1 101.89 314 Z" fill="url(#bre-shade)"/>
+<g clip-path="url(#bre-clipbody)"><path d="M 125 132 L 137 132 L 145 344 L 134 344 Z" fill="#fff" opacity=".13" filter="url(#bre-soft)"/><path d="M 128.5 132 L 131.5 132 L 139 344 L 136.5 344 Z" fill="#fff" opacity=".12"/><path d="M 292 132 L 298 132 L 285 344 L 280 344 Z" fill="#fff" opacity=".05" filter="url(#bre-soft)"/><path d="M 89.4 130 L 105.4 342" stroke="#8a93a0" stroke-width="1.4" opacity=".28"/><path d="M 310.6 130 L 294.6 342" stroke="#8a93a0" stroke-width="1.4" opacity=".38"/><path d="M 105 340.8 A 95 16.6 0 0 0 295 340.8" fill="none" stroke="#6a717d" stroke-width="1.2" opacity=".5"/></g>
+<path d="M 89 132 L 75 137 Q 70 138.5 70 144 L 70 152 Q 70 157.5 75 158.5 L 87.5 164 Z" fill="url(#bre-ear)"/>
+<path d="M 89 132 L 75 137 Q 70 138.5 70 144 L 70 152 Q 70 157.5 75 158.5 L 87.5 164 Z" fill="none" stroke="#4a505c" stroke-width=".8" opacity=".6"/>
+<circle cx="78" cy="148" r="3.4" fill="#050607"/>
+<path d="M 311 132 L 325 137 Q 330 138.5 330 144 L 330 152 Q 330 157.5 325 158.5 L 312.5 164 Z" fill="url(#bre-ear)"/>
+<path d="M 311 132 L 325 137 Q 330 138.5 330 144 L 330 152 Q 330 157.5 325 158.5 L 312.5 164 Z" fill="none" stroke="#4a505c" stroke-width=".8" opacity=".6"/>
+<circle cx="322" cy="148" r="3.4" fill="#050607"/>
+<path d="M 84 120 A 116 21.6 0 0 0 316 120 L 316 131 A 116 21.6 0 0 1 84 131 Z" fill="url(#bre-plast)"/>
+<line x1="84.64" y1="124.76" x2="84.64" y2="131.76" stroke="#040405" stroke-width="1.5" opacity="0.14"/>
+<line x1="86.37" y1="126.84" x2="86.37" y2="133.84" stroke="#040405" stroke-width="1.5" opacity="0.18"/>
+<line x1="89.19" y1="128.89" x2="89.19" y2="135.89" stroke="#040405" stroke-width="1.5" opacity="0.27"/>
+<line x1="93.06" y1="130.87" x2="93.06" y2="137.87" stroke="#040405" stroke-width="1.5" opacity="0.35"/>
+<line x1="97.96" y1="132.77" x2="97.96" y2="139.77" stroke="#040405" stroke-width="1.5" opacity="0.43"/>
+<line x1="103.83" y1="134.58" x2="103.83" y2="141.58" stroke="#040405" stroke-width="1.5" opacity="0.5"/>
+<line x1="110.62" y1="136.27" x2="110.62" y2="143.27" stroke="#040405" stroke-width="1.5" opacity="0.57"/>
+<line x1="118.26" y1="137.83" x2="118.26" y2="144.83" stroke="#040405" stroke-width="1.5" opacity="0.64"/>
+<line x1="126.68" y1="139.24" x2="126.68" y2="146.24" stroke="#040405" stroke-width="1.5" opacity="0.7"/>
+<line x1="135.81" y1="140.49" x2="135.81" y2="147.49" stroke="#040405" stroke-width="1.5" opacity="0.75"/>
+<line x1="145.54" y1="141.57" x2="145.54" y2="148.57" stroke="#040405" stroke-width="1.5" opacity="0.79"/>
+<line x1="155.8" y1="142.47" x2="155.8" y2="149.47" stroke="#040405" stroke-width="1.5" opacity="0.83"/>
+<line x1="166.47" y1="143.18" x2="166.47" y2="150.18" stroke="#040405" stroke-width="1.5" opacity="0.86"/>
+<line x1="177.47" y1="143.69" x2="177.47" y2="150.69" stroke="#040405" stroke-width="1.5" opacity="0.88"/>
+<line x1="188.68" y1="144" x2="188.68" y2="151" stroke="#040405" stroke-width="1.5" opacity="0.9"/>
+<line x1="200" y1="144.1" x2="200" y2="151.1" stroke="#040405" stroke-width="1.5" opacity="0.9"/>
+<line x1="211.32" y1="144" x2="211.32" y2="151" stroke="#040405" stroke-width="1.5" opacity="0.9"/>
+<line x1="222.53" y1="143.69" x2="222.53" y2="150.69" stroke="#040405" stroke-width="1.5" opacity="0.88"/>
+<line x1="233.53" y1="143.18" x2="233.53" y2="150.18" stroke="#040405" stroke-width="1.5" opacity="0.86"/>
+<line x1="244.2" y1="142.47" x2="244.2" y2="149.47" stroke="#040405" stroke-width="1.5" opacity="0.83"/>
+<line x1="254.46" y1="141.57" x2="254.46" y2="148.57" stroke="#040405" stroke-width="1.5" opacity="0.79"/>
+<line x1="264.19" y1="140.49" x2="264.19" y2="147.49" stroke="#040405" stroke-width="1.5" opacity="0.75"/>
+<line x1="273.32" y1="139.24" x2="273.32" y2="146.24" stroke="#040405" stroke-width="1.5" opacity="0.7"/>
+<line x1="281.74" y1="137.83" x2="281.74" y2="144.83" stroke="#040405" stroke-width="1.5" opacity="0.64"/>
+<line x1="289.38" y1="136.27" x2="289.38" y2="143.27" stroke="#040405" stroke-width="1.5" opacity="0.57"/>
+<line x1="296.17" y1="134.58" x2="296.17" y2="141.58" stroke="#040405" stroke-width="1.5" opacity="0.5"/>
+<line x1="302.04" y1="132.77" x2="302.04" y2="139.77" stroke="#040405" stroke-width="1.5" opacity="0.43"/>
+<line x1="306.94" y1="130.87" x2="306.94" y2="137.87" stroke="#040405" stroke-width="1.5" opacity="0.35"/>
+<line x1="310.81" y1="128.89" x2="310.81" y2="135.89" stroke="#040405" stroke-width="1.5" opacity="0.27"/>
+<line x1="313.63" y1="126.84" x2="313.63" y2="133.84" stroke="#040405" stroke-width="1.5" opacity="0.18"/>
+<line x1="315.36" y1="124.76" x2="315.36" y2="131.76" stroke="#040405" stroke-width="1.5" opacity="0.14"/>
+<path d="M 127.13 144.91 L 143.13 145.91 L 142.13 155.91 Q 135.13 159.91 128.13 154.91 Z" fill="#1d2026" stroke="#3a3f49" stroke-width=".8"/>
+<path d="M 84 131 A 116 21.6 0 0 0 316 131" fill="none" stroke="#3a3f49" stroke-width=".9" opacity=".6"/>
+<path d="M 82 100 A 118 22 0 0 0 318 100 L 318 120 A 118 22 0 0 1 82 120 Z" fill="url(#bre-plast)"/>
+<line x1="82.18" y1="104.23" x2="82.18" y2="118.23" stroke="#050607" stroke-width="1.8" opacity="0.09"/>
+<line x1="83.78" y1="104.23" x2="83.78" y2="118.23" stroke="#3a3f49" stroke-width=".8" opacity="0.06"/>
+<line x1="83.58" y1="106.59" x2="83.58" y2="120.59" stroke="#050607" stroke-width="1.8" opacity="0.14"/>
+<line x1="85.18" y1="106.59" x2="85.18" y2="120.59" stroke="#3a3f49" stroke-width=".8" opacity="0.1"/>
+<line x1="86.35" y1="108.92" x2="86.35" y2="122.92" stroke="#050607" stroke-width="1.8" opacity="0.23"/>
+<line x1="87.95" y1="108.92" x2="87.95" y2="122.92" stroke="#3a3f49" stroke-width=".8" opacity="0.16"/>
+<line x1="90.44" y1="111.17" x2="90.44" y2="125.17" stroke="#050607" stroke-width="1.8" opacity="0.32"/>
+<line x1="92.04" y1="111.17" x2="92.04" y2="125.17" stroke="#3a3f49" stroke-width=".8" opacity="0.22"/>
+<line x1="95.81" y1="113.33" x2="95.81" y2="127.33" stroke="#050607" stroke-width="1.8" opacity="0.4"/>
+<line x1="97.41" y1="113.33" x2="97.41" y2="127.33" stroke="#3a3f49" stroke-width=".8" opacity="0.28"/>
+<line x1="102.4" y1="115.37" x2="102.4" y2="129.37" stroke="#050607" stroke-width="1.8" opacity="0.48"/>
+<line x1="104" y1="115.37" x2="104" y2="129.37" stroke="#3a3f49" stroke-width=".8" opacity="0.34"/>
+<line x1="110.14" y1="117.26" x2="110.14" y2="131.26" stroke="#050607" stroke-width="1.8" opacity="0.55"/>
+<line x1="111.74" y1="117.26" x2="111.74" y2="131.26" stroke="#3a3f49" stroke-width=".8" opacity="0.39"/>
+<line x1="118.92" y1="118.98" x2="118.92" y2="132.98" stroke="#050607" stroke-width="1.8" opacity="0.62"/>
+<line x1="120.52" y1="118.98" x2="120.52" y2="132.98" stroke="#3a3f49" stroke-width=".8" opacity="0.44"/>
+<line x1="128.66" y1="120.52" x2="128.66" y2="134.52" stroke="#050607" stroke-width="1.8" opacity="0.68"/>
+<line x1="130.26" y1="120.52" x2="130.26" y2="134.52" stroke="#3a3f49" stroke-width=".8" opacity="0.48"/>
+<line x1="139.23" y1="121.86" x2="139.23" y2="135.86" stroke="#050607" stroke-width="1.8" opacity="0.73"/>
+<line x1="140.83" y1="121.86" x2="140.83" y2="135.86" stroke="#3a3f49" stroke-width=".8" opacity="0.51"/>
+<line x1="150.5" y1="122.97" x2="150.5" y2="136.97" stroke="#050607" stroke-width="1.8" opacity="0.77"/>
+<line x1="152.1" y1="122.97" x2="152.1" y2="136.97" stroke="#3a3f49" stroke-width=".8" opacity="0.54"/>
+<line x1="162.36" y1="123.85" x2="162.36" y2="137.85" stroke="#050607" stroke-width="1.8" opacity="0.81"/>
+<line x1="163.96" y1="123.85" x2="163.96" y2="137.85" stroke="#3a3f49" stroke-width=".8" opacity="0.57"/>
+<line x1="174.66" y1="124.49" x2="174.66" y2="138.49" stroke="#050607" stroke-width="1.8" opacity="0.83"/>
+<line x1="176.26" y1="124.49" x2="176.26" y2="138.49" stroke="#3a3f49" stroke-width=".8" opacity="0.59"/>
+<line x1="187.26" y1="124.87" x2="187.26" y2="138.87" stroke="#050607" stroke-width="1.8" opacity="0.85"/>
+<line x1="188.86" y1="124.87" x2="188.86" y2="138.87" stroke="#3a3f49" stroke-width=".8" opacity="0.6"/>
+<line x1="200" y1="125" x2="200" y2="139" stroke="#050607" stroke-width="1.8" opacity="0.85"/>
+<line x1="201.6" y1="125" x2="201.6" y2="139" stroke="#3a3f49" stroke-width=".8" opacity="0.6"/>
+<line x1="212.74" y1="124.87" x2="212.74" y2="138.87" stroke="#050607" stroke-width="1.8" opacity="0.85"/>
+<line x1="214.34" y1="124.87" x2="214.34" y2="138.87" stroke="#3a3f49" stroke-width=".8" opacity="0.6"/>
+<line x1="225.34" y1="124.49" x2="225.34" y2="138.49" stroke="#050607" stroke-width="1.8" opacity="0.83"/>
+<line x1="226.94" y1="124.49" x2="226.94" y2="138.49" stroke="#3a3f49" stroke-width=".8" opacity="0.59"/>
+<line x1="237.64" y1="123.85" x2="237.64" y2="137.85" stroke="#050607" stroke-width="1.8" opacity="0.81"/>
+<line x1="239.24" y1="123.85" x2="239.24" y2="137.85" stroke="#3a3f49" stroke-width=".8" opacity="0.57"/>
+<line x1="249.5" y1="122.97" x2="249.5" y2="136.97" stroke="#050607" stroke-width="1.8" opacity="0.77"/>
+<line x1="251.1" y1="122.97" x2="251.1" y2="136.97" stroke="#3a3f49" stroke-width=".8" opacity="0.54"/>
+<line x1="260.77" y1="121.86" x2="260.77" y2="135.86" stroke="#050607" stroke-width="1.8" opacity="0.73"/>
+<line x1="262.37" y1="121.86" x2="262.37" y2="135.86" stroke="#3a3f49" stroke-width=".8" opacity="0.51"/>
+<line x1="271.34" y1="120.52" x2="271.34" y2="134.52" stroke="#050607" stroke-width="1.8" opacity="0.68"/>
+<line x1="272.94" y1="120.52" x2="272.94" y2="134.52" stroke="#3a3f49" stroke-width=".8" opacity="0.48"/>
+<line x1="281.08" y1="118.98" x2="281.08" y2="132.98" stroke="#050607" stroke-width="1.8" opacity="0.62"/>
+<line x1="282.68" y1="118.98" x2="282.68" y2="132.98" stroke="#3a3f49" stroke-width=".8" opacity="0.44"/>
+<line x1="289.86" y1="117.26" x2="289.86" y2="131.26" stroke="#050607" stroke-width="1.8" opacity="0.55"/>
+<line x1="291.46" y1="117.26" x2="291.46" y2="131.26" stroke="#3a3f49" stroke-width=".8" opacity="0.39"/>
+<line x1="297.6" y1="115.37" x2="297.6" y2="129.37" stroke="#050607" stroke-width="1.8" opacity="0.48"/>
+<line x1="299.2" y1="115.37" x2="299.2" y2="129.37" stroke="#3a3f49" stroke-width=".8" opacity="0.34"/>
+<line x1="304.19" y1="113.33" x2="304.19" y2="127.33" stroke="#050607" stroke-width="1.8" opacity="0.4"/>
+<line x1="305.79" y1="113.33" x2="305.79" y2="127.33" stroke="#3a3f49" stroke-width=".8" opacity="0.28"/>
+<line x1="309.56" y1="111.17" x2="309.56" y2="125.17" stroke="#050607" stroke-width="1.8" opacity="0.32"/>
+<line x1="311.16" y1="111.17" x2="311.16" y2="125.17" stroke="#3a3f49" stroke-width=".8" opacity="0.22"/>
+<line x1="313.65" y1="108.92" x2="313.65" y2="122.92" stroke="#050607" stroke-width="1.8" opacity="0.23"/>
+<line x1="315.25" y1="108.92" x2="315.25" y2="122.92" stroke="#3a3f49" stroke-width=".8" opacity="0.16"/>
+<line x1="316.42" y1="106.59" x2="316.42" y2="120.59" stroke="#050607" stroke-width="1.8" opacity="0.14"/>
+<line x1="318.02" y1="106.59" x2="318.02" y2="120.59" stroke="#3a3f49" stroke-width=".8" opacity="0.1"/>
+<line x1="317.82" y1="104.23" x2="317.82" y2="118.23" stroke="#050607" stroke-width="1.8" opacity="0.09"/>
+<line x1="319.42" y1="104.23" x2="319.42" y2="118.23" stroke="#3a3f49" stroke-width=".8" opacity="0.06"/>
+<path d="M 82 120 A 118 22 0 0 0 318 120" fill="none" stroke="#040405" stroke-width="1.6"/>
+<ellipse cx="200" cy="100" rx="118" ry="22" fill="url(#bre-lidtop)"/>
+<ellipse cx="200" cy="100" rx="117" ry="21.4" fill="none" stroke="#4d535f" stroke-width="1.2" opacity=".8"/>
+<ellipse cx="200" cy="100.8" rx="100" ry="18.4" fill="none" stroke="#060708" stroke-width="2.6"/>
+<ellipse cx="200" cy="102.2" rx="100" ry="18.4" fill="none" stroke="#3a3f49" stroke-width=".9" opacity=".7"/>
+<ellipse cx="200" cy="101.2" rx="74" ry="13.2" fill="url(#bre-lidpanel)"/>
+<ellipse cx="200" cy="101.2" rx="74" ry="13.2" fill="none" stroke="#060708" stroke-width="1.4"/>
+<ellipse cx="200" cy="102.4" rx="74" ry="13.2" fill="none" stroke="#3a3f49" stroke-width=".7" opacity=".6"/>
+<ellipse cx="156" cy="93" rx="42" ry="6.5" fill="#fff" opacity=".13" filter="url(#bre-soft)"/>
+<path d="M 78 148 C 70 78, 128 34, 200 34 C 272 34, 330 78, 322 148" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="3.6" transform="translate(1.2 1.6)"/>
+<path d="M 78 148 C 70 78, 128 34, 200 34 C 272 34, 330 78, 322 148" fill="none" stroke="url(#bre-metal)" stroke-width="3.4" stroke-linecap="round"/>
+<path d="M 78 148 C 70 78, 128 34, 200 34 C 272 34, 330 78, 322 148" fill="none" stroke="#f4f6f8" stroke-width="1" stroke-opacity=".75" transform="translate(-.5 -.8)"/>
+<circle cx="78" cy="148" r="3.6" fill="none" stroke="url(#bre-metal)" stroke-width="2"/>
+<circle cx="322" cy="148" r="3.6" fill="none" stroke="url(#bre-metal)" stroke-width="2"/>
+<path d="M 160 38.6 Q 200 30.5 240 38.6" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="15" stroke-linecap="round" transform="translate(1 2)"/>
+<path d="M 160 38.6 Q 200 30.5 240 38.6" fill="none" stroke="url(#bre-grip)" stroke-width="14" stroke-linecap="round"/>
+<line x1="174" y1="30.26" x2="174" y2="42.26" stroke="#050607" stroke-width="1.2" opacity=".8"/>
+<line x1="187" y1="28.98" x2="187" y2="40.98" stroke="#050607" stroke-width="1.2" opacity=".8"/>
+<line x1="200" y1="28.55" x2="200" y2="40.55" stroke="#050607" stroke-width="1.2" opacity=".8"/>
+<line x1="213" y1="28.98" x2="213" y2="40.98" stroke="#050607" stroke-width="1.2" opacity=".8"/>
+<line x1="226" y1="30.26" x2="226" y2="42.26" stroke="#050607" stroke-width="1.2" opacity=".8"/>
+<path d="M 162 35.4 Q 200 27.8 238 35.4" fill="none" stroke="#6a717d" stroke-width="1.2" stroke-linecap="round" opacity=".55"/>
+</svg>

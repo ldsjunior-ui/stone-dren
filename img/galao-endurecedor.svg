@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Galão Endurecedor Stone Dren 3,6 L">
+<defs>
+<filter id="gen-blur6" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="7"/></filter>
+<filter id="gen-blur2" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="2.4"/></filter>
+<filter id="gen-soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+<linearGradient id="gen-front" gradientUnits="userSpaceOnUse" x1="104.0" y1="0" x2="266.0" y2="0"><stop offset="0" stop-color="#c9c3b8"/><stop offset=".07" stop-color="#e2ded5"/><stop offset=".2" stop-color="#f8f6f1"/><stop offset=".32" stop-color="#f1eee8"/><stop offset=".7" stop-color="#e8e4dc"/><stop offset=".92" stop-color="#dcd7ce"/><stop offset="1" stop-color="#eeebe5"/></linearGradient>
+<linearGradient id="gen-side" gradientUnits="userSpaceOnUse" x1="266.0" y1="0" x2="300.0" y2="0"><stop offset="0" stop-color="#d6d1c7"/><stop offset=".5" stop-color="#c6c0b4"/><stop offset="1" stop-color="#b3ac9f"/></linearGradient>
+<linearGradient id="gen-top" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f7f5f0"/><stop offset="1" stop-color="#e3dfd6"/></linearGradient>
+<linearGradient id="gen-vert" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".0"/><stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient>
+<linearGradient id="gen-amber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9C27A" stop-opacity=".16"/><stop offset="1" stop-color="#C68A2E" stop-opacity=".24"/></linearGradient>
+<linearGradient id="gen-handle" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d4cfc5"/><stop offset=".25" stop-color="#f8f6f1"/><stop offset=".6" stop-color="#ebe7df"/><stop offset="1" stop-color="#cfc9be"/></linearGradient>
+<linearGradient id="gen-cap" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7a531a"/><stop offset=".2" stop-color="#C68A2E"/><stop offset=".36" stop-color="#F4DFA8"/><stop offset=".5" stop-color="#D9AE5E"/><stop offset=".8" stop-color="#a8741f"/><stop offset="1" stop-color="#6c4814"/></linearGradient>
+<linearGradient id="gen-captop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4DFA8"/><stop offset=".55" stop-color="#D9AE5E"/><stop offset="1" stop-color="#C68A2E"/></linearGradient>
+<linearGradient id="gen-lab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F1D33"/><stop offset="1" stop-color="#0A1526"/></linearGradient>
+<linearGradient id="gen-labshade" gradientUnits="userSpaceOnUse" x1="116" y1="0" x2="254" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".12" stop-color="#fff" stop-opacity=".06"/><stop offset=".3" stop-color="#fff" stop-opacity=".03"/><stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>
+<linearGradient id="gen-acc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9AE5E"/><stop offset=".5" stop-color="#C68A2E"/><stop offset="1" stop-color="#9A6A20"/></linearGradient>
+<linearGradient id="gen-gloss" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".35" stop-color="#fff" stop-opacity=".04"/><stop offset=".36" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<clipPath id="gen-clipfront"><path d="M 128 146 L 242 146 Q 266 146 266 170 L 266 336 Q 266 350 252 350 L 118 350 Q 104 350 104 336 L 104 170 Q 104 146 128 146 Z"/></clipPath>
+<clipPath id="gen-cliplab"><path d="M 124 194 L 246 194 Q 254 194 254 202 L 254 326 Q 254 334 246 334 L 124 334 Q 116 334 116 326 L 116 202 Q 116 194 124 194 Z"/></clipPath>
+</defs>
+<ellipse cx="208" cy="346" rx="122" ry="15" fill="rgba(0,0,0,.35)" filter="url(#gen-blur6)"/>
+<ellipse cx="200" cy="350" rx="100" ry="6" fill="rgba(0,0,0,.35)" filter="url(#gen-blur2)"/>
+<path d="M 162 133 L 276 133 Q 300 133 300 157 L 300 323 Q 300 337 286 337 L 152 337 Q 138 337 138 323 L 138 157 Q 138 133 162 133 Z" fill="url(#gen-side)"/>
+<path d="M 266 170 L 300 157 L 300 323 Q 300 337 286 337 L 252 350 Z" fill="url(#gen-side)"/>
+<path d="M 119.43 147.58 L 153.43 134.58 L 276 133 Q 300 133 300 157 L 266 170 Q 266 146 242 146 Z" fill="url(#gen-top)"/>
+<path d="M 266 176 L 300 163 L 300 323 Q 300 337 286 337 L 252 350 Z" fill="url(#gen-amber)"/>
+<path d="M 267 176 L 299 163" stroke="#B07A28" stroke-width="1.2" opacity=".55"/>
+<path d="M 267 174.4 L 299 161.4" stroke="#fff" stroke-width="1" opacity=".5"/>
+<path d="M 276 174.1 L 276 326" stroke="#fff" stroke-width="1.4" opacity=".35"/>
+<path d="M 142 136.5 L 148 76.5 Q 151 54.5 174 54.5 L 230 54.5 Q 253 54.5 256 76.5 L 262 136.5 Z M 170 136.5 L 174 96.5 Q 176 82.5 190 82.5 L 214 82.5 Q 228 82.5 230 96.5 L 234 136.5 Z" fill-rule="evenodd" fill="#cdc7bc"/>
+<path d="M 135 139.5 L 141 79.5 Q 144 57.5 167 57.5 L 223 57.5 Q 246 57.5 249 79.5 L 255 139.5 Z M 163 139.5 L 167 99.5 Q 169 85.5 183 85.5 L 207 85.5 Q 221 85.5 223 99.5 L 227 139.5 Z" fill-rule="evenodd" fill="url(#gen-handle)"/>
+<path d="M 135 139.5 L 141 79.5 Q 144 57.5 167 57.5 L 223 57.5 Q 246 57.5 249 79.5 L 255 139.5 Z M 163 139.5 L 167 99.5 Q 169 85.5 183 85.5 L 207 85.5 Q 221 85.5 223 99.5 L 227 139.5 Z" fill-rule="evenodd" fill="none" stroke="#b9b2a5" stroke-width=".8" opacity=".7"/>
+<path d="M 167 59.5 L 223 59.5" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+<path d="M 145 85.5 Q 147 65.5 165 61.5" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
+<path d="M 131 139.5 Q 195 143.5 259 139.5" fill="none" stroke="#fff" stroke-width="1.2" opacity=".35"/>
+<path d="M 248 141 L 248 120 L 278 120 L 278 141 A 15 4.5 0 0 1 248 141 Z" fill="url(#gen-handle)"/>
+<path d="M 248 126 A 15 4.5 0 0 0 278 126" fill="none" stroke="#b3ac9f" stroke-width="1" opacity=".8"/>
+<path d="M 248 131 A 15 4.5 0 0 0 278 131" fill="none" stroke="#b3ac9f" stroke-width="1" opacity=".8"/>
+<path d="M 248 136 A 15 4.5 0 0 0 278 136" fill="none" stroke="#b3ac9f" stroke-width="1" opacity=".8"/>
+<path d="M 244 99 L 244 120 A 19 5.5 0 0 0 282 120 L 282 99 Z" fill="url(#gen-cap)"/>
+<line x1="244.29" y1="101.96" x2="244.29" y2="118.96" stroke="#5a3c10" stroke-width="1" opacity="0.1"/>
+<line x1="245.15" y1="102.88" x2="245.15" y2="119.88" stroke="#5a3c10" stroke-width="1" opacity="0.21"/>
+<line x1="246.55" y1="103.75" x2="246.55" y2="120.75" stroke="#5a3c10" stroke-width="1" opacity="0.3"/>
+<line x1="248.45" y1="104.54" x2="248.45" y2="121.54" stroke="#5a3c10" stroke-width="1" opacity="0.39"/>
+<line x1="250.79" y1="105.21" x2="250.79" y2="122.21" stroke="#5a3c10" stroke-width="1" opacity="0.46"/>
+<line x1="253.5" y1="105.76" x2="253.5" y2="122.76" stroke="#5a3c10" stroke-width="1" opacity="0.52"/>
+<line x1="256.5" y1="106.17" x2="256.5" y2="123.17" stroke="#5a3c10" stroke-width="1" opacity="0.56"/>
+<line x1="259.7" y1="106.42" x2="259.7" y2="123.42" stroke="#5a3c10" stroke-width="1" opacity="0.59"/>
+<line x1="263" y1="106.5" x2="263" y2="123.5" stroke="#5a3c10" stroke-width="1" opacity="0.6"/>
+<line x1="266.3" y1="106.42" x2="266.3" y2="123.42" stroke="#5a3c10" stroke-width="1" opacity="0.59"/>
+<line x1="269.5" y1="106.17" x2="269.5" y2="123.17" stroke="#5a3c10" stroke-width="1" opacity="0.56"/>
+<line x1="272.5" y1="105.76" x2="272.5" y2="122.76" stroke="#5a3c10" stroke-width="1" opacity="0.52"/>
+<line x1="275.21" y1="105.21" x2="275.21" y2="122.21" stroke="#5a3c10" stroke-width="1" opacity="0.46"/>
+<line x1="277.55" y1="104.54" x2="277.55" y2="121.54" stroke="#5a3c10" stroke-width="1" opacity="0.39"/>
+<line x1="279.45" y1="103.75" x2="279.45" y2="120.75" stroke="#5a3c10" stroke-width="1" opacity="0.3"/>
+<line x1="280.85" y1="102.88" x2="280.85" y2="119.88" stroke="#5a3c10" stroke-width="1" opacity="0.21"/>
+<line x1="281.71" y1="101.96" x2="281.71" y2="118.96" stroke="#5a3c10" stroke-width="1" opacity="0.1"/>
+<path d="M 244 120 A 19 5.5 0 0 0 282 120" fill="none" stroke="#5a3c10" stroke-width="1" opacity=".6"/>
+<ellipse cx="263" cy="99" rx="19" ry="5.5" fill="url(#gen-captop)"/>
+<ellipse cx="263" cy="99" rx="13" ry="3.6" fill="none" stroke="#a8741f" stroke-width="1" opacity=".7"/>
+<ellipse cx="257" cy="97.6" rx="7" ry="1.4" fill="#fff" opacity=".45"/>
+<path d="M 128 146 L 242 146 Q 266 146 266 170 L 266 336 Q 266 350 252 350 L 118 350 Q 104 350 104 336 L 104 170 Q 104 146 128 146 Z" fill="url(#gen-front)"/>
+<g clip-path="url(#gen-clipfront)">
+<rect x="104.0" y="176.0" width="162.0" height="174.0" fill="url(#gen-amber)"/>
+<line x1="104.0" y1="176.0" x2="266.0" y2="176.0" stroke="#B07A28" stroke-width="1.2" opacity=".5"/>
+<line x1="104.0" y1="174.4" x2="266.0" y2="174.4" stroke="#fff" stroke-width="1" opacity=".55"/>
+<rect x="104.0" y="146.0" width="162.0" height="204.0" fill="url(#gen-vert)"/>
+<rect x="126" y="152.0" width="10" height="188.0" fill="#fff" opacity=".35" filter="url(#gen-soft)"/>
+<line x1="264.0" y1="170.0" x2="264.0" y2="336.0" stroke="#fff" stroke-width="1.6" opacity=".75"/>
+<line x1="112.0" y1="341.0" x2="258.0" y2="341.0" stroke="#b3ac9f" stroke-width="1" opacity=".7"/>
+<line x1="112.0" y1="342.2" x2="258.0" y2="342.2" stroke="#fff" stroke-width=".8" opacity=".6"/>
+</g>
+<path d="M 116 147.5 L 251.6 147.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity=".85"/>
+<path d="M 128 146 L 242 146 Q 266 146 266 170 L 266 336 Q 266 350 252 350 L 118 350 Q 104 350 104 336 L 104 170 Q 104 146 128 146 Z" fill="none" stroke="#a9a295" stroke-width=".8" opacity=".55"/>
+<path d="M 124 194 L 246 194 Q 254 194 254 202 L 254 326 Q 254 334 246 334 L 124 334 Q 116 334 116 326 L 116 202 Q 116 194 124 194 Z" fill="url(#gen-lab)"/>
+<g clip-path="url(#gen-cliplab)">
+<rect x="116" y="293" width="138" height="24" fill="url(#gen-acc)"/>
+<line x1="116" y1="293.5" x2="254" y2="293.5" stroke="#fff" stroke-opacity=".35" stroke-width=".8"/>
+</g>
+<path d="M 126.5 199.5 L 243.5 199.5 Q 248.5 199.5 248.5 204.5 L 248.5 323.5 Q 248.5 328.5 243.5 328.5 L 126.5 328.5 Q 121.5 328.5 121.5 323.5 L 121.5 204.5 Q 121.5 199.5 126.5 199.5 Z" fill="none" stroke="#C68A2E" stroke-width="1"/>
+<path d="M 126.5 199.5 L 243.5 199.5 Q 248.5 199.5 248.5 204.5 L 248.5 323.5 Q 248.5 328.5 243.5 328.5 L 126.5 328.5 Q 121.5 328.5 121.5 323.5 L 121.5 204.5 Q 121.5 199.5 126.5 199.5 Z" fill="none" stroke="#F4DFA8" stroke-width=".4" opacity=".6"/>
+<text x="185" y="225" font-family="Montserrat, Arial, sans-serif" font-size="15" text-anchor="middle"><tspan font-weight="500" fill="#EFE7D6">Stone </tspan><tspan font-weight="600" fill="#D9AE5E" letter-spacing=".35em">DRE</tspan><tspan font-weight="600" fill="#D9AE5E">N</tspan></text>
+<line x1="172" y1="234.5" x2="198" y2="234.5" stroke="#C68A2E" stroke-width="1"/>
+<text x="185" y="256" font-family="Montserrat, Arial, sans-serif" font-size="13.4" font-weight="700" fill="#EFE7D6" text-anchor="middle" letter-spacing=".02em">ENDURECEDOR</text>
+<text x="185" y="272" font-family="Montserrat, Arial, sans-serif" font-size="9.4" font-weight="500" fill="#EFE7D6" fill-opacity=".84" text-anchor="middle" letter-spacing=".04em">Para resina</text>
+<text x="185" y="284" font-family="Montserrat, Arial, sans-serif" font-size="9.4" font-weight="500" fill="#EFE7D6" fill-opacity=".84" text-anchor="middle" letter-spacing=".04em">Componente B</text>
+<text x="185" y="310.5" font-family="Montserrat, Arial, sans-serif" font-size="15" font-weight="700" fill="#0A1526" text-anchor="middle" letter-spacing=".06em">3,6 L</text>
+<path d="M 124 194 L 246 194 Q 254 194 254 202 L 254 326 Q 254 334 246 334 L 124 334 Q 116 334 116 326 L 116 202 Q 116 194 124 194 Z" fill="url(#gen-labshade)"/>
+<path d="M 124 194 L 246 194 Q 254 194 254 202 L 254 326 Q 254 334 246 334 L 124 334 Q 116 334 116 326 L 116 202 Q 116 194 124 194 Z" fill="url(#gen-gloss)"/>
+<path d="M 124 194 L 246 194 Q 254 194 254 202 L 254 326 Q 254 334 246 334 L 124 334 Q 116 334 116 326 L 116 202 Q 116 194 124 194 Z" fill="none" stroke="#000" stroke-opacity=".35" stroke-width=".8"/>
+</svg>

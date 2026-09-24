@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Pulverizador Fix Pedras Stone Dren">
+<defs>
+<filter id="sfp-blur6" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="7"/></filter>
+<filter id="sfp-blur2" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="2.4"/></filter>
+<filter id="sfp-soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+<linearGradient id="sfp-tank" gradientUnits="userSpaceOnUse" x1="92.0" y1="0" x2="260.0" y2="0"><stop offset="0" stop-color="#aea79b"/><stop offset=".07" stop-color="#cfcac0"/><stop offset=".2" stop-color="#f6f4ef"/><stop offset=".27" stop-color="#ffffff"/><stop offset=".36" stop-color="#f1eee8"/><stop offset=".62" stop-color="#e6e2da"/><stop offset=".86" stop-color="#cfcac0"/><stop offset=".95" stop-color="#bdb6aa"/><stop offset="1" stop-color="#dcd7ce"/></linearGradient>
+<radialGradient id="sfp-dome" gradientUnits="userSpaceOnUse" cx="150" cy="140" r="120"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".45" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity=".06"/></radialGradient>
+<linearGradient id="sfp-plast" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#07080a"/><stop offset=".18" stop-color="#2a2e36"/><stop offset=".3" stop-color="#3a3f49"/><stop offset=".5" stop-color="#1a1c22"/><stop offset=".85" stop-color="#101216"/><stop offset="1" stop-color="#22252c"/></linearGradient>
+<linearGradient id="sfp-plastv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a505c"/><stop offset=".3" stop-color="#2a2e36"/><stop offset=".65" stop-color="#15171c"/><stop offset="1" stop-color="#060708"/></linearGradient>
+<linearGradient id="sfp-metal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6c737c"/><stop offset=".35" stop-color="#e8ecef"/><stop offset=".6" stop-color="#a7aeb6"/><stop offset="1" stop-color="#5f666f"/></linearGradient>
+<linearGradient id="sfp-brass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6c4814"/><stop offset=".3" stop-color="#C68A2E"/><stop offset=".45" stop-color="#F4DFA8"/><stop offset=".7" stop-color="#C68A2E"/><stop offset="1" stop-color="#6c4814"/></linearGradient>
+<linearGradient id="sfp-lab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F1D33"/><stop offset="1" stop-color="#0A1526"/></linearGradient>
+<linearGradient id="sfp-shade" gradientUnits="userSpaceOnUse" x1="92.0" y1="0" x2="260.0" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".7"/><stop offset=".07" stop-color="#000" stop-opacity=".4"/><stop offset=".2" stop-color="#fff" stop-opacity=".07"/><stop offset=".27" stop-color="#fff" stop-opacity=".12"/><stop offset=".38" stop-color="#fff" stop-opacity="0"/><stop offset=".62" stop-color="#000" stop-opacity="0"/><stop offset=".85" stop-color="#000" stop-opacity=".28"/><stop offset=".95" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity=".72"/></linearGradient>
+<linearGradient id="sfp-acc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9AE5E"/><stop offset=".45" stop-color="#C68A2E"/><stop offset="1" stop-color="#9A6A20"/></linearGradient>
+<linearGradient id="sfp-gold" gradientUnits="userSpaceOnUse" x1="92.0" y1="0" x2="260.0" y2="0"><stop offset="0" stop-color="#C68A2E"/><stop offset=".3" stop-color="#F4DFA8"/><stop offset=".55" stop-color="#D9AE5E"/><stop offset="1" stop-color="#C68A2E"/></linearGradient>
+<clipPath id="sfp-cliptank"><path d="M 92 338 L 92 186 C 92 150, 126 128, 176 126 C 226 128, 260 150, 260 186 L 260 338 A 84 13 0 0 1 92 338 Z"/></clipPath>
+<clipPath id="sfp-cliplab"><path d="M 92 198 A 84 13 0 0 0 260 198 L 260 318 A 84 13 0 0 1 92 318 Z"/></clipPath>
+<path id="sfp-tp-fil1" d="M 92 204 A 84 13 0 0 0 260 204"/>
+<path id="sfp-tp-brand" d="M 92 223.5 A 84 13 0 0 0 260 223.5"/>
+<path id="sfp-tp-prod" d="M 92 249.5 A 84 13 0 0 0 260 249.5"/>
+<path id="sfp-tp-la" d="M 92 263.5 A 84 13 0 0 0 260 263.5"/>
+<path id="sfp-tp-lb" d="M 92 274.5 A 84 13 0 0 0 260 274.5"/>
+<path id="sfp-tp-vol" d="M 92 300.5 A 84 13 0 0 0 260 300.5"/>
+<path id="sfp-tp-fil2" d="M 92 312 A 84 13 0 0 0 260 312"/>
+</defs>
+<g transform="translate(-10 0)">
+<ellipse cx="206" cy="349" rx="128" ry="16" fill="rgba(0,0,0,.35)" filter="url(#sfp-blur6)"/>
+<ellipse cx="176" cy="352" rx="90" ry="7" fill="rgba(0,0,0,.35)" filter="url(#sfp-blur2)"/>
+<ellipse cx="301" cy="342" rx="15" ry="3.6" fill="rgba(0,0,0,.35)" filter="url(#sfp-blur2)"/>
+<path d="M 92 338 L 92 186 C 92 150, 126 128, 176 126 C 226 128, 260 150, 260 186 L 260 338 A 84 13 0 0 1 92 338 Z" fill="url(#sfp-tank)"/>
+<g clip-path="url(#sfp-cliptank)">
+<rect x="92" y="120" width="168" height="80" fill="url(#sfp-dome)"/>
+<path d="M 92 186 A 84 13 0 0 0 260 186" fill="none" stroke="#b9b2a5" stroke-width="1" opacity=".55"/>
+<path d="M 92 187.4 A 84 13 0 0 0 260 187.4" fill="none" stroke="#fff" stroke-width=".9" opacity=".6"/>
+<path d="M 92 326 A 84 13 0 0 0 260 326 L 260 340 A 84 13 0 0 1 92 340 Z" fill="#000" opacity=".1"/>
+<path d="M 92 326 A 84 13 0 0 0 260 326" fill="none" stroke="#a9a295" stroke-width="1.2" opacity=".7"/>
+<path d="M 92 327.4 A 84 13 0 0 0 260 327.4" fill="none" stroke="#fff" stroke-width=".8" opacity=".6"/>
+</g>
+<path d="M 92 198 A 84 13 0 0 0 260 198 L 260 318 A 84 13 0 0 1 92 318 Z" fill="url(#sfp-lab)"/>
+<g clip-path="url(#sfp-cliplab)">
+<path d="M 92 287 A 84 13 0 0 0 260 287 L 260 308 A 84 13 0 0 1 92 308 Z" fill="url(#sfp-acc)"/>
+<path d="M 92 287 A 84 13 0 0 0 260 287" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width=".8"/>
+<use href="#sfp-tp-fil1" fill="none" stroke="url(#sfp-gold)" stroke-width="1.2"/>
+<use href="#sfp-tp-fil2" fill="none" stroke="url(#sfp-gold)" stroke-width="1.2"/>
+</g>
+<path d="M 92 198 A 84 13 0 0 0 260 198" fill="none" stroke="#000" stroke-width="1" opacity=".35"/>
+<path d="M 92 318 A 84 13 0 0 0 260 318" fill="none" stroke="#000" stroke-width="1" opacity=".35"/>
+<text font-family="Montserrat, Arial, sans-serif" font-size="16" text-anchor="middle"><textPath href="#sfp-tp-brand" startOffset="50%"><tspan font-weight="500" fill="#EFE7D6">Stone </tspan><tspan font-weight="600" fill="#D9AE5E" letter-spacing=".35em">DRE</tspan><tspan font-weight="600" fill="#D9AE5E">N</tspan></textPath></text>
+<text font-family="Montserrat, Arial, sans-serif" font-size="20" font-weight="700" fill="#EFE7D6" text-anchor="middle" letter-spacing=".02em"><textPath href="#sfp-tp-prod" startOffset="50%">FIX PEDRAS</textPath></text>
+<text font-family="Montserrat, Arial, sans-serif" font-size="9.6" font-weight="500" fill="#EFE7D6" fill-opacity=".84" text-anchor="middle" letter-spacing=".04em"><textPath href="#sfp-tp-la" startOffset="50%">Fixador de pedras</textPath></text>
+<text font-family="Montserrat, Arial, sans-serif" font-size="9.6" font-weight="500" fill="#EFE7D6" fill-opacity=".84" text-anchor="middle" letter-spacing=".04em"><textPath href="#sfp-tp-lb" startOffset="50%">para jardim</textPath></text>
+<text font-family="Montserrat, Arial, sans-serif" font-size="10.4" font-weight="700" fill="#0A1526" text-anchor="middle" letter-spacing=".05em"><textPath href="#sfp-tp-vol" startOffset="50%">Aplicação em spray</textPath></text>
+<path d="M 92 198 A 84 13 0 0 0 260 198 L 260 318 A 84 13 0 0 1 92 318 Z" fill="url(#sfp-shade)"/>
+<g clip-path="url(#sfp-cliptank)"><rect x="117.92" y="150" width="12" height="186" fill="#fff" opacity=".22" filter="url(#sfp-soft)"/><rect x="122.72" y="160" width="2.4" height="170" fill="#fff" opacity=".2"/><line x1="258.6" y1="186.0" x2="258.6" y2="338.0" stroke="#fff" stroke-width="1.2" opacity=".35"/></g>
+<path d="M 92 338 L 92 186 C 92 150, 126 128, 176 126 C 226 128, 260 150, 260 186 L 260 338 A 84 13 0 0 1 92 338 Z" fill="none" stroke="#9e978a" stroke-width=".8" opacity=".45"/>
+<path d="M 129 146 L 129 139 A 6 2.2 0 0 1 141 139 L 141 146 A 6 2.2 0 0 1 129 146 Z" fill="url(#sfp-brass)"/>
+<ellipse cx="135" cy="139" rx="6" ry="2.2" fill="#F4DFA8"/>
+<ellipse cx="135" cy="139" rx="2.6" ry="1" fill="#9A6A20"/>
+<path d="M 146 110 L 146 128 A 30 6 0 0 0 206 128 L 206 110 Z" fill="url(#sfp-plast)"/>
+<line x1="146.46" y1="113.04" x2="146.46" y2="127.04" stroke="#050607" stroke-width="1.4" opacity="0.15"/>
+<line x1="147.81" y1="114.05" x2="147.81" y2="128.05" stroke="#050607" stroke-width="1.4" opacity="0.29"/>
+<line x1="150.02" y1="115" x2="150.02" y2="129" stroke="#050607" stroke-width="1.4" opacity="0.43"/>
+<line x1="153.02" y1="115.86" x2="153.02" y2="129.86" stroke="#050607" stroke-width="1.4" opacity="0.55"/>
+<line x1="156.72" y1="116.6" x2="156.72" y2="130.6" stroke="#050607" stroke-width="1.4" opacity="0.65"/>
+<line x1="161" y1="117.2" x2="161" y2="131.2" stroke="#050607" stroke-width="1.4" opacity="0.74"/>
+<line x1="165.74" y1="117.64" x2="165.74" y2="131.64" stroke="#050607" stroke-width="1.4" opacity="0.8"/>
+<line x1="170.79" y1="117.91" x2="170.79" y2="131.91" stroke="#050607" stroke-width="1.4" opacity="0.84"/>
+<line x1="176" y1="118" x2="176" y2="132" stroke="#050607" stroke-width="1.4" opacity="0.85"/>
+<line x1="181.21" y1="117.91" x2="181.21" y2="131.91" stroke="#050607" stroke-width="1.4" opacity="0.84"/>
+<line x1="186.26" y1="117.64" x2="186.26" y2="131.64" stroke="#050607" stroke-width="1.4" opacity="0.8"/>
+<line x1="191" y1="117.2" x2="191" y2="131.2" stroke="#050607" stroke-width="1.4" opacity="0.74"/>
+<line x1="195.28" y1="116.6" x2="195.28" y2="130.6" stroke="#050607" stroke-width="1.4" opacity="0.65"/>
+<line x1="198.98" y1="115.86" x2="198.98" y2="129.86" stroke="#050607" stroke-width="1.4" opacity="0.55"/>
+<line x1="201.98" y1="115" x2="201.98" y2="129" stroke="#050607" stroke-width="1.4" opacity="0.43"/>
+<line x1="204.19" y1="114.05" x2="204.19" y2="128.05" stroke="#050607" stroke-width="1.4" opacity="0.29"/>
+<line x1="205.54" y1="113.04" x2="205.54" y2="127.04" stroke="#050607" stroke-width="1.4" opacity="0.15"/>
+<ellipse cx="176" cy="110" rx="30" ry="6" fill="#23262d"/>
+<ellipse cx="176" cy="110" rx="29" ry="5.4" fill="none" stroke="#4a505c" stroke-width="1"/>
+<rect x="170.5" y="74" width="11" height="37" fill="url(#sfp-metal)"/>
+<ellipse cx="176" cy="110" rx="9" ry="2.6" fill="#0b0c0f"/>
+<path d="M 151 46 L 201 46 Q 214 46 214 59 L 214 74 Q 214 82 206 82 L 146 82 Q 138 82 138 74 L 138 59 Q 138 46 151 46 Z M 156 56 L 196 56 Q 202 56 202 62 L 202 66 Q 202 70 198 70 L 154 70 Q 150 70 150 66 L 150 62 Q 150 56 156 56 Z" fill-rule="evenodd" fill="#000" opacity=".3" transform="translate(1.5 2.5)"/>
+<path d="M 151 46 L 201 46 Q 214 46 214 59 L 214 74 Q 214 82 206 82 L 146 82 Q 138 82 138 74 L 138 59 Q 138 46 151 46 Z M 156 56 L 196 56 Q 202 56 202 62 L 202 66 Q 202 70 198 70 L 154 70 Q 150 70 150 66 L 150 62 Q 150 56 156 56 Z" fill-rule="evenodd" fill="url(#sfp-plastv)"/>
+<path d="M 151 46 L 201 46 Q 214 46 214 59 L 214 74 Q 214 82 206 82 L 146 82 Q 138 82 138 74 L 138 59 Q 138 46 151 46 Z" fill="none" stroke="#5a616d" stroke-width=".9" opacity=".6"/>
+<path d="M 148 48.6 L 204 48.6" stroke="#8a93a0" stroke-width="1.4" stroke-linecap="round" opacity=".55"/>
+<line x1="156" y1="47" x2="156" y2="55" stroke="#050607" stroke-width="1.1" opacity=".75"/>
+<line x1="164" y1="47" x2="164" y2="55" stroke="#050607" stroke-width="1.1" opacity=".75"/>
+<line x1="172" y1="47" x2="172" y2="55" stroke="#050607" stroke-width="1.1" opacity=".75"/>
+<line x1="180" y1="47" x2="180" y2="55" stroke="#050607" stroke-width="1.1" opacity=".75"/>
+<line x1="188" y1="47" x2="188" y2="55" stroke="#050607" stroke-width="1.1" opacity=".75"/>
+<line x1="196" y1="47" x2="196" y2="55" stroke="#050607" stroke-width="1.1" opacity=".75"/>
+<path d="M 166 82 L 169 88 L 183 88 L 186 82 Z" fill="#16181d"/>
+<path d="M 203 114 L 216 112 L 216 124 L 203 124 Z" fill="url(#sfp-plastv)"/>
+<path d="M 216 118 C 256 114, 280 140, 278 196 C 276 262, 272 316, 282 331 C 287 338, 294 337, 299 330" fill="none" stroke="#050607" stroke-width="6.4" stroke-linecap="round"/>
+<path d="M 216 118 C 256 114, 280 140, 278 196 C 276 262, 272 316, 282 331 C 287 338, 294 337, 299 330" fill="none" stroke="#2a2e36" stroke-width="4" stroke-linecap="round"/>
+<path d="M 216 118 C 256 114, 280 140, 278 196 C 276 262, 272 316, 282 331 C 287 338, 294 337, 299 330" fill="none" stroke="#6a717d" stroke-width="1.1" stroke-linecap="round" opacity=".7" transform="translate(-1 -1)"/>
+<g transform="translate(300 339) rotate(6.8)">
+<rect x="-2.6" y="-238" width="5.2" height="166" fill="url(#sfp-metal)"/>
+<path d="M -3.6 -236 L -4.6 -252 L 4.6 -252 L 3.6 -236 Z" fill="url(#sfp-brass)"/>
+<path d="M -6 -252 L -6 -258 Q 0 -262 6 -258 L 6 -252 Z" fill="url(#sfp-brass)"/>
+<rect x="-2" y="-263" width="4" height="4" rx="1" fill="#6c4814"/>
+<rect x="-6" y="-82" width="12" height="16" rx="3" fill="url(#sfp-brass)"/>
+<rect x="-4" y="-72" width="8" height="4" fill="#7a531a" opacity=".6"/>
+<path d="M -8 -66 L 8 -66 L 9 -6 Q 9 2 0 2 Q -9 2 -9 -6 Z" fill="url(#sfp-plast)"/>
+<line x1="-8.2" y1="-58" x2="8.4" y2="-58" stroke="#050607" stroke-width="1.2" opacity=".7"/>
+<line x1="-8.2" y1="-51" x2="8.4" y2="-51" stroke="#050607" stroke-width="1.2" opacity=".7"/>
+<line x1="-8.2" y1="-44" x2="8.4" y2="-44" stroke="#050607" stroke-width="1.2" opacity=".7"/>
+<line x1="-8.2" y1="-37" x2="8.4" y2="-37" stroke="#050607" stroke-width="1.2" opacity=".7"/>
+<line x1="-8.2" y1="-30" x2="8.4" y2="-30" stroke="#050607" stroke-width="1.2" opacity=".7"/>
+<line x1="-8.2" y1="-23" x2="8.4" y2="-23" stroke="#050607" stroke-width="1.2" opacity=".7"/>
+<line x1="-8.2" y1="-16" x2="8.4" y2="-16" stroke="#050607" stroke-width="1.2" opacity=".7"/>
+<line x1="-8.2" y1="-9" x2="8.4" y2="-9" stroke="#050607" stroke-width="1.2" opacity=".7"/>
+<path d="M -5 -64 L -5.6 -8" stroke="#6a717d" stroke-width="1.2" opacity=".6"/>
+<path d="M -8 -62 Q -20 -56 -19 -30 Q -18.5 -22 -14 -22 L -9 -24 L -9 -58 Z" fill="url(#sfp-plastv)"/>
+<path d="M -9 -60 Q -18 -54 -17.5 -32" fill="none" stroke="#6a717d" stroke-width="1" opacity=".6"/>
+</g>
+</g>
+</svg>
