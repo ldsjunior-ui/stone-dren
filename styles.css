@@ -93,6 +93,48 @@ html:not(.js) .nav-toggle{display:none !important;}
 .hero::before{content:''; position:absolute; inset:0; z-index:-3; background:url(img/hero-piso.jpg) center 62%/cover no-repeat; transform:scale(1.04);}
 .hero::after{content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgba(10,21,38,.92) 0%, rgba(10,21,38,.72) 42%, rgba(10,21,38,.18) 100%), linear-gradient(0deg, rgba(6,11,20,.55), transparent 30%);}
 #hero-rain{position:absolute; inset:0; width:100%; height:100%; z-index:-2; pointer-events:none;}
+/* loop de vídeo atrás do piso 3D (hero-loop.js): mistura por luz, o preto do vídeo some e só a luz soma.
+   Fica depois dos canvas no DOM, então no mesmo z-index desenha por cima deles; o véu navy (.hero::after, z -1)
+   continua por cima de tudo para o texto seguir legível. Máscara e força mudam por opção. */
+.hero-loop{position:absolute; inset:0; width:100%; height:100%; z-index:-2; pointer-events:none; object-fit:cover; object-position:var(--hl-pos,70% 40%); mix-blend-mode:screen; opacity:0; transition:opacity 1.8s var(--ease-out); -webkit-mask-image:var(--hl-mask,none); mask-image:var(--hl-mask,none);}
+.hero-loop.is-on{opacity:var(--hl-o,.8);}
+html[data-hero-loop="nevoa"]{--hl-o:.85; --hl-pos:72% 30%; --hl-mask:linear-gradient(200deg,#000 0%,#000 45%,rgba(0,0,0,.35) 75%,transparent 100%);}
+html[data-hero-loop="bokeh"]{--hl-o:.75; --hl-pos:60% 45%; --hl-mask:linear-gradient(to bottom,#000 0%,#000 55%,rgba(0,0,0,.4) 78%,transparent 95%);}
+/* reflexos: só no piso, com força total (overlay escurecia o piso inteiro) */
+html[data-hero-loop="reflexos"]{--hl-o:1; --hl-pos:55% 60%; --hl-mask:linear-gradient(to bottom,transparent 0%,transparent 22%,rgba(0,0,0,.7) 45%,#000 70%);}
+html[data-hero-loop="chuva"]{--hl-o:.8; --hl-pos:75% 30%; --hl-mask:linear-gradient(205deg,#000 0%,#000 55%,rgba(0,0,0,.4) 85%,transparent 100%);}
+/* tempestade: a faixa dourada do céu fica no meio do vídeo, sobe para ficar acima do horizonte do piso */
+html[data-hero-loop="tempestade"]{--hl-o:1; --hl-pos:68% 38%; --hl-mask:linear-gradient(to bottom,#000 0%,#000 50%,rgba(0,0,0,.35) 66%,transparent 80%);}
+html[data-hero-loop="tempestade"] .hero-loop{transform:translateY(-18%) scale(1.25); transform-origin:70% 0;}
+/* celular e tablet em pé: o texto ocupa a largura toda e quase o topo inteiro (107 a 859 px de 931 em 390 px),
+   então cada opção tem intensidade própria, medida para o texto manter contraste >= 4,5:1 em qualquer momento do loop */
+@media (max-width:900px){
+  html[data-hero-loop="nevoa"]{--hl-o:.35;}
+  html[data-hero-loop="bokeh"]{--hl-o:.5;}
+  html[data-hero-loop="reflexos"]{--hl-o:.55;}
+  html[data-hero-loop="tempestade"]{--hl-o:.4;}
+  html[data-hero-loop="tempestade"] .hero-loop{transform:none;}
+}
+@media (max-width:380px){
+  html[data-hero-loop="nevoa"]{--hl-o:.24;}
+  html[data-hero-loop="bokeh"]{--hl-o:.32;}
+  html[data-hero-loop="reflexos"]{--hl-o:.4;}
+  html[data-hero-loop="chuva"]{--hl-o:.6;}
+  html[data-hero-loop="tempestade"]{--hl-o:.28;}
+}
+@media (prefers-reduced-motion: reduce){ .hero-loop{transition:none;} }
+.hero-loop-picker{position:fixed; left:16px; bottom:16px; z-index:95; display:flex; align-items:center; gap:6px; padding:8px 10px; border-radius:999px; background:rgba(10,21,38,.88); border:1px solid var(--line); box-shadow:0 10px 30px rgba(0,0,0,.35); font:600 12px/1 var(--font, "Montserrat", sans-serif); color:var(--ink); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); max-width:calc(100vw - 110px); flex-wrap:wrap;}
+.hero-loop-picker .hl-tit{letter-spacing:.14em; text-transform:uppercase; color:var(--gold-2); margin-right:2px;}
+.hero-loop-picker button{width:30px; height:30px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--ink); font:inherit; cursor:pointer;}
+.hero-loop-picker button[aria-pressed="true"]{background:linear-gradient(180deg,var(--gold-2),var(--gold)); color:#1a1206; border-color:transparent;}
+.hero-loop-picker button:focus-visible{outline:2px solid var(--gold-2); outline-offset:2px;}
+.hero-loop-picker .hl-nome{color:var(--ink-dim); padding:0 4px; min-width:9ch;}
+@media (max-width:560px){
+  .hero-loop-picker{left:12px; bottom:12px; gap:5px; padding:7px 9px; border-radius:18px; max-width:calc(100vw - 96px);}
+  .hero-loop-picker .hl-tit{display:none;}
+  .hero-loop-picker .hl-nome{order:-1; flex-basis:100%; text-align:center; padding:0 0 3px; font-size:11px;}
+  .hero-loop-picker button{width:28px; height:28px;}
+}
 .hero > .container{width:100%;}
 .hero-inner{max-width:680px;}
 .hero h1{font-size:clamp(2.5rem,6.2vw,4.6rem); line-height:.98; margin-bottom:24px; text-shadow:0 2px 18px rgba(10,21,38,.9);}
@@ -330,7 +372,7 @@ dialog.priv .x{background:none; border:0; cursor:pointer; color:var(--ink); font
 @media print{
   :root{color-scheme:light;}
   header.site{position:static; background:#fff !important; backdrop-filter:none; border-bottom:1px solid #ddd;}
-  .wa-float,.scroll-progress,.marquee,.scroll-cue,.nav-toggle,.nav-cta,#hero3d,#hero-rain,.dust{display:none !important;}
+  .wa-float,.scroll-progress,.marquee,.scroll-cue,.nav-toggle,.nav-cta,#hero3d,#hero-rain,.hero-loop,.hero-loop-picker,.dust{display:none !important;}
   html:not(.cx-printing) body{background:#fff !important; color:#1a1a1a;}
   html:not(.cx-printing) :is(header.site,.hero,.piso,.loja,.rede,.franquia,.faq,.cta-band,footer){background:#fff !important; color:#1a1a1a !important;}
   html:not(.cx-printing) :is(header.site,.hero,.piso,.loja,.rede,.franquia,.faq,.cta-band,footer) *{color:#1a1a1a !important; text-shadow:none !important; box-shadow:none !important;}
