@@ -103,16 +103,21 @@ html[data-hero-loop="bokeh"]{--hl-o:.75; --hl-pos:60% 45%; --hl-mask:linear-grad
 /* reflexos: só no piso, com força total (overlay escurecia o piso inteiro) */
 html[data-hero-loop="reflexos"]{--hl-o:1; --hl-pos:55% 60%; --hl-mask:linear-gradient(to bottom,transparent 0%,transparent 22%,rgba(0,0,0,.7) 45%,#000 70%);}
 html[data-hero-loop="chuva"]{--hl-o:.8; --hl-pos:75% 30%; --hl-mask:linear-gradient(205deg,#000 0%,#000 55%,rgba(0,0,0,.4) 85%,transparent 100%);}
-/* tempestade: a faixa dourada do céu fica no meio do vídeo, sobe para ficar acima do horizonte do piso */
-html[data-hero-loop="tempestade"]{--hl-o:1; --hl-pos:68% 38%; --hl-mask:linear-gradient(to bottom,#000 0%,#000 50%,rgba(0,0,0,.35) 66%,transparent 80%);}
-html[data-hero-loop="tempestade"] .hero-loop{transform:translateY(-18%) scale(1.25); transform-origin:70% 0;}
+/* tempestade: a faixa dourada do céu fica no meio do vídeo, sobe para ficar acima do horizonte do piso.
+   -45% e a máscara que some aos 64% (medido no QA: ouro abaixo do horizonte de 14 mil para 269 px em 1440) */
+html[data-hero-loop="tempestade"]{--hl-o:1; --hl-pos:68% 38%; --hl-mask:linear-gradient(to bottom,#000 0%,#000 55%,rgba(0,0,0,.35) 60%,transparent 64%);}
+html[data-hero-loop="tempestade"] .hero-loop{transform:translateY(-45%) scale(1.25); transform-origin:70% 0;}
+/* a luz do vídeo encostada no header fazia uma linha reta sob ele; só no alto da página (rolado, o header fica opaco) */
+html[data-hero-loop] header.site:not(.scrolled)::after{content:""; position:absolute; left:0; right:0; top:100%; height:48px; pointer-events:none; background:linear-gradient(rgba(10,21,38,.6),rgba(10,21,38,0));}
 /* celular e tablet em pé: o texto ocupa a largura toda e quase o topo inteiro (107 a 859 px de 931 em 390 px),
    então cada opção tem intensidade própria, medida para o texto manter contraste >= 4,5:1 em qualquer momento do loop */
 @media (max-width:900px){
   html[data-hero-loop="nevoa"]{--hl-o:.35;}
   html[data-hero-loop="bokeh"]{--hl-o:.5;}
-  html[data-hero-loop="reflexos"]{--hl-o:.55;}
-  html[data-hero-loop="tempestade"]{--hl-o:.4;}
+  /* reflexos: em pé o horizonte fica a 36-45% da altura; a água só começa abaixo dele (anéis no céu, QA) */
+  html[data-hero-loop="reflexos"]{--hl-o:.55; --hl-mask:linear-gradient(to bottom,transparent 0%,transparent 44%,rgba(0,0,0,.7) 54%,#000 66%);}
+  /* tempestade em pé: sem transform e com a máscara de antes (o ajuste do desktop não foi medido aqui) */
+  html[data-hero-loop="tempestade"]{--hl-o:.4; --hl-mask:linear-gradient(to bottom,#000 0%,#000 50%,rgba(0,0,0,.35) 66%,transparent 80%);}
   html[data-hero-loop="tempestade"] .hero-loop{transform:none;}
 }
 @media (max-width:380px){

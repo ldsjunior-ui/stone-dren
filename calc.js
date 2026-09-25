@@ -612,9 +612,28 @@
     return L.join("\n");
   }
 
-  // Payload do lead para o webhook (a página manda fire and forget).
-  function montarPayload(lead, obra, r, optin) {
+  // Entrada crua da obra (o que a pessoa digitou), para o servidor refazer a conta com este mesmo motor.
+  // Só os campos que o cálculo usa, cada um curto e em texto; nada de número pronto vindo da página.
+  function entradaDaObra(obra) {
+    obra = obra || {};
+    var curto = function (v, n) { return v == null ? "" : String(v).slice(0, n); };
     return {
+      resina: curto(obra.resina, 12), cor: curto(obra.cor, 12),
+      ambientes: (obra.ambientes || []).slice(0, TABELA.limites.ambientesMax).map(function (a) {
+        a = a || {};
+        return {
+          nome: curto(a.nome, 60).trim(), uso: curto(a.uso, 16), modo: a.modo === "medidas" ? "medidas" : "area",
+          area: curto(a.area, 16), comprimento: curto(a.comprimento, 16), largura: curto(a.largura, 16),
+          base: curto(a.base, 16), espessuraMm: a.espessuraMm == null ? null : curto(a.espessuraMm, 8)
+        };
+      })
+    };
+  }
+
+  // Payload do lead para o webhook. extra (opcional): { email, id, pagina, teste, site }.
+  // Sem extra o formato é o de sempre (a página principal manda fire and forget).
+  function montarPayload(lead, obra, r, optin, extra) {
+    var p = {
       origem: "calculadora-stone-dren",
       tabela: TABELA.versao, tabelaProvisoria: TABELA.provisorio,
       lead: {
@@ -650,6 +669,15 @@
       } : null,
       enviadoEm: new Date().toISOString()
     };
+    if (extra) {
+      p.lead.email = String(extra.email || "").trim().slice(0, 254);
+      p.entrada = entradaDaObra(obra);
+      p.id = String(extra.id || "").slice(0, 64);
+      p.pagina = String(extra.pagina || "").slice(0, 60);
+      p.teste = !!extra.teste;
+      p.hp = String(extra.hp || "").slice(0, 200);   // campo isca: gente não preenche
+    }
+    return p;
   }
 
   var api = {
@@ -667,6 +695,7 @@
     mensagemWhatsApp: mensagemWhatsApp,
     textoLista: textoLista,
     montarPayload: montarPayload,
+    entradaDaObra: entradaDaObra,
     nomeAmbiente: nomeAmbiente,
     tiposDaObra: tiposDaObra
   };

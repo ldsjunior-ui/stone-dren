@@ -63,10 +63,17 @@
       try { video.load(); } catch (e) {}
       video.classList.add("is-on");
     } else {
-      video.src = base + (pequeno() ? "-480.mp4" : "-720.mp4");
+      video.src = base + arquivo();
       tocar();
     }
     marcarSeletor();
+  }
+
+  // celular com tela densa (DPR >= 2) recebe o 720: o 480 ficava esticado cerca de 4 vezes e a chuva perdia
+  // o fio fino (medido no QA). Com rede 3G ou tela de DPR 1 continua o 480, que pesa um terço.
+  function arquivo() {
+    var lento = /(^|-)3g$/.test(conn.effectiveType || "");
+    return pequeno() && ((window.devicePixelRatio || 1) < 2 || lento) ? "-480.mp4" : "-720.mp4";
   }
 
   function tocar() {

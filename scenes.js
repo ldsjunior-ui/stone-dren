@@ -373,7 +373,7 @@ async function initHero(canvas) {
   var skyMat = new THREE.ShaderMaterial({
     uniforms: skyUniforms, side: THREE.BackSide, depthWrite: false,
     vertexShader: "varying vec3 vDir; void main(){ vDir = position; vec4 p = projectionMatrix * modelViewMatrix * vec4(position, 1.0); gl_Position = p.xyww; }",
-    fragmentShader: SKY_GLSL + "\n" + VEIL_GLSL + "\nvarying vec3 vDir; void main(){ gl_FragColor = vec4(sdSky(vDir), 1.0);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\ngl_FragColor.rgb *= sdVeil();\n}"
+    fragmentShader: SKY_GLSL + "\n" + VEIL_GLSL + "\nvarying vec3 vDir; void main(){ gl_FragColor = vec4(sdSky(vDir), 1.0);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\ngl_FragColor.rgb *= sdVeil();\ngl_FragColor.rgb += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;\n}"
   });
   var sky = new THREE.Mesh(new THREE.SphereGeometry(40, 48, 24), skyMat);
   sky.frustumCulled = false;
@@ -517,7 +517,7 @@ async function initHero(canvas) {
       "  vec3 R = reflect(-V, nw);",
       "  float F = 0.02 + 0.98 * pow(1.0 - max(dot(V, nw), 0.0), 5.0);",
       "  float vis = texture2D(uData, uv).b;",
-      "  vec3 spec = sdSky(R) * F * 1.6 + uSunColor * pow(max(dot(R, sdSunDir), 0.0), 260.0) * 16.0 * mix(0.35, 1.0, vis);",
+      "  vec3 spec = sdSky(R) * F * 1.6 + uSunColor * pow(max(dot(R, sdSunDir), 0.0), 140.0) * 6.0 * mix(0.35, 1.0, vis);",
       "  float m = max(wet, ring);",
       "  vec3 col = spec * m + mix(vec3(0.5, 0.56, 0.62), uSunColor, 0.45) * ring * uRingK;",
       "  float dist = length(vW - cameraPosition);",
@@ -544,6 +544,17 @@ async function initHero(canvas) {
   dropGeo.setAttribute("aDrop", dropAttr);
   dropGeo.instanceCount = Q.drops;
   var WIND = new THREE.Vector3(-0.35, -5.6, 0.12);
+  /* A chuva 3D cai com a mesma inclinação da chuva do vídeo de fundo, medida nos quadros do vídeo:
+   * "chuva" 16 graus da vertical com o topo para a direita, "bokeh" 5 graus; os outros não têm chuva
+   * com direção. Antes caía quase reta (3,6 graus) e cruzava com a do vídeo. O vento sai da câmera
+   * (right/fwd), então a inclinação na tela vale com qualquer giro; troca junto com o vídeo. */
+  var RAIN_TILT = { chuva: 16, bokeh: 5 }, RAIN_TILT_PADRAO = 16;
+  function setWind() {
+    var slug = docEl.getAttribute("data-hero-loop");
+    var deg = slug && RAIN_TILT[slug] != null ? RAIN_TILT[slug] : RAIN_TILT_PADRAO;
+    var fall = 5.6, side = fall * Math.tan(THREE.MathUtils.degToRad(deg));
+    WIND.set(-right.x * side - fwd.x * 0.12, -fall, -right.z * side - fwd.z * 0.12);
+  }
   var dropUniforms = {
     uVel: { value: WIND }, uStreak: { value: 0.022 }, uRes: { value: new THREE.Vector2(1, 1) },
     uWidth: { value: 1.1 }, uOpacity: { value: 1.0 }, sdSunDir: { value: sunDir },
@@ -650,6 +661,7 @@ async function initHero(canvas) {
     gradeYU.value.set(portrait ? P.bottomDimPortrait : P.bottomDim, gy[0], gy[1], gradeYU.value.w);
     fwd.set(Math.sin(view.yaw), 0, -Math.cos(view.yaw));
     right.set(Math.cos(view.yaw), 0, Math.sin(view.yaw));
+    setWind();
     buildFloor();
   }
 
@@ -756,6 +768,8 @@ async function initHero(canvas) {
   resize(true);
   var ro = new ResizeObserver(function () { resize(false); });
   ro.observe(section);
+  var moLoop = typeof MutationObserver === "function" ? new MutationObserver(function () { if (!disposed) setWind(); }) : null;
+  if (moLoop) moLoop.observe(docEl, { attributes: true, attributeFilter: ["data-hero-loop"] });
 
   for (var di = 0; di < Q.drops; di++) spawn(di, true);
 
@@ -897,6 +911,7 @@ async function initHero(canvas) {
       if (loop) loop.stop();
       offMotion();
       ro.disconnect();
+      if (moLoop) moLoop.disconnect();
       W.removeEventListener("pointermove", onPointer);
       W.removeEventListener("scroll", onScroll);
       canvas.removeEventListener("webglcontextlost", onLost);

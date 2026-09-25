@@ -1929,7 +1929,7 @@
           <span class="cx-step-n" aria-hidden="true">3</span>
           <div><h3 id="cxLeadTitulo">Veja as quantidades</h3></div>
         </div>
-        <p class="cx-lead-destaque">Para ver as quantidades, informe nome, WhatsApp, cidade e perfil. Com a lista pronta, você pode enviá-la ao comercial pelo WhatsApp.</p>
+        <p class="cx-lead-destaque"><span data-sem-email>Para ver as quantidades, informe nome, WhatsApp, cidade e perfil. Com a lista pronta, você pode enviá-la ao comercial pelo WhatsApp.</span><span data-email-only hidden>Para ver as quantidades e receber a lista no seu e-mail, informe nome, e-mail, WhatsApp, cidade e perfil. O comercial recebe uma cópia para confirmar as quantidades com você.</span></p>
         <div class="cx-lock" aria-hidden="true">
           <div class="cx-lock-row"><i></i><span></span><b>0.000 kg</b></div>
           <div class="cx-lock-row"><i></i><span></span><b>00 kits</b></div>
@@ -1938,12 +1938,21 @@
         </div>
       </div>
 
-      <form class="cx-lead-form" id="cxLeadForm" novalidate>
+      <form class="cx-lead-form" id="cxLeadForm" novalidate method="post" action="#calculadora" onsubmit="return false">
         <p class="cx-req-nota" aria-hidden="true"><span class="cx-req">*</span> Campo obrigatório</p>
         <div class="cx-lf">
           <label for="cxNome">Nome<span class="cx-req" aria-hidden="true">*</span></label>
           <input class="cx-inp" id="cxNome" name="nome" type="text" autocomplete="name" maxlength="80" required aria-describedby="cxNomeErr">
           <p class="cx-err" id="cxNomeErr"></p>
+        </div>
+        <div class="cx-lf" id="cxEmailFld" data-email-only hidden>
+          <label for="cxEmail">E-mail para receber o cálculo<span class="cx-req" aria-hidden="true">*</span></label>
+          <input class="cx-inp" id="cxEmail" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" placeholder="voce@email.com" aria-describedby="cxEmailErr" disabled>
+          <p class="cx-err" id="cxEmailErr"></p>
+        </div>
+        <div class="cx-isca" aria-hidden="true">
+          <label for="cxHp">Não preencha</label>
+          <input id="cxHp" name="cx_hp_x9" type="text" tabindex="-1" autocomplete="off" data-lpignore="true" data-1p-ignore>
         </div>
         <div class="cx-lf-row">
           <div class="cx-lf">
@@ -1973,11 +1982,27 @@
           <span>Quero receber novidades, lançamentos e ofertas da Stone Dren por WhatsApp. Posso cancelar quando quiser respondendo SAIR ou pelo e-mail <span data-cfg="emailPrivacidade" class="cx-cfg">[privacidade@dominio.com.br]</span>. (Opcional)</span>
         </label>
 
-        <p class="cx-priv" id="cxPriv">Ao usar o botão “Ver meu cálculo”, seu nome, telefone, cidade, o perfil que você escolheu e os dados da área informada serão tratados por <span data-cfg="razaoSocial" class="cx-cfg">[RAZÃO SOCIAL]</span>, CNPJ <span data-cfg="cnpj" class="cx-cfg">[00.000.000/0000-00]</span>, para enviar este cálculo e responder ao seu pedido de orçamento (LGPD, art. 7º, V). O atendimento acontece pelo WhatsApp, serviço da Meta, que pode tratar dados fora do Brasil, e seu pedido pode ser encaminhado à unidade ou ao aplicador Stone Dren que atende sua região, apenas para o orçamento. Guardamos esses dados por até 12 meses após o último contato (candidatos à franquia: até 24 meses ou até o fim da seleção). Você pode pedir acesso, correção ou exclusão a qualquer momento pelo e-mail <span data-cfg="emailPrivacidade" class="cx-cfg">[privacidade@dominio.com.br]</span>. Saiba mais na nossa <button type="button" class="linkbtn" data-open="privDlg">Política de Privacidade</button>.</p>
+        <p class="cx-priv" id="cxPriv">Ao usar o botão “Ver meu cálculo”, seu nome, telefone, <span data-email-only hidden>e-mail, </span>cidade, o perfil que você escolheu e os dados da área informada serão tratados por <span data-cfg="razaoSocial" class="cx-cfg">[RAZÃO SOCIAL]</span>, CNPJ <span data-cfg="cnpj" class="cx-cfg">[00.000.000/0000-00]</span>, para enviar este cálculo e responder ao seu pedido de orçamento (LGPD, art. 7º, V). O atendimento acontece pelo WhatsApp, serviço da Meta, que pode tratar dados fora do Brasil, e seu pedido pode ser encaminhado à unidade ou ao aplicador Stone Dren que atende sua região, apenas para o orçamento.<span data-email-only hidden> O cálculo chega ao seu e-mail enviado pelo Gmail, serviço do Google, que também pode tratar dados fora do Brasil.</span> Guardamos esses dados por até 12 meses após o último contato (candidatos à franquia: até 24 meses ou até o fim da seleção). Você pode pedir acesso, correção ou exclusão a qualquer momento pelo e-mail <span data-cfg="emailPrivacidade" class="cx-cfg">[privacidade@dominio.com.br]</span>. Saiba mais na nossa <button type="button" class="linkbtn" data-open="privDlg">Política de Privacidade</button>.</p>
 
         <p class="cx-form-err" id="cxLeadErr" role="alert"></p>
         <button type="submit" class="btn btn-gold cx-submit">Ver meu cálculo</button>
       </form>
+    </section>
+
+    <!-- o status do envio vem ANTES do resultado: no celular a pessoa vê na hora se o e-mail saiu -->
+    <section class="cx-envio" id="cxEnvio" hidden aria-labelledby="cxEnvioTitulo">
+      <div class="cx-envio-head">
+        <h3 id="cxEnvioTitulo" class="cx-lbl">Envio por e-mail</h3>
+        <p class="cx-envio-st" id="cxEnvioSt" role="status" aria-live="polite"></p>
+      </div>
+      <div class="cx-envio-acts">
+        <button type="button" class="btn btn-ghost" id="cxReenviar" hidden>Enviar de novo com a obra atual</button>
+      </div>
+      <details class="cx-previa" id="cxPrevia" hidden>
+        <summary>Ver como o e-mail chega</summary>
+        <p class="cx-previa-nota" id="cxPreviaNota"></p>
+        <iframe id="cxPreviaFrame" title="Prévia do e-mail do cálculo" sandbox="" loading="lazy"></iframe>
+      </details>
     </section>
 
     <section class="cx-result" id="cxResult" hidden aria-labelledby="cxResTitulo"></section>
@@ -2179,7 +2204,7 @@
 
   <h4>Quais dados recebemos</h4>
   <ul>
-    <li><b>Calculadora:</b> nome, WhatsApp, cidade, o perfil que você escolheu (cliente final, aplicador, arquiteto ou construtor, ou interessado na franquia) e os dados da obra que você informou (metragens, tipo de área, base, espessura, resina, cor e os nomes que você der aos ambientes).</li>
+    <li><b>Calculadora:</b> nome, WhatsApp, cidade, o e-mail (quando você pede o cálculo por e-mail), o perfil que você escolheu (cliente final, aplicador, arquiteto ou construtor, ou interessado na franquia) e os dados da obra que você informou (metragens, tipo de área, base, espessura, resina, cor e os nomes que você der aos ambientes).</li>
     <li><b>Botões de WhatsApp:</b> a conversa acontece no aplicativo WhatsApp, com os dados que você decidir enviar por lá.</li>
     <li><b>No seu navegador:</b> a calculadora pode guardar as medidas e escolhas da obra (metragens, tipo de área, base, espessura, resina e cor), só no seu aparelho, para você não perder o cálculo. Seu nome, seu telefone e os nomes dos ambientes não ficam guardados assim.</li>
   </ul>
@@ -2192,7 +2217,7 @@
   </ul>
 
   <h4>Com quem compartilhamos</h4>
-  <p>Com a unidade e os aplicadores Stone Dren da sua região, para o orçamento, e com os serviços que usamos para operar o atendimento. O atendimento acontece pelo WhatsApp, serviço da Meta, que pode tratar dados fora do Brasil (LGPD, art. 33). Para mostrar a fonte do site, a página carrega a fonte Montserrat do Google Fonts: ao entregar a fonte, o Google recebe o endereço IP e dados técnicos do navegador, também com possível tratamento fora do Brasil. Não vendemos dados pessoais.</p>
+  <p>Com a unidade e os aplicadores Stone Dren da sua região, para o orçamento, e com os serviços que usamos para operar o atendimento. O atendimento acontece pelo WhatsApp, serviço da Meta, que pode tratar dados fora do Brasil (LGPD, art. 33). Quando você pede o cálculo por e-mail, ele é montado e enviado pelo Google Apps Script e pelo Gmail, serviços do Google, que também podem tratar dados fora do Brasil; o e-mail vai para você e uma cópia vai para o comercial. Para mostrar a fonte do site, a página carrega a fonte Montserrat do Google Fonts: ao entregar a fonte, o Google recebe o endereço IP e dados técnicos do navegador, também com possível tratamento fora do Brasil. Não vendemos dados pessoais.</p>
 
   <h4>Por quanto tempo</h4>
   <p>Guardamos os dados do pedido por até 12 meses após o último contato. Dados de candidatos à franquia, inclusive de quem marca "interessado na franquia" na calculadora, ficam por até 24 meses ou até o fim da seleção, o que ocorrer primeiro. Depois disso, são apagados ou anonimizados.</p>

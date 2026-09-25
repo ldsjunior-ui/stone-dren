@@ -24,10 +24,12 @@
   function rand(a, b) { return a + Math.random() * (b - a); }
 
   // A superfície começa perto do meio da tela e vai até embaixo (perspectiva).
+  // mesma inclinação da chuva do vídeo de fundo (16 graus da vertical, topo para a direita)
+  var TILT = Math.tan(16 * Math.PI / 180);
   function spawnDrop() {
     var targetY = rand(H * 0.52, H * 0.98);
     drops.push({
-      x: rand(0, W), y: rand(-H * 0.4, -10), vy: rand(900, 1300),
+      x: rand(0, W * 1.15), y: rand(-H * 0.4, -10), vy: rand(900, 1300),
       len: rand(14, 26), targetY: targetY,
       scale: 0.45 + 0.75 * ((targetY - H * 0.5) / (H * 0.5)) // mais perto = maior
     });
@@ -42,6 +44,7 @@
     for (var i = drops.length - 1; i >= 0; i--) {
       var d = drops[i];
       d.y += d.vy * dt;
+      d.x -= d.vy * TILT * dt;
       if (d.y >= d.targetY) {
         splashes.push({ x: d.x, y: d.targetY, r: 1, max: 9 + 14 * d.scale, a: 0.55, s: d.scale });
         wets.push({ x: d.x, y: d.targetY, r: 3 + 7 * d.scale, a: 0.32, s: d.scale });
@@ -90,12 +93,12 @@
     ctx.lineCap = "round";
     for (var i = 0; i < drops.length; i++) {
       var d = drops[i];
-      var grd = ctx.createLinearGradient(d.x, d.y - d.len, d.x, d.y);
+      var grd = ctx.createLinearGradient(d.x + d.len * TILT, d.y - d.len, d.x, d.y);
       grd.addColorStop(0, "rgba(220,232,242,0)");
       grd.addColorStop(1, "rgba(225,236,246,0.55)");
       ctx.strokeStyle = grd;
       ctx.lineWidth = 1 + d.scale * 0.8;
-      ctx.beginPath(); ctx.moveTo(d.x - 1.5, d.y - d.len); ctx.lineTo(d.x, d.y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(d.x + d.len * TILT, d.y - d.len); ctx.lineTo(d.x, d.y); ctx.stroke();
     }
   }
 

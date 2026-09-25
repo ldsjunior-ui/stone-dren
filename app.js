@@ -46,42 +46,46 @@
 
   /* ---------- header + menu ---------- */
   var header = document.getElementById("siteHeader");
-  function onScroll() { header.classList.toggle("scrolled", window.scrollY > 12); }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  if (header) {
+    function onScroll() { header.classList.toggle("scrolled", window.scrollY > 12); }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
-  var navToggle = document.getElementById("navToggle");
-  var navLinks = document.getElementById("navLinks");
-  var navIcon = document.getElementById("navToggleIcon");
-  function menuOpen() { return navLinks.classList.contains("is-open"); }
-  function setMenu(open, focusFirst) {
-    navLinks.classList.toggle("is-open", open);
-    navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    navToggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
-    navIcon.innerHTML = open ? '<path d="M6 6l12 12M18 6L6 18"/>' : '<path d="M4 7h16M4 12h16M4 17h16"/>';
-    if (open && focusFirst) {
-      var first = navLinks.querySelector("a");
-      if (first) first.focus();
+    var navToggle = document.getElementById("navToggle");
+    var navLinks = document.getElementById("navLinks");
+    var navIcon = document.getElementById("navToggleIcon");
+    if (navToggle && navLinks && navIcon) {
+      function menuOpen() { return navLinks.classList.contains("is-open"); }
+      function setMenu(open, focusFirst) {
+        navLinks.classList.toggle("is-open", open);
+        navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+        navToggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+        navIcon.innerHTML = open ? '<path d="M6 6l12 12M18 6L6 18"/>' : '<path d="M4 7h16M4 12h16M4 17h16"/>';
+        if (open && focusFirst) {
+          var first = navLinks.querySelector("a");
+          if (first) first.focus();
+        }
+      }
+      // o menu do celular aparece antes do botão no DOM: ao abrir, o foco entra no primeiro link
+      navToggle.addEventListener("click", function (e) { setMenu(!menuOpen(), e.detail === 0); });
+      navLinks.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { setMenu(false); }); });
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape" || !menuOpen()) return;
+        var dentro = navLinks.contains(document.activeElement);
+        setMenu(false);
+        if (dentro || document.activeElement === navToggle) navToggle.focus();
+      });
+      // o foco saiu do header com o menu aberto (Tab para o conteúdo): fecha, para o painel não cobrir a página
+      header.addEventListener("focusout", function (e) {
+        if (!menuOpen()) return;
+        if (e.relatedTarget && !header.contains(e.relatedTarget)) setMenu(false);
+      });
     }
+    // o menu mobile nasce exatamente embaixo do header, qualquer que seja a altura real
+    function syncHeaderH() { document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px"); }
+    window.addEventListener("resize", syncHeaderH);
+    syncHeaderH();
   }
-  // o menu do celular aparece antes do botão no DOM: ao abrir, o foco entra no primeiro link
-  navToggle.addEventListener("click", function (e) { setMenu(!menuOpen(), e.detail === 0); });
-  navLinks.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { setMenu(false); }); });
-  document.addEventListener("keydown", function (e) {
-    if (e.key !== "Escape" || !menuOpen()) return;
-    var dentro = navLinks.contains(document.activeElement);
-    setMenu(false);
-    if (dentro || document.activeElement === navToggle) navToggle.focus();
-  });
-  // o foco saiu do header com o menu aberto (Tab para o conteúdo): fecha, para o painel não cobrir a página
-  header.addEventListener("focusout", function (e) {
-    if (!menuOpen()) return;
-    if (e.relatedTarget && !header.contains(e.relatedTarget)) setMenu(false);
-  });
-  // o menu mobile nasce exatamente embaixo do header, qualquer que seja a altura real
-  function syncHeaderH() { document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px"); }
-  window.addEventListener("resize", syncHeaderH);
-  syncHeaderH();
 
   /* ---------- reveal ---------- */
   var reveals = document.querySelectorAll("[data-reveal]");

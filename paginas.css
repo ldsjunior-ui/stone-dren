@@ -1,0 +1,52 @@
+/* Stone Dren · páginas de apoio: calculadora-teste.html e ativar-email.html.
+ * Usa os tokens de styles.css (navy, ouro, tinta). Nada aqui vale para a página principal.
+ */
+.pg-nav .btn{padding:11px 16px; font-size:12px;}
+@media (max-width:560px){ .nav-cta.pg-nav .btn{display:inline-flex; padding:9px 12px; font-size:11px; letter-spacing:.04em;} }
+
+/* ---------- calculadora de teste ---------- */
+.pg-calc{padding-top:calc(var(--header-h, 76px) + 40px);}
+.pg-faixa{max-width:860px; margin:0 auto 40px; padding:18px 22px; border:1px solid rgba(217,174,94,.45); border-radius:12px;
+  background:linear-gradient(180deg, rgba(198,138,46,.14), rgba(198,138,46,.06)); display:grid; gap:8px;}
+.pg-faixa p{margin:0; font-size:.95rem; line-height:1.6; color:var(--ink);}
+.pg-tag{font-weight:800; font-size:12px !important; letter-spacing:.18em; text-transform:uppercase; color:var(--gold-3) !important;}
+.pg-estado{font-size:.9rem !important; color:var(--ink-dim) !important; padding-top:8px; border-top:1px solid rgba(217,174,94,.22);}
+.pg-estado b{color:var(--ink);}
+.pg-estado[data-estado="ativo"] b{color:#9FD8A8;}
+.pg-estado[data-estado="sem-resposta"] b,.pg-estado[data-estado="desligado"] b{color:#F0A37A;}
+.pg-estado a{color:var(--gold-2);}
+.pg-head h1{font-size:clamp(1.9rem,3.8vw,2.9rem); margin-bottom:18px;}
+.pg-foot{padding:36px 0 30px;}
+
+/* ---------- guia de ativação ---------- */
+.pg-guia{padding-top:calc(var(--header-h, 76px) + 48px);}
+.pg-estreito{max-width:860px;}
+.pg-guia h1{font-size:clamp(1.8rem,3.6vw,2.6rem); margin-bottom:16px;}
+.pg-guia .lede{margin-bottom:26px;}
+.pg-resumo{display:grid; gap:10px; padding:18px 20px; border-radius:12px; border:1px solid var(--line); background:rgba(22,34,61,.6); margin-bottom:36px;}
+.pg-resumo p{margin:0; font-size:.95rem; line-height:1.6; color:var(--ink-dim);}
+.pg-resumo b{color:var(--ink);}
+.pg-passos{list-style:none; counter-reset:passo; padding:0; margin:0 0 40px; display:grid; gap:14px;}
+.pg-passos > li{counter-increment:passo; position:relative; padding:20px 22px 18px 72px; border-radius:12px; border:1px solid rgba(217,174,94,.22);
+  background:linear-gradient(180deg, rgba(22,34,61,.74), rgba(10,21,38,.82));}
+.pg-passos > li::before{content:counter(passo); position:absolute; left:20px; top:18px; width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--navy); background:var(--gold-2);}
+.pg-passos h2,.pg-codigo h2,.pg-depois h2,.pg-conexao h2{font-size:1.05rem; letter-spacing:.02em; margin:4px 0 8px;}
+.pg-passos p,.pg-passos li li,.pg-depois li,.pg-conexao p{font-size:.95rem; line-height:1.65; color:var(--ink-dim);}
+.pg-passos p + p,.pg-passos ul + p{margin-top:8px;}
+.pg-passos b,.pg-depois b{color:var(--ink);}
+.pg-passos ul,.pg-depois ul{padding-left:18px; display:grid; gap:6px; margin:6px 0 0;}
+.pg-passos a{color:var(--gold-2);}
+@media (max-width:560px){
+  .pg-passos > li{padding:62px 16px 16px;}
+  .pg-passos > li::before{left:16px; top:16px;}
+}
+.pg-codigo{margin-bottom:40px;}
+.pg-codigo-head{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
+.pg-copia-st{min-height:1.4em; font-size:.88rem; color:#9FD8A8; margin:0 0 8px;}
+.pg-pre{max-height:420px; overflow:auto; margin:0; padding:16px 18px; border-radius:12px; border:1px solid var(--line); background:#060B14;
+  font:12.5px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color:#D8D0BE; white-space:pre; tab-size:2;}
+.pg-pre:focus-visible{outline:2px solid var(--gold-2); outline-offset:3px;}
+.pg-depois,.pg-conexao{padding:20px 22px; border-radius:12px; border:1px solid var(--line); background:rgba(22,34,61,.5); margin-bottom:24px;}
+.pg-conexao .btn{margin-top:8px;}
+.pg-conexao-st{margin-top:10px; font-size:.92rem; color:var(--ink); min-height:1.4em;}

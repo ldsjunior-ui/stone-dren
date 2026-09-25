@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora Stone Dren · página de teste</title>
+<meta name="description" content="Página de teste da calculadora Stone Dren, com envio do cálculo por e-mail.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A1526">
+<link rel="icon" href="img/stone-mark-128.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/three-addons/"}}</script>
+<script>document.documentElement.classList.add("js")</script>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="calc.css">
+<link rel="stylesheet" href="paginas.css">
+</head>
+<body class="pg-teste">
+<a href="#main" class="skip-link">Pular para o conteúdo</a>
+
+<header class="site" id="siteHeader">
+  <div class="container nav-row">
+    <a href="index.html" class="lockup" aria-label="Stone Dren, ir para o site">
+      <img class="mk" src="img/stone-mark-128.png" alt="" width="128" height="128">
+      <span class="wd"><img src="img/stone-word-66.png" alt="Stone" width="245" height="66"><span>DREN</span></span>
+    </a>
+    <div class="nav-cta pg-nav">
+      <a class="btn btn-ghost" href="index.html">Ver o site completo</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="calc pg-calc" id="calculadora" data-email="obrigatorio" data-teste="1" aria-labelledby="pgTitulo">
+  <div class="container">
+    <div class="pg-faixa" role="note" aria-label="Sobre esta página">
+      <p class="pg-tag">Página de teste</p>
+      <p>Esta página serve para testar a calculadora e o envio do cálculo por e-mail. Monte uma obra, informe um e-mail que você consegue abrir agora e peça o cálculo. O e-mail chega marcado como teste e o comercial recebe uma cópia.</p>
+      <p class="pg-estado" id="pgEstado" data-estado="carregando">Conferindo se o envio por e-mail já está ativo.</p>
+    </div>
+
+    <div class="sec-head center pg-head">
+      <p class="eyebrow">Calculadora Stone Dren</p>
+      <h1 id="pgTitulo">Quanto material a&nbsp;sua obra <em>vai precisar?</em></h1>
+      <p class="lede">Monte a obra por ambientes: informe a metragem e o tipo de área, escolha a resina e a cor da pedra. A calculadora estima a pedra, a resina, a brita e a malha, mostra as premissas do cálculo e envia a lista para o seu e-mail.</p>
+    </div>
+
+    <div class="cx" id="calcApp" data-state="vazio">
+  <noscript><p class="cx-noscript">A calculadora precisa do JavaScript ativado no navegador. Se preferir, fale com o comercial pelo WhatsApp.</p></noscript>
+
+  <div class="cx-shell" data-reveal>
+    <!-- 1 · a obra: escolhas globais + ambientes (os cartões de ambiente são montados por calc-ui.js) -->
+    <form class="cx-obra" id="cxObra" novalidate aria-labelledby="cxObraTitulo" autocomplete="off">
+      <div class="cx-step">
+        <span class="cx-step-n" aria-hidden="true">1</span>
+        <div>
+          <h3 id="cxObraTitulo">Sua obra</h3>
+          <p class="cx-step-sub">Até 8 ambientes. Aceita vírgula: 12,5.</p>
+        </div>
+      </div>
+
+      <div class="cx-globais">
+        <fieldset class="cx-f">
+          <legend class="cx-lbl">Resina</legend>
+          <div class="cx-seg2">
+            <label class="cx-opt"><input type="radio" name="cxResina" value="epoxi" checked><span><b>Epóxi</b><small>Resina epóxi</small></span></label>
+            <label class="cx-opt"><input type="radio" name="cxResina" value="pu"><span><b>PU</b><small>Poliuretano</small></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="cx-f">
+          <legend class="cx-lbl">Cor da pedra</legend>
+          <div class="cx-cores">
+            <label class="cx-cor"><input type="radio" name="cxCor" value="branca" checked><span><img src="img/pedra-branca.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Branca</em></span></label>
+            <label class="cx-cor"><input type="radio" name="cxCor" value="palha"><span><img src="img/pedra-palha.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Palha</em></span></label>
+            <label class="cx-cor"><input type="radio" name="cxCor" value="cinza"><span><img src="img/pedra-cinza.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Cinza</em></span></label>
+            <label class="cx-cor"><input type="radio" name="cxCor" value="preta"><span><img src="img/pedra-preta.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Preta</em></span></label>
+            <label class="cx-cor"><input type="radio" name="cxCor" value="ouro"><span><img src="img/pedra-ouro.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Ouro</em></span></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="cx-ambs-head">
+        <h4 class="cx-lbl" id="cxAmbsTitulo">Ambientes</h4>
+        <span class="cx-count" id="cxAmbCount">1 de 8</span>
+      </div>
+      <ol class="cx-ambs" id="cxAmbs" aria-labelledby="cxAmbsTitulo"></ol>
+      <!-- desfazer a remoção: região viva sempre presente (vazia até alguém remover um ambiente) -->
+      <div class="cx-undo" id="cxUndo" role="status" aria-live="polite" aria-atomic="true"></div>
+
+      <button type="button" class="cx-add" id="cxAdd">
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 4v12M4 10h12"/></svg>
+        <span>Adicionar ambiente</span>
+      </button>
+
+      <!-- resumo fixo no celular: acompanha a digitação enquanto o painel está mais abaixo -->
+      <div class="cx-dock" id="cxDock">
+        <p class="cx-dock-t"><span class="cx-dock-l">Área total</span><b id="cxDockV">A informar</b><small id="cxDockS"></small></p>
+        <button type="button" class="cx-dock-btn" id="cxDockBtn"><span>Ver números</span><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 4v12M5 11l5 5 5-5"/></svg></button>
+      </div>
+    </form>
+
+    <!-- 2 · painel visual ao vivo -->
+    <div class="cx-painel" id="cxPainel" role="region" aria-labelledby="cxPainelTitulo">
+      <div class="cx-step">
+        <span class="cx-step-n" aria-hidden="true">2</span>
+        <div>
+          <h3 id="cxPainelTitulo" tabindex="-1">A obra em números</h3>
+          <p class="cx-step-sub">Atualiza enquanto você digita.</p>
+        </div>
+        <span class="cx-live" aria-hidden="true"><i></i>Ao vivo</span>
+      </div>
+
+      <p class="cx-sr" id="cxResumo" role="status" aria-live="polite" aria-atomic="true"></p>
+
+      <div class="cx-tiles" id="cxTiles">
+        <div class="cx-tile" data-tile="area"><p class="cx-tile-l">Área total</p><p class="cx-tile-v"><span data-v>0</span><small>m²</small></p><p class="cx-tile-s" data-s></p></div>
+        <div class="cx-tile" data-tile="pedra"><p class="cx-tile-l">Pedra</p><p class="cx-tile-v"><span data-v></span><small data-u>kg</small></p><p class="cx-tile-s" data-s></p></div>
+        <div class="cx-tile" data-tile="resina"><p class="cx-tile-l">Resina</p><p class="cx-tile-v"><span data-v></span><small data-u>kits</small></p><p class="cx-tile-s" data-s></p></div>
+        <div class="cx-tile" data-tile="brita"><p class="cx-tile-l">Brita</p><p class="cx-tile-v"><span data-v></span><small data-u>sacos</small></p><p class="cx-tile-s" data-s></p></div>
+      </div>
+
+      <div class="cx-charts">
+        <figure class="cx-fig cx-fig-donut" id="cxDonutFig">
+          <figcaption class="cx-fig-t">Massa total por material</figcaption>
+          <div class="cx-donut-wrap">
+            <div class="cx-donut" id="cxDonut"></div>
+            <ul class="cx-legend" id="cxDonutLegend"></ul>
+          </div>
+          <details class="cx-table"><summary>Ver dados em tabela</summary><div id="cxDonutTable"></div></details>
+        </figure>
+
+        <figure class="cx-fig cx-fig-bars" id="cxBarsFig">
+          <figcaption class="cx-fig-t">Pedra e resina por ambiente</figcaption>
+          <ul class="cx-legend cx-legend-inline" aria-hidden="true">
+            <li><i class="k-pedra"></i>Pedra</li><li><i class="k-resina"></i>Resina</li>
+          </ul>
+          <div class="cx-bars" id="cxBars"></div>
+          <details class="cx-table"><summary>Ver dados em tabela</summary><div id="cxBarsTable"></div></details>
+        </figure>
+      </div>
+
+      <figure class="cx-fig cx-corte" id="cxCorteFig">
+        <div class="cx-corte-head">
+          <figcaption class="cx-fig-t" id="cxCorteTitulo">Corte em escala</figcaption>
+          <div class="cx-tabs" id="cxCorteTabs" role="group" aria-label="Ambiente mostrado no corte"></div>
+        </div>
+        <div class="cx-corte-body">
+          <div class="cx-corte-svg" id="cxCorte"></div>
+          <div class="cx-3d" id="cx3dWrap" hidden>
+            <canvas id="calcPreview3d" aria-hidden="true"></canvas>
+            <p class="cx-3d-cap">Amostra 3D da camada, ilustrativa</p>
+          </div>
+        </div>
+        <p class="cx-corte-nota" id="cxCorteNota"></p>
+      </figure>
+    </div>
+  </div>
+
+  <!-- 3 · portão do lead e resultado -->
+  <div class="cx-fim" id="cxFim" data-reveal>
+    <section class="cx-lead" id="cxLead" aria-labelledby="cxLeadTitulo">
+      <div class="cx-lead-intro">
+        <div class="cx-step">
+          <span class="cx-step-n" aria-hidden="true">3</span>
+          <div><h3 id="cxLeadTitulo">Veja as quantidades</h3></div>
+        </div>
+        <p class="cx-lead-destaque"><span data-sem-email>Para ver as quantidades, informe nome, WhatsApp, cidade e perfil. Com a lista pronta, você pode enviá-la ao comercial pelo WhatsApp.</span><span data-email-only hidden>Para ver as quantidades e receber a lista no seu e-mail, informe nome, e-mail, WhatsApp, cidade e perfil. O comercial recebe uma cópia para confirmar as quantidades com você.</span></p>
+        <div class="cx-lock" aria-hidden="true">
+          <div class="cx-lock-row"><i></i><span></span><b>0.000 kg</b></div>
+          <div class="cx-lock-row"><i></i><span></span><b>00 kits</b></div>
+          <div class="cx-lock-row"><i></i><span></span><b>000 sacos</b></div>
+          <svg class="cx-lock-ic" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+        </div>
+      </div>
+
+      <form class="cx-lead-form" id="cxLeadForm" novalidate method="post" action="#calculadora" onsubmit="return false">
+        <p class="cx-req-nota" aria-hidden="true"><span class="cx-req">*</span> Campo obrigatório</p>
+        <div class="cx-lf">
+          <label for="cxNome">Nome<span class="cx-req" aria-hidden="true">*</span></label>
+          <input class="cx-inp" id="cxNome" name="nome" type="text" autocomplete="name" maxlength="80" required aria-describedby="cxNomeErr">
+          <p class="cx-err" id="cxNomeErr"></p>
+        </div>
+        <div class="cx-lf" id="cxEmailFld" data-email-only hidden>
+          <label for="cxEmail">E-mail para receber o cálculo<span class="cx-req" aria-hidden="true">*</span></label>
+          <input class="cx-inp" id="cxEmail" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" placeholder="voce@email.com" aria-describedby="cxEmailErr" disabled>
+          <p class="cx-err" id="cxEmailErr"></p>
+        </div>
+        <div class="cx-isca" aria-hidden="true">
+          <label for="cxHp">Não preencha</label>
+          <input id="cxHp" name="cx_hp_x9" type="text" tabindex="-1" autocomplete="off" data-lpignore="true" data-1p-ignore>
+        </div>
+        <div class="cx-lf-row">
+          <div class="cx-lf">
+            <label for="cxWhats">WhatsApp com DDD<span class="cx-req" aria-hidden="true">*</span></label>
+            <input class="cx-inp" id="cxWhats" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" placeholder="(62) 99999-9999" required aria-describedby="cxWhatsErr">
+            <p class="cx-err" id="cxWhatsErr"></p>
+          </div>
+          <div class="cx-lf">
+            <label for="cxCidade">Cidade/UF<span class="cx-req" aria-hidden="true">*</span></label>
+            <input class="cx-inp" id="cxCidade" name="cidade" type="text" autocomplete="address-level2" maxlength="80" placeholder="Goiânia/GO" required aria-describedby="cxCidadeErr">
+            <p class="cx-err" id="cxCidadeErr"></p>
+          </div>
+        </div>
+        <fieldset class="cx-lf" role="radiogroup" aria-required="true" aria-describedby="cxPerfilErr">
+          <legend>Você é<span class="cx-req" aria-hidden="true">*</span></legend>
+          <div class="cx-perfis">
+            <label class="cx-opt"><input type="radio" name="perfil" value="Cliente final" required><span>Cliente final</span></label>
+            <label class="cx-opt"><input type="radio" name="perfil" value="Aplicador" required><span>Aplicador</span></label>
+            <label class="cx-opt"><input type="radio" name="perfil" value="Arquiteto ou construtor" required><span>Arquiteto ou construtor</span></label>
+            <label class="cx-opt"><input type="radio" name="perfil" value="Interessado na franquia" required><span>Interessado na franquia</span></label>
+          </div>
+          <p class="cx-err" id="cxPerfilErr"></p>
+        </fieldset>
+
+        <label class="cx-check">
+          <input type="checkbox" id="cxOptin" name="optin">
+          <span>Quero receber novidades, lançamentos e ofertas da Stone Dren por WhatsApp. Posso cancelar quando quiser respondendo SAIR ou pelo e-mail <span data-cfg="emailPrivacidade" class="cx-cfg">[privacidade@dominio.com.br]</span>. (Opcional)</span>
+        </label>
+
+        <p class="cx-priv" id="cxPriv">Ao usar o botão “Ver meu cálculo”, seu nome, telefone, <span data-email-only hidden>e-mail, </span>cidade, o perfil que você escolheu e os dados da área informada serão tratados por <span data-cfg="razaoSocial" class="cx-cfg">[RAZÃO SOCIAL]</span>, CNPJ <span data-cfg="cnpj" class="cx-cfg">[00.000.000/0000-00]</span>, para enviar este cálculo e responder ao seu pedido de orçamento (LGPD, art. 7º, V). O atendimento acontece pelo WhatsApp, serviço da Meta, que pode tratar dados fora do Brasil, e seu pedido pode ser encaminhado à unidade ou ao aplicador Stone Dren que atende sua região, apenas para o orçamento.<span data-email-only hidden> O cálculo chega ao seu e-mail enviado pelo Gmail, serviço do Google, que também pode tratar dados fora do Brasil.</span> Guardamos esses dados por até 12 meses após o último contato (candidatos à franquia: até 24 meses ou até o fim da seleção). Você pode pedir acesso, correção ou exclusão a qualquer momento pelo e-mail <span data-cfg="emailPrivacidade" class="cx-cfg">[privacidade@dominio.com.br]</span>. Saiba mais na nossa <button type="button" class="linkbtn" data-open="privDlg">Política de Privacidade</button>.</p>
+
+        <p class="cx-form-err" id="cxLeadErr" role="alert"></p>
+        <button type="submit" class="btn btn-gold cx-submit">Ver meu cálculo</button>
+      </form>
+    </section>
+
+    <!-- o status do envio vem ANTES do resultado: no celular a pessoa vê na hora se o e-mail saiu -->
+    <section class="cx-envio" id="cxEnvio" hidden aria-labelledby="cxEnvioTitulo">
+      <div class="cx-envio-head">
+        <h3 id="cxEnvioTitulo" class="cx-lbl">Envio por e-mail</h3>
+        <p class="cx-envio-st" id="cxEnvioSt" role="status" aria-live="polite"></p>
+      </div>
+      <div class="cx-envio-acts">
+        <button type="button" class="btn btn-ghost" id="cxReenviar" hidden>Enviar de novo com a obra atual</button>
+      </div>
+      <details class="cx-previa" id="cxPrevia" hidden>
+        <summary>Ver como o e-mail chega</summary>
+        <p class="cx-previa-nota" id="cxPreviaNota"></p>
+        <iframe id="cxPreviaFrame" title="Prévia do e-mail do cálculo" sandbox="" loading="lazy"></iframe>
+      </details>
+    </section>
+
+    <section class="cx-result" id="cxResult" hidden aria-labelledby="cxResTitulo"></section>
+  </div>
+</div>
+
+  </div>
+</section>
+</main>
+
+<footer class="pg-foot">
+  <div class="container">
+    <div class="foot-legal">
+      <p>A calculadora apresenta estimativas de referência, não orçamento nem oferta. Quantidades, preços, frete e prazos são confirmados no orçamento formal do comercial.</p>
+      <p>Resinas, endurecedores e fixadores são produtos químicos. Use luvas, óculos e máscara adequados, aplique em local ventilado, mantenha fora do alcance de crianças e animais e leia o rótulo e a FDS antes de usar.</p>
+      <p class="ident"><span data-cfg="razaoSocial">[RAZÃO SOCIAL]</span> · CNPJ <span data-cfg="cnpj">[00.000.000/0000-00]</span> · <button type="button" class="linkbtn" data-open="privDlg">Política de privacidade</button> · <a href="ativar-email.html">Como ativar o envio por e-mail</a></p>
+      <p>© <span id="year">2026</span> Stone Dren. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<dialog class="priv" id="privDlg" aria-labelledby="privTitle">
+  <div class="dh"><h3 id="privTitle" style="font-size:1rem;">Política de privacidade</h3><button class="x" type="button" data-close aria-label="Fechar">×</button></div>
+  <div class="db">
+    <div class="priv-doc">
+  <p class="note">Atualizada em <span data-cfg="politicaAtualizadaEm">setembro de 2026</span>.</p>
+
+  <h4>Quem trata os seus dados</h4>
+  <p><span data-cfg="razaoSocial">[RAZÃO SOCIAL]</span>, CNPJ <span data-cfg="cnpj">[00.000.000/0000-00]</span>, <span data-cfg="endereco">[endereço]</span>, responsável pela marca Stone Dren, é a controladora dos dados pessoais enviados por este site (Lei nº 13.709/2018, LGPD). Encarregado pelo tratamento de dados (LGPD, art. 41): <span data-cfg="encarregado">[nome do encarregado de dados]</span>, pelo canal de privacidade <span data-cfg="emailPrivacidade">[privacidade@dominio.com.br]</span>.</p>
+
+  <h4>Quais dados recebemos</h4>
+  <ul>
+    <li><b>Calculadora:</b> nome, WhatsApp, cidade, o e-mail (quando você pede o cálculo por e-mail), o perfil que você escolheu (cliente final, aplicador, arquiteto ou construtor, ou interessado na franquia) e os dados da obra que você informou (metragens, tipo de área, base, espessura, resina, cor e os nomes que você der aos ambientes).</li>
+    <li><b>Botões de WhatsApp:</b> a conversa acontece no aplicativo WhatsApp, com os dados que você decidir enviar por lá.</li>
+    <li><b>No seu navegador:</b> a calculadora pode guardar as medidas e escolhas da obra (metragens, tipo de área, base, espessura, resina e cor), só no seu aparelho, para você não perder o cálculo. Seu nome, seu telefone e os nomes dos ambientes não ficam guardados assim.</li>
+  </ul>
+
+  <h4>Para que usamos</h4>
+  <ul>
+    <li>Enviar o cálculo e responder ao seu pedido de orçamento (LGPD, art. 7º, V: procedimentos preliminares a um contrato, a seu pedido).</li>
+    <li>Encaminhar o pedido à unidade ou ao aplicador Stone Dren que atende a sua região, apenas para o orçamento.</li>
+    <li>Enviar novidades e ofertas, somente se você marcar a opção de receber (LGPD, art. 7º, I: consentimento). Você pode cancelar quando quiser.</li>
+  </ul>
+
+  <h4>Com quem compartilhamos</h4>
+  <p>Com a unidade e os aplicadores Stone Dren da sua região, para o orçamento, e com os serviços que usamos para operar o atendimento. O atendimento acontece pelo WhatsApp, serviço da Meta, que pode tratar dados fora do Brasil (LGPD, art. 33). Quando você pede o cálculo por e-mail, ele é montado e enviado pelo Google Apps Script e pelo Gmail, serviços do Google, que também podem tratar dados fora do Brasil; o e-mail vai para você e uma cópia vai para o comercial. Para mostrar a fonte do site, a página carrega a fonte Montserrat do Google Fonts: ao entregar a fonte, o Google recebe o endereço IP e dados técnicos do navegador, também com possível tratamento fora do Brasil. Não vendemos dados pessoais.</p>
+
+  <h4>Por quanto tempo</h4>
+  <p>Guardamos os dados do pedido por até 12 meses após o último contato. Dados de candidatos à franquia, inclusive de quem marca "interessado na franquia" na calculadora, ficam por até 24 meses ou até o fim da seleção, o que ocorrer primeiro. Depois disso, são apagados ou anonimizados.</p>
+
+  <h4>Seus direitos</h4>
+  <p>Você pode pedir a confirmação do tratamento, o acesso, a correção, a anonimização, a portabilidade ou a exclusão dos seus dados, saber com quem foram compartilhados e revogar o consentimento para novidades (LGPD, art. 18), pelo e-mail <span data-cfg="emailPrivacidade">[privacidade@dominio.com.br]</span>. Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</p>
+
+  <h4>Cookies</h4>
+  <p>Este site não usa cookies de medição nem de publicidade. Se passar a usar, vai pedir a sua permissão antes.</p>
+</div>
+
+  </div>
+</dialog>
+
+<script src="config.js"></script>
+<script src="calc.js"></script>
+<script src="email-calc.js"></script>
+<script src="app.js"></script>
+<script src="sonda-3d.js"></script>
+<script src="calc-ui.js"></script>
+<script src="paginas.js"></script>
+</body>
+</html>

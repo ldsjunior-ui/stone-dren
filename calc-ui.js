@@ -40,8 +40,17 @@
     result: $("#cxResult"),
     painel: $("#cxPainel"), painelTitulo: $("#cxPainelTitulo"),
     dock: $("#cxDock"), dockV: $("#cxDockV"), dockS: $("#cxDockS"), dockBtn: $("#cxDockBtn"),
-    undo: $("#cxUndo")
+    undo: $("#cxUndo"),
+    envio: $("#cxEnvio"), envioSt: $("#cxEnvioSt"), reenviar: $("#cxReenviar"),
+    previa: $("#cxPrevia"), previaNota: $("#cxPreviaNota"), previaFrame: $("#cxPreviaFrame")
   };
+
+  // Envio do cálculo por e-mail: só numa página que marca a seção com data-email
+  // ("obrigatorio" ou "opcional"). Na página principal nada disso existe e o fluxo é o de sempre.
+  var alvoEmail = root.closest ? root.closest("[data-email]") : null;
+  var modoEmail = alvoEmail ? String(alvoEmail.getAttribute("data-email") || "") : "";
+  if (modoEmail !== "obrigatorio" && modoEmail !== "opcional") modoEmail = "";
+  var paginaTeste = !!(alvoEmail && alvoEmail.getAttribute("data-teste") === "1");
 
   /* ---------- estado ---------- */
   var state = { ambientes: [], resina: "epoxi", cor: "branca", selecionado: null };
@@ -1221,8 +1230,66 @@
   /* ---------- portão do lead ---------- */
   var F = {
     nome: $("#cxNome"), whats: $("#cxWhats"), cidade: $("#cxCidade"), optin: $("#cxOptin"),
-    errNome: $("#cxNomeErr"), errWhats: $("#cxWhatsErr"), errCidade: $("#cxCidadeErr"), errPerfil: $("#cxPerfilErr")
+    errNome: $("#cxNomeErr"), errWhats: $("#cxWhatsErr"), errCidade: $("#cxCidadeErr"), errPerfil: $("#cxPerfilErr"),
+    email: $("#cxEmail"), errEmail: $("#cxEmailErr"), isca: $("#cxHp")
   };
+  if (modoEmail && F.email) {
+    $$("[data-email-only]").forEach(function (el) { el.hidden = false; });
+    $$("[data-sem-email]").forEach(function (el) { el.hidden = true; });
+    F.email.disabled = false;
+    if (modoEmail === "obrigatorio") F.email.required = true;
+    else {
+      var rotEmail = $('label[for="cxEmail"]');
+      if (rotEmail) rotEmail.innerHTML = "E-mail para receber o cálculo (opcional)";
+    }
+    F.email.addEventListener("input", function () { if (F.email.getAttribute("aria-invalid")) validarLead(false); });
+  }
+
+  // Mesmo formato que o servidor aceita. Erros comuns de digitação do domínio viram sugestão.
+  var EMAIL_RE = /^[A-Za-z0-9._%+'-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,24}$/;
+  var DOMINIO_TROCADO = {
+    "gmail.con": "gmail.com", "gmail.co": "gmail.com", "gmail.cm": "gmail.com", "gmial.com": "gmail.com", "gmai.com": "gmail.com", "gamil.com": "gmail.com", "gmail.com.br": "gmail.com",
+    "hotmail.con": "hotmail.com", "hotmal.com": "hotmail.com", "hotmail.co": "hotmail.com", "hotmial.com": "hotmail.com",
+    "outlook.con": "outlook.com", "outlok.com": "outlook.com", "yahoo.con": "yahoo.com", "yaho.com": "yahoo.com.br", "icloud.con": "icloud.com"
+  };
+  // Domínios mais comuns no Brasil: um domínio a até 2 letras de um deles (ou igual sem o ".br") vira
+  // pergunta, não bloqueio (existe e-mail de verdade em mail.com, bol.com...). Final que não existe
+  // como domínio (.con, .comm, .cim, .xom...) bloqueia com a sugestão.
+  var DOMINIOS_COMUNS = ["gmail.com", "hotmail.com", "hotmail.com.br", "outlook.com", "outlook.com.br", "live.com", "msn.com",
+    "yahoo.com", "yahoo.com.br", "icloud.com", "uol.com.br", "bol.com.br", "terra.com.br", "ig.com.br", "globo.com"];
+  var FINAL_IMPOSSIVEL = /\.(con|comm|cim|xom|vom|cpm|coom|comn|cmo)(\.br)?$/;
+  function distancia(a, b) {
+    if (Math.abs(a.length - b.length) > 2) return 9;
+    var ant = [], i, j;
+    for (j = 0; j <= b.length; j++) ant[j] = j;
+    for (i = 1; i <= a.length; i++) {
+      var cur = [i];
+      for (j = 1; j <= b.length; j++) cur[j] = Math.min(ant[j] + 1, cur[j - 1] + 1, ant[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      ant = cur;
+    }
+    return ant[b.length];
+  }
+  function avaliarEmail(v) {
+    if (!v) return { msg: modoEmail === "obrigatorio" ? "Informe o e-mail para receber o cálculo." : "", suave: false };
+    if (v.length > 254 || !EMAIL_RE.test(v) || /\.\.|^\.|\.@|@-/.test(v)) return { msg: "Confira o e-mail, por exemplo nome@gmail.com.", suave: false };
+    var dom = v.split("@")[1].toLowerCase();
+    if (DOMINIOS_COMUNS.indexOf(dom) >= 0) return { msg: "", suave: false };
+    var duro = !!DOMINIO_TROCADO[dom] || FINAL_IMPOSSIVEL.test(dom);
+    var sug = DOMINIO_TROCADO[dom] || "";
+    if (!sug && FINAL_IMPOSSIVEL.test(dom)) {
+      sug = dom.replace(FINAL_IMPOSSIVEL, ".com$2");
+      if (DOMINIO_TROCADO[sug]) sug = DOMINIO_TROCADO[sug];
+    }
+    if (!sug) {
+      var melhor = "", dm = 3;
+      DOMINIOS_COMUNS.forEach(function (c) { var d = distancia(dom, c); if (d < dm) { dm = d; melhor = c; } });
+      sug = melhor || (DOMINIOS_COMUNS.indexOf(dom + ".br") >= 0 ? dom + ".br" : "");
+    }
+    if (!sug) return { msg: "", suave: false };
+    if (duro) return { msg: "Confira o final do e-mail: não seria @" + sug + "?", suave: false };
+    return { msg: "Confira o final do e-mail: não seria @" + sug + "? Se o seu e-mail é assim mesmo, toque de novo em “Ver meu cálculo”.", suave: true };
+  }
+  var emailAvisado = "";
   function mascaraTel(v) {
     var d = String(v).replace(/\D/g, "").slice(0, 13);
     var cc = "";
@@ -1258,6 +1325,7 @@
     var dig = F.whats.value.replace(/\D/g, "");
     var cid = F.cidade.value.trim();
     var perfil = perfilEscolhido();
+    var email = modoEmail && F.email ? F.email.value.trim() : "";
     var primeiro = null;
     var eN = nome.length < 2 ? "Informe seu nome." : "";
     var eW = !dig.length ? "Informe seu WhatsApp com DDD." : (dig.length < 10 || dig.length > 13 ? "Confira o número: use DDD + número, de 10 a 13 dígitos." : "");
@@ -1267,9 +1335,23 @@
     erroCampo(F.whats, F.errWhats, eW);
     erroCampo(F.cidade, F.errCidade, eC);
     erroCampo(null, F.errPerfil, eP);
-    if (eN) primeiro = F.nome; else if (eW) primeiro = F.whats; else if (eC) primeiro = F.cidade; else if (eP) primeiro = els.leadForm.querySelector('input[name="perfil"]');
+    var eE = "";
+    if (modoEmail && F.email) {
+      var ve = avaliarEmail(email);
+      eE = ve.msg;
+      // pergunta de domínio parecido: vale uma vez; tocar de novo com o mesmo e-mail confirma
+      if (ve.suave) {
+        if (email.toLowerCase() === emailAvisado) eE = "";
+        else if (focar) emailAvisado = email.toLowerCase();
+      }
+      erroCampo(F.email, F.errEmail, eE);
+    }
+    if (eN) primeiro = F.nome; else if (eE) primeiro = F.email; else if (eW) primeiro = F.whats; else if (eC) primeiro = F.cidade; else if (eP) primeiro = els.leadForm.querySelector('input[name="perfil"]');
     if (focar && primeiro) primeiro.focus();
-    return primeiro ? null : { nome: nome, whatsapp: dig, cidadeUf: cid, perfil: perfil };
+    if (primeiro) return null;
+    var dados = { nome: nome, whatsapp: dig, cidadeUf: cid, perfil: perfil };
+    if (modoEmail) dados.email = email;
+    return dados;
   }
   els.leadForm.addEventListener("change", function (e) {
     if (e.target.name === "perfil") erroCampo(null, F.errPerfil, "");
@@ -1292,16 +1374,22 @@
     if (!dados) { els.leadErr.textContent = "Confira os campos marcados."; return; }
     lead = dados;                          // só em memória
     var optin = !!F.optin.checked;
-    enviarWebhook(C.montarPayload(lead, obraAtual(), r, optin));
+    if (modoEmail) { envio.optin = optin; envio.id = ""; }
+    else enviarWebhook(C.montarPayload(lead, obraAtual(), r, optin));
     unlocked = true;
     root.classList.add("is-liberado");
     els.leadSec.hidden = true;
+    // modo e-mail: o bloco do envio aparece vazio já agora (a região aria-live precisa existir antes
+    // da 1ª mensagem para o leitor de tela anunciar) e é para ele que a tela rola
+    if (modoEmail && els.envio) { els.envio.hidden = false; els.envioSt.textContent = ""; }
     atualizar();
     var h = document.getElementById("cxResTitulo");
+    var alvoRolagem = modoEmail && els.envio ? els.envio : els.result;
     if (h) {
-      try { els.result.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); } catch (e2) { els.result.scrollIntoView(); }
+      try { alvoRolagem.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); } catch (e2) { alvoRolagem.scrollIntoView(); }
       h.focus({ preventScroll: true });
     }
+    if (modoEmail) setTimeout(function () { enviarCalculo(true); }, 60);
   });
 
   // primeiro campo de área (ou medida) com erro, na ordem dos cartões
@@ -1328,6 +1416,175 @@
         body: JSON.stringify(payload)
       }).catch(function () { /* o WhatsApp segue como canal principal */ });
     } catch (e) { /* idem */ }
+  }
+
+  /* ---------- envio do cálculo por e-mail ----------
+   * A página manda a obra CRUA (o que foi digitado) e o lead; o servidor (Google Apps Script)
+   * refaz a conta com este mesmo calc.js, monta o e-mail com o email-calc.js e envia para a
+   * pessoa, com uma cópia para o comercial. Cada pedido leva um id: se a primeira tentativa
+   * cair no meio, a segunda usa o mesmo id e o servidor não manda duas vezes.
+   * Sem URL configurada (emailWebhookUrl vazio), a página só mostra a prévia do e-mail. */
+  var envio = { id: "", optin: false, seq: 0, estado: "", assinatura: "" };
+  function novoIdEnvio() {
+    var b = new Uint8Array(12), i;
+    try { window.crypto.getRandomValues(b); } catch (e) { for (i = 0; i < b.length; i++) b[i] = Math.floor(Math.random() * 256); }
+    var h = "";
+    for (i = 0; i < b.length; i++) h += ("0" + b[i].toString(16)).slice(-2);
+    return h;
+  }
+  function urlEnvio() {
+    var u = String((SD.site && SD.site.emailWebhookUrl) || "").trim();
+    // só aceita a URL de um app da Web do Google Apps Script (conta pessoal ou Workspace)
+    return /^https:\/\/script\.google\.com\/(a\/macros\/[A-Za-z0-9.-]+\/|macros\/)s\/[A-Za-z0-9_-]+\/exec$/.test(u) ? u : "";
+  }
+  function statusEnvio(st, html, reenviar) {
+    envio.estado = st;
+    if (!els.envio) return;
+    els.envio.hidden = false;
+    els.envio.setAttribute("data-st", st);
+    els.envioSt.innerHTML = html;
+    if (els.reenviar) els.reenviar.hidden = !reenviar;
+  }
+  function opcoesEmail() {
+    var site = SD.site || {};
+    var base = "";
+    try { base = new URL(".", location.href).href; } catch (e) { base = ""; }
+    return { teste: paginaTeste, whatsapp: site.whatsappComercial, empresa: site.empresa || {}, siteUrl: /^https:/.test(base) ? base : "" };
+  }
+  function atualizarPrevia(r) {
+    var E = window.StoneDrenEmail;
+    if (!els.previa || !els.previaFrame || !E || !lead || !r) return;
+    var m;
+    try { m = E.montarEmailCliente(r, lead, opcoesEmail()); } catch (e) { m = null; }
+    if (!m) { els.previa.hidden = true; return; }
+    els.previa.hidden = false;
+    els.previaNota.textContent = "Assunto: " + m.assunto + ". Na prévia os links não abrem; no e-mail de verdade, abrem.";
+    els.previaFrame.setAttribute("srcdoc", m.html);
+  }
+  if (els.previa) els.previa.addEventListener("toggle", function () { if (els.previa.open && unlocked) atualizarPrevia(ultimo); });
+  if (els.reenviar) els.reenviar.addEventListener("click", function () { enviarCalculo(true); });
+
+  function enviarCalculo(novo) {
+    var r = ultimo;
+    if (!modoEmail || !lead || !r || (!r.totais && !r.consulte)) return;
+    var email = lead.email || "";
+    var paraQuem = email ? "<b>" + esc(email) + "</b>" : "o comercial";
+    atualizarPrevia(r);
+    var url = urlEnvio();
+    if (!url) {
+      statusEnvio("previa", "O envio por e-mail ainda não foi ativado nesta página. Quando estiver ativo, o cálculo chega em " + paraQuem +
+        (email ? ", com uma cópia para o comercial" : "") + ". Abaixo, a prévia de como o e-mail vai chegar.", false);
+      if (els.previa) els.previa.open = true;
+      return;
+    }
+    var payload = C.montarPayload(lead, obraAtual(), r, envio.optin, {
+      email: email, id: "", teste: paginaTeste, hp: F.isca ? F.isca.value : "",
+      pagina: String(location.pathname || "").split("/").pop() || "index.html"
+    });
+    // "Enviar de novo" depois de um envio NÃO confirmado, com a mesma obra e o mesmo contato, repete o
+    // id: se o primeiro já tiver chegado, o servidor não manda outro par de e-mails (nem gasta a cota)
+    var assinatura = JSON.stringify(Object.assign({}, payload, { enviadoEm: "" }));
+    var reaproveita = novo && envio.id && envio.estado !== "ok" && envio.assinatura === assinatura;
+    if ((novo && !reaproveita) || !envio.id) envio.id = novoIdEnvio();
+    envio.assinatura = assinatura;
+    payload.id = envio.id;
+    var corpo = JSON.stringify(payload);
+    var seq = ++envio.seq;
+    statusEnvio("enviando", "Enviando o cálculo para " + paraQuem + ".", false);
+    var ctrl = typeof AbortController === "function" ? new AbortController() : null;
+    var relogio = setTimeout(function () { if (ctrl) ctrl.abort(); }, 25000);
+    var opts = { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: corpo, redirect: "follow", credentials: "omit" };
+    if (ctrl) opts.signal = ctrl.signal;
+    var p;
+    try { p = fetch(url, opts); } catch (e) { p = Promise.reject(e); }
+    p.then(function (res) {
+      return res.text().then(function (t) { var j = null; try { j = JSON.parse(t); } catch (e) { j = null; } return { http: res.status, j: j }; });
+    }).then(function (x) {
+      clearTimeout(relogio);
+      if (seq === envio.seq) respostaEnvio(x, paraQuem);
+    }).catch(function (err) {
+      clearTimeout(relogio);
+      if (seq !== envio.seq) return;
+      // demorou demais: pergunta ao servidor o que aconteceu com este id antes de dizer qualquer coisa
+      if (err && err.name === "AbortError") { confirmarPorId(url, seq, paraQuem, true); return; }
+      // sem resposta legível (rede ou bloqueio do navegador): uma segunda tentativa que não lê a resposta,
+      // com o MESMO id (se a primeira tiver chegado, o servidor não repete o envio). Essa tentativa
+      // "dá certo" até quando o Google devolve uma página de login ou de erro; por isso a página
+      // pergunta logo depois ao servidor (GET ?id=) o que ele fez com ESTE pedido.
+      var o2 = { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: corpo, credentials: "omit" };
+      if (corpo.length < 60000) o2.keepalive = true;
+      // a 2ª tentativa também tem prazo: sem ele, um pedido pendurado deixaria a página em "Enviando" para sempre.
+      // Se o prazo estourar, o pedido pode ter chegado: a conferência decide entre "provável" e erro.
+      var ctrl2 = typeof AbortController === "function" ? new AbortController() : null;
+      var relogio2 = setTimeout(function () { if (ctrl2) ctrl2.abort(); }, 15000);
+      if (ctrl2) o2.signal = ctrl2.signal;
+      var p2;
+      try { p2 = fetch(url, o2); } catch (e2) { p2 = Promise.reject(e2); }
+      p2.then(function () {
+        clearTimeout(relogio2);
+        confirmarPorId(url, seq, paraQuem, false);
+      }, function (e3) {
+        clearTimeout(relogio2);
+        if (e3 && e3.name === "AbortError") confirmarPorId(url, seq, paraQuem, true);
+        else if (seq === envio.seq) naoConfirmado(false);
+      });
+    });
+  }
+  // conferência (GET): o doGet responde se está no ar e, com ?id=, o que aconteceu com o pedido
+  // (envio: {ok, cliente, copia} | {ok:false, erro} | null quando o servidor não viu esse id)
+  function conferirServico(url, id) {
+    var ctrl = typeof AbortController === "function" ? new AbortController() : null;
+    var relogio = setTimeout(function () { if (ctrl) ctrl.abort(); }, 12000);
+    var o = { method: "GET", credentials: "omit" };
+    if (ctrl) o.signal = ctrl.signal;
+    var p;
+    try { p = fetch(url + (id ? "?id=" + encodeURIComponent(id) : ""), o); } catch (e) { p = Promise.reject(e); }
+    return p.then(function (r) { return r.json(); }).then(function (j) {
+      clearTimeout(relogio);
+      if (!(j && j.servico === "stone-dren-email")) return null;
+      return { ligado: !!j.ligado, envio: j.envio };
+    }, function () { clearTimeout(relogio); return null; });
+  }
+  function naoConfirmado(pendente) {
+    if (pendente) statusEnvio("provavel", "O servidor demorou para responder. O e-mail ainda pode chegar em alguns minutos; confira também a caixa de spam. Se não chegar, envie de novo.", true);
+    else statusEnvio("erro", "Não deu para confirmar o envio. Confira a conexão e envie de novo. A lista continua na tela e também pode ir pelo WhatsApp.", true);
+  }
+  // sem resposta legível: a mensagem sai do que o servidor diz sobre ESTE id, nunca de um palpite
+  function confirmarPorId(url, seq, paraQuem, pendente) {
+    conferirServico(url, envio.id).then(function (c) {
+      if (seq !== envio.seq) return;
+      if (!c) { naoConfirmado(pendente); return; }
+      if (c.envio && typeof c.envio === "object") { respostaEnvio({ http: 200, j: c.envio }, paraQuem); return; }
+      if (c.envio === null) { naoConfirmado(pendente); return; }
+      // servidor de versão antiga, sem ?id=: só dá para saber se está no ar
+      if (!c.ligado) { respostaEnvio({ http: 200, j: { ok: false, erro: "desligado" } }, paraQuem); return; }
+      statusEnvio("provavel", "Pedido enviado para " + paraQuem + ". Confira a caixa de entrada e também o spam nos próximos minutos.", true);
+    });
+  }
+  function respostaEnvio(x, paraQuem) {
+    var j = x && x.j;
+    if (j && j.ok) {
+      var copia = j.copia ? (lead.email ? " e uma cópia foi para o comercial" : "") : "";
+      var dest = lead.email ? "O cálculo foi enviado para " + paraQuem + copia + "." : "O cálculo foi enviado para o comercial.";
+      statusEnvio("ok", "Pronto. " + dest + (lead.email ? " Se não aparecer em alguns minutos, confira a caixa de spam." : ""), true);
+      return;
+    }
+    var cod = j && j.erro ? String(j.erro) : "";
+    if (cod === "email") {
+      statusEnvio("erro", "O servidor não aceitou este e-mail. Corrija o endereço no formulário e peça de novo.", false);
+      els.leadSec.hidden = false;
+      erroCampo(F.email, F.errEmail, "Confira o e-mail, por exemplo nome@gmail.com.");
+      try { els.leadSec.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); } catch (e) { /* segue */ }
+      if (F.email) F.email.focus({ preventScroll: true });
+      return;
+    }
+    if (cod === "limite") { statusEnvio("erro", "Muitos envios seguidos para este e-mail. Tente de novo daqui a uma hora ou mande a lista pelo WhatsApp.", false); return; }
+    if (cod === "cota") { statusEnvio("erro", "Os envios de hoje acabaram. Amanhã volta a funcionar; por enquanto, mande a lista pelo WhatsApp.", false); return; }
+    if (cod === "hora") { statusEnvio("erro", "Muitos pedidos neste momento. Tente de novo em até uma hora ou mande a lista pelo WhatsApp.", false); return; }
+    if (cod === "ocupado") { statusEnvio("erro", "O servidor está ocupado agora. Toque em enviar de novo em alguns segundos.", true); return; }
+    if (cod === "invalido") { statusEnvio("erro", "O servidor não aceitou os dados do formulário. Confira nome, WhatsApp e cidade (por exemplo Goiânia/GO) e envie de novo, ou mande a lista pelo WhatsApp.", true); return; }
+    if (cod === "desligado") { statusEnvio("erro", "O envio por e-mail está desligado no momento. Mande a lista pelo WhatsApp.", false); return; }
+    statusEnvio("erro", "O servidor não conseguiu enviar" + (cod ? " (" + esc(cod) + ")" : (x && x.http ? " (resposta " + x.http + ")" : "")) + ". Envie de novo em instantes.", true);
   }
 
   /* ---------- resultado ---------- */

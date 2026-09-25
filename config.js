@@ -10,6 +10,11 @@ window.STONE_DREN_SITE = {
   // Opcional: URL que recebe o lead (Google Apps Script, Formspree etc.). Vazio = só WhatsApp.
   leadWebhookUrl: "",
 
+  // Envio do cálculo por e-mail (só nas páginas com a calculadora marcada data-email, como a
+  // calculadora-teste.html). É a URL do app da Web do Google Apps Script (apps-script/Code.gs),
+  // no formato https://script.google.com/macros/s/.../exec. Vazio = a página mostra só a prévia do e-mail.
+  emailWebhookUrl: "",
+
   // Identificação do controlador (LGPD) e do franqueador (Lei 13.966/2019).
   empresa: {
     razaoSocial: "[RAZÃO SOCIAL]",
