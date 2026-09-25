@@ -624,7 +624,7 @@
       return;
     }
     if (!t) {
-      tileSet("pedra", { nomeado: "A informar", sub: "Sacos de " + T.pedra.sacoKg + " kg" });
+      tileSet("pedra", { nomeado: "A informar", sub: "Sacos de " + T.pedra.sacoKg + " kg" + (T.pedra.sacoProvisorio ? " (peso a confirmar)" : "") });
       tileSet("resina", { nomeado: "A informar", sub: "Kits de referência" });
       tileSet("brita", { nomeado: "A informar", sub: "Só para base sobre solo" });
       return;
@@ -1656,7 +1656,7 @@
   }
   function materiaisHTML(r, t, corNome) {
     var html = "";
-    html += matHTML('<img src="img/pedra-' + r.cor + '.jpg" alt="" width="44" height="44">', "Pedra natural " + corNome, "Sacos de " + t.pedra.sacoKg + " kg (peso do saco a confirmar) · perda de " + C.fmtAuto(T.pedra.perda * 100) + "% incluída", C.qtd(t.pedra.sacos, "saco", "sacos"), C.fmtKg(t.pedra.kg), "pedra");
+    html += matHTML('<img src="img/pedra-' + r.cor + '-192.jpg" alt="" width="44" height="44">', "Pedra natural " + corNome, "Sacos de " + t.pedra.sacoKg + " kg (peso do saco a confirmar) · perda de " + C.fmtAuto(T.pedra.perda * 100) + "% incluída", C.qtd(t.pedra.sacos, "saco", "sacos"), C.fmtKg(t.pedra.kg), "pedra");
     html += matHTML(ICON.resina, "Resina " + t.resina.curto + " + endurecedor", capital(T.resina.kitPremissa) + ".", C.qtd(t.resina.kits, "kit", "kits"), C.fmtKg(t.resina.kg) + " de resina já misturada com o endurecedor", "resina");
     if (t.brita) {
       html += matHTML(ICON.brita, "Brita para a base", "Base sobre solo · sacos de " + t.brita.sacoKg + " kg", C.qtd(t.brita.sacos, "saco", "sacos"), C.fmtKg(t.brita.kg) + " · " + C.fmtM3(t.brita.m3) + " de brita solta", "brita",

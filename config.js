@@ -26,5 +26,25 @@ window.STONE_DREN_SITE = {
     cidadeUnidadeModelo: "Goiânia/GO"
   },
 
-  politicaAtualizadaEm: "setembro de 2026"
+  politicaAtualizadaEm: "setembro de 2026",
+  // data da última revisão do conteúdo do site, mantida à mão (aparece no rodapé; nunca a data do build)
+  conteudoAtualizadoEm: "setembro de 2026",
+
+  // CHAVE DE LANÇAMENTO (SEO e GEO). Com "ligado" em false tudo sai como prévia: noindex em toda
+  // página, sem canonical, sem sitemap e sem llms.txt. Para lançar: dados da empresa sem colchetes,
+  // WhatsApp confirmado, urlFinal com a RAIZ do domínio final (https e barra no fim), hospedagem
+  // ("github-pages" grava o CNAME, "outra" não grava), decisão sobre robôs de treino de IA
+  // (bloquearTreinoDeIA verdadeiro ou falso) e só então "ligado" verdadeiro e ./publicar.sh --lancamento.
+  // O build e a trava (trava_lancamento.py) recusam o lançamento e listam o que falta.
+  // perfisOficiais: só perfis que existem, no formato { nome: "Instagram", url: "https://..." }.
+  // indexNowChave: opcional, 8 a 128 letras ou números (gera o arquivo da chave e avisa o Bing a cada publicação).
+  lancamento: {
+    ligado: false,
+    urlFinal: "",
+    urlPrevia: "https://ldsjunior-ui.github.io/stone-dren/",
+    hospedagem: "",
+    bloquearTreinoDeIA: null,
+    perfisOficiais: [],
+    indexNowChave: ""
+  }
 };

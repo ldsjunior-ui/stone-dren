@@ -90,7 +90,7 @@ html:not(.js) .nav-toggle{display:none !important;}
 
 /* hero */
 .hero{min-height:100svh; display:flex; align-items:center; padding-block:calc(var(--header-h) + 40px) 72px; overflow:hidden; isolation:isolate;}
-.hero::before{content:''; position:absolute; inset:0; z-index:-3; background:url(img/hero-piso.jpg) center 62%/cover no-repeat; transform:scale(1.04);}
+.hero::before{content:''; position:absolute; inset:0; z-index:-3; background:url(img/hero-piso.webp) center 62%/cover no-repeat; transform:scale(1.04);}
 .hero::after{content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgba(10,21,38,.92) 0%, rgba(10,21,38,.72) 42%, rgba(10,21,38,.18) 100%), linear-gradient(0deg, rgba(6,11,20,.55), transparent 30%);}
 #hero-rain{position:absolute; inset:0; width:100%; height:100%; z-index:-2; pointer-events:none;}
 /* loop de vídeo atrás do piso 3D (hero-loop.js): mistura por luz, o preto do vídeo some e só a luz soma.
@@ -191,7 +191,7 @@ html[data-hero-loop] header.site:not(.scrolled)::after{content:""; position:abso
 .stones .bag svg{width:100%; height:auto;}
 .swatches{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:22px 0 10px;}
 .sw{border:1px solid var(--line); border-radius:8px; overflow:hidden; background:none; padding:0; cursor:pointer; text-align:center; transition:border-color .2s, transform .2s;}
-.sw img{width:100%; aspect-ratio:1/1; object-fit:cover;}
+.sw img{width:100%; height:auto; aspect-ratio:1/1; object-fit:cover;}
 .sw span{display:block; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; padding:8px 2px; color:var(--ink-dim);}
 .sw[aria-pressed="true"]{border-color:var(--gold-2); transform:translateY(-3px);}
 .sw[aria-pressed="true"] span{color:var(--gold-2);}
@@ -315,7 +315,7 @@ html[data-hero-loop] header.site:not(.scrolled)::after{content:""; position:abso
 
 /* CTA band */
 .cta-band{text-align:center; isolation:isolate; overflow:hidden;}
-.cta-band::before{content:''; position:absolute; inset:0; z-index:-2; background:url(img/hero-piso.jpg) center 70%/cover; filter:brightness(.8);}
+.cta-band::before{content:''; position:absolute; inset:0; z-index:-2; background:url(img/hero-piso.webp) center 70%/cover; filter:brightness(.8);}
 .cta-band::after{content:''; position:absolute; inset:0; z-index:-1; background:radial-gradient(ellipse 60% 70% at 50% 50%, rgba(10,21,38,.72), rgba(10,21,38,.95));}
 .cta-band h2{max-width:18ch; margin-inline:auto;}
 .cta-band .lede{margin:0 auto 32px;}
@@ -325,7 +325,7 @@ html[data-hero-loop] header.site:not(.scrolled)::after{content:""; position:abso
 footer{background:var(--navy-deep); border-top:1px solid var(--line); padding:56px 0 30px;}
 .foot{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:40px; margin-bottom:36px;}
 .foot p{color:var(--ink-dim); font-size:.9rem; max-width:40ch; margin-top:16px;}
-.foot h4{font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:14px;}
+.foot h4,.foot .foot-h{font-size:11.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin:0 0 14px; max-width:none;}
 .foot ul{list-style:none; padding:0; display:grid; gap:9px;}
 .foot a,.foot .linkbtn{color:var(--ink-dim); text-decoration:none; font-size:.9rem; line-height:1.5; text-align:left;}
 .foot .linkbtn:hover{color:var(--gold-2);}

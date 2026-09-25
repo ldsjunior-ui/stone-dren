@@ -119,9 +119,11 @@
 
   /* ---------- dialogs ---------- */
   document.querySelectorAll("[data-open]").forEach(function (b) {
-    b.addEventListener("click", function () {
+    b.addEventListener("click", function (e) {
+      // link com data-open (ex.: política no rodapé): sem JS ou com Ctrl/Cmd abre a página própria
+      if (b.tagName === "A" && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
       var d = document.getElementById(b.getAttribute("data-open"));
-      if (d && d.showModal) d.showModal();
+      if (d && d.showModal) { if (b.tagName === "A") e.preventDefault(); d.showModal(); }
     });
   });
   document.querySelectorAll("dialog").forEach(function (d) {

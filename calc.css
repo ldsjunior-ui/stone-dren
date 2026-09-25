@@ -523,3 +523,13 @@
   html.cx-printing .cx-res-grid{grid-template-columns:1.4fr 1fr;}
   html.cx-printing .pending{border:0;}
 }
+
+/* referências por uso: tabela estática gerada pelo build.py a partir do calc.js (seo_build.referencias_html).
+ * Fica fora do .cx, então traz as próprias variáveis; no celular a tabela rola dentro da caixa, nunca a página. */
+.cx-refs{--cx-hair:rgba(239,231,214,.10); max-width:860px; margin:28px auto 0; font-size:13px;}
+.cx-refs .cx-refs-rolagem{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+.cx-refs table{min-width:600px;}
+.cx-refs caption{caption-side:top; text-align:left; color:var(--ink-dim); padding:4px 0 8px; font-size:12px;}
+.cx-refs thead th{color:var(--ink-dim); font-weight:600;}
+.cx-refs tbody th{color:var(--ink); font-weight:600;}
+.cx-refs .note{margin-top:10px;}

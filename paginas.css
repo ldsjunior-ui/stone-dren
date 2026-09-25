@@ -50,3 +50,8 @@
 .pg-depois,.pg-conexao{padding:20px 22px; border-radius:12px; border:1px solid var(--line); background:rgba(22,34,61,.5); margin-bottom:24px;}
 .pg-conexao .btn{margin-top:8px;}
 .pg-conexao-st{margin-top:10px; font-size:.92rem; color:var(--ink); min-height:1.4em;}
+
+/* ---------- política de privacidade (página própria, mesmo texto do dialog) ---------- */
+.pg-politica .priv-doc{color:var(--ink-dim); font-size:.95rem; line-height:1.65;}
+.pg-politica .priv-doc h2{font-size:1rem; font-weight:700; text-transform:none; letter-spacing:.01em; line-height:1.3; color:var(--ink); margin:26px 0 8px;}
+.pg-politica .priv-doc p,.pg-politica .priv-doc ul{margin-bottom:10px;}

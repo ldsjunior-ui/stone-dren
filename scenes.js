@@ -242,6 +242,8 @@ function makeDprGovernor(renderer, cap, onChange) {
   var fixed = W.STONE_DREN_3D && W.STONE_DREN_3D.fixedDpr;
   return {
     get dpr() { return dpr; },
+    // teto novo: a sonda do hero baixou o DPR para a cena passar; o governador não volta acima disso
+    limit: function (c) { cap = c; floor = Math.min(cap, 0.75); if (dpr > cap) dpr = cap; },
     sample: function (dtMs) {
       if (fixed) return;
       ema += (dtMs - ema) * 0.08;
@@ -822,6 +824,24 @@ async function initHero(canvas) {
     W.dispatchEvent(new Event("stonedren:hero3d-ready"));
     heroSettle();
   }
+  /* Tela retina com GPU modesta: em 1,75x a cena desenha 3 vezes os pontos de 1x e a sonda reprova
+   * (medido: 317 ms por quadro em 1,75x e 17 ms em 1x na mesma máquina). Antes de devolver a página à
+   * foto, a sonda roda de novo com menos pixels: primeiro o DPR estimado para caber no limite (os
+   * pixels crescem com o quadrado do DPR), depois 1x. Só desiste se falhar em 1x. */
+  var probeSteps = [];
+  function stepDown() {
+    var cur = renderer.getPixelRatio(), med = probe.median;
+    if (cur <= 1.01 || probeSteps.length >= 2 || (W.STONE_DREN_3D && W.STONE_DREN_3D.fixedDpr)) return false;
+    var alvo = probeSteps.length ? 1 : cur * Math.sqrt(30 / Math.max(med, 30));
+    var d = Math.max(1, Math.min(cur * 0.85, Math.round(alvo * 20) / 20));
+    probeSteps.push({ dpr: cur, ms: Math.round(med * 10) / 10 });
+    stats.hero.probeSteps = probeSteps;
+    renderer.setPixelRatio(d);
+    gov.limit(d);
+    resize(true);
+    probe.reset();
+    return true;
+  }
   function bail(reason) {
     if (disposed) return;
     stats.hero.bailed = reason;
@@ -846,7 +866,7 @@ async function initHero(canvas) {
       if (lat < 0) return;
       var v = probe.sample(Math.max(raw, lat));
       if (v === "ok") reveal();
-      else if (v === "slow") { bail("slow"); return; }
+      else if (v === "slow" && !stepDown()) { bail("slow"); return; }
     } else {
       var lv = late.sample(raw);
       if (lv === "ok") late.reset();
