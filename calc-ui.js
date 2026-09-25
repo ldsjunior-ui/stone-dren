@@ -51,6 +51,10 @@
   var modoEmail = alvoEmail ? String(alvoEmail.getAttribute("data-email") || "") : "";
   if (modoEmail !== "obrigatorio" && modoEmail !== "opcional") modoEmail = "";
   var paginaTeste = !!(alvoEmail && alvoEmail.getAttribute("data-teste") === "1");
+  // Página de teste livre (data-livre="1"): o resultado completo aparece na hora, sem formulário,
+  // sem e-mail e sem envio de nada. Serve para o cliente conferir a calculadora inteira.
+  var alvoLivre = root.closest ? root.closest("[data-livre]") : null;
+  var modoLivre = !modoEmail && !!(alvoLivre && alvoLivre.getAttribute("data-livre") === "1");
 
   /* ---------- estado ---------- */
   var state = { ambientes: [], resina: "epoxi", cor: "branca", selecionado: null };
@@ -1784,6 +1788,11 @@
 
   /* ---------- início ---------- */
   if (!carregar()) state.ambientes = [novoAmbiente()];
+  if (modoLivre) {
+    unlocked = true;
+    root.classList.add("is-liberado");
+    if (els.leadSec) els.leadSec.hidden = true;
+  }
   state.selecionado = state.ambientes[0].id;
   $$('input[name="cxResina"]', els.form).forEach(function (r) { r.checked = r.value === state.resina; });
   $$('input[name="cxCor"]', els.form).forEach(function (r) { r.checked = r.value === state.cor; });
