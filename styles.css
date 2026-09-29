@@ -189,6 +189,7 @@ html[data-hero-loop] header.site:not(.scrolled)::after{content:""; position:abso
 .stones{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:40px; align-items:center; padding:34px; border:1px solid var(--line); border-radius:12px; background:rgba(10,21,38,.6); margin-bottom:28px;}
 .stones .bag{max-width:360px; margin-inline:auto; width:100%;}
 #bagStage > [data-bag]{display:flex;align-items:center;justify-content:center;}
+#bagStage > [data-bag][hidden]{display:none !important;}
 #bagStage img{width:100%;height:auto;display:block;object-fit:contain;}
 
 .stones .bag svg{width:100%; height:auto;}
