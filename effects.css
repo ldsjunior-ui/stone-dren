@@ -105,8 +105,9 @@ header.site.fx-autohide.fx-hide:has(:focus-visible){transform:none;}
 
 /* ---------- troca de cor do saco ---------- */
 #bagStage.fx-bag{position:relative;}
-#bagStage.fx-bag > [data-bag]{backface-visibility:hidden;}
-#bagStage.fx-bag > .fx-bag-out{position:absolute; inset:0; z-index:0; pointer-events:none;}
+#bagStage.fx-bag > [data-bag]{backface-visibility:hidden; position:relative; inset:auto;}
+#bagStage.fx-bag > .fx-bag-out{position:absolute; inset:0; z-index:0; pointer-events:none; display:flex; align-items:center; justify-content:center;}
+#bagStage.fx-bag > .fx-bag-out img{width:100%; height:100%; object-fit:contain;}
 
 /* ---------- spotlight que segue o cursor (por baixo do conteúdo) ---------- */
 .fx-spot{position:absolute; left:0; top:0; z-index:0; width:900px; height:900px; margin:-450px 0 0 -450px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .8s ease; background:radial-gradient(closest-side, rgba(217,174,94,.13), rgba(217,174,94,.05) 45%, rgba(217,174,94,0) 100%);}
