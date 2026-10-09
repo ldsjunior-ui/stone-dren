@@ -1280,12 +1280,19 @@
     var labelsX = narrow ? 10 : 14;
     var dimW = narrow ? 62 : 78;
     var x0 = 0, x1 = W - dimW;
-    var topo = 38;
     var fora = 32;                            // altura das camadas fora de escala
     var disponivel = narrow ? 104 : 128;      // altura para as camadas em escala (corte compacto)
     var emEscala = a.camadas.filter(function (c) { return c.emEscala; });
     var somaMm = emEscala.reduce(function (s, c) { return s + c.espessuraMm; }, 0) || 1;
-    var s = Math.min(3.2, disponivel / somaMm);   // px por mm, própria deste corte
+    // a lata de referência (350 ml, 122 mm x 66 mm) fica em pé sobre a pedra, NA MESMA escala das
+    // camadas: entra na conta da escala para o corte não ficar alto demais
+    var LATA_MM = 122, LATA_D_MM = 66;
+    // e a lata não passa de ~1/4 da largura (com camada fina ela ficaria larga e cobriria o rótulo da pedra)
+    var s = Math.min(3.2, (disponivel + 60) / (somaMm + LATA_MM), (x1 - x0) * (narrow ? 0.22 : 0.26) / LATA_D_MM);   // px por mm, própria deste corte
+    var lataH = LATA_MM * s, lataW = LATA_D_MM * s;
+    var topo = Math.max(38, Math.round(lataH + 10));
+    var lataX = x1 - lataW - (narrow ? 4 : 14);
+    var chuvaX1 = lataX - 10;                 // a chuva e as gotas caem só à esquerda da lata
     var y = topo;
     var cam = a.camadas.map(function (c) {
       var h = c.emEscala ? c.espessuraMm * s : fora;
@@ -1303,7 +1310,7 @@
     svg += '<title id="' + id("cxCorteT") + '">' + esc(titulo) + '</title>';
     svg += '<desc id="' + id("cxCorteD") + '">' + esc(cam.map(function (o) {
       return o.c.rotulo + (o.c.espessuraMm ? ", " + medida(o.c.espessuraMm, o.c.id) : ", espessura fora de escala");
-    }).join("; ") + ".") + '</desc>';
+    }).join("; ") + ". Em cima, na mesma escala, uma lata de refrigerante de 350 ml (12,2 cm de altura) para comparar.") + '</desc>';
     svg += '<defs>' +
       '<linearGradient id="' + id("cxpSheen") + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient>' +
       '<pattern id="' + id("cxpBrita") + '" width="46" height="30" patternUnits="userSpaceOnUse"><rect width="46" height="30" fill="#3b4049"/><path d="M3 5l8-3 6 5-4 7-9-2z" fill="#8b9099"/><path d="M20 3l9 1 3 8-7 4-6-5z" fill="#6f757f"/><path d="M34 7l9 2-1 9-8-1z" fill="#9aa0a8"/><path d="M6 18l9-1 4 8-8 4-6-4z" fill="#7f858e"/><path d="M24 17l8-2 5 7-5 6-9-3z" fill="#9097a0"/><path d="M40 20l6 1v8l-6-1z" fill="#737983"/></pattern>' +
@@ -1312,6 +1319,7 @@
       '<pattern id="' + id("cxpSolo") + '" width="26" height="26" patternUnits="userSpaceOnUse"><rect width="26" height="26" fill="#3a2a1d"/><circle cx="6" cy="7" r="1.4" fill="#57402e"/><circle cx="19" cy="17" r="1.2" fill="#57402e"/><circle cx="11" cy="22" r="1" fill="#4a3627"/></pattern>' +
       '<linearGradient id="' + id("cxpRain") + '" gradientUnits="userSpaceOnUse" x1="0" y1="2" x2="0" y2="20"><stop offset="0" stop-color="#9CC7D8" stop-opacity="0"/><stop offset="1" stop-color="#CFE6F0" stop-opacity=".95"/></linearGradient>' +
       '<linearGradient id="' + id("cxpFade") + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101E36" stop-opacity="0"/><stop offset="1" stop-color="#101E36" stop-opacity=".92"/></linearGradient>' +
+      '<linearGradient id="' + id("cxpLata") + '" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7d838c"/><stop offset=".22" stop-color="#e9ecef"/><stop offset=".42" stop-color="#b9bec5"/><stop offset=".7" stop-color="#d6dadf"/><stop offset="1" stop-color="#6c727b"/></linearGradient>' +
       '<clipPath id="' + id("cxpClip") + '"><rect x="' + x0 + '" y="' + topo + '" width="' + (x1 - x0) + '" height="' + (y - topo) + '" rx="6"/></clipPath>' +
       '</defs>';
 
@@ -1319,7 +1327,7 @@
     var gotas = "";
     var nGotas = narrow ? 5 : 7;
     for (var g = 0; g < nGotas; g++) {
-      var gx = Math.round(x0 + (x1 - x0) * (g + 0.5) / nGotas + (g % 2 ? 6 : -6));
+      var gx = Math.round(x0 + (chuvaX1 - x0) * (g + 0.5) / nGotas + (g % 2 ? 6 : -6));
       gotas += '<path class="cx-rain" style="--i:' + g + '" d="M' + gx + ' 4l-2 14" />';
     }
     svg += '<g class="cx-rain-g" stroke="' + url("cxpRain") + '" stroke-width="1.7" stroke-linecap="round">' + gotas + '</g>';
@@ -1353,7 +1361,7 @@
     var quedas = "";
     var nq = narrow ? 3 : 4;
     for (var q = 0; q < nq; q++) {
-      var qx = Math.round(x0 + (x1 - x0) * (q + 0.62) / (nq + 0.25));
+      var qx = Math.round(x0 + (chuvaX1 - x0) * (q + 0.62) / (nq + 0.25));
       quedas += '<circle class="cx-drop" style="--i:' + q + ';--fall:' + Math.round(fundoAgua - topo + 4) + 'px" cx="' + qx + '" cy="' + (topo - 6) + '" r="2.4"/>';
     }
     svg += '<g fill="#9CC7D8">' + quedas + '</g>';
@@ -1362,8 +1370,24 @@
       svg += '<g class="cx-escoa" stroke="#9CC7D8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M' + (x0 + 24) + ' ' + ya + 'H' + (x1 - 20) + '"/><path d="M' + (x1 - 26) + ' ' + (+ya - 4) + 'l6 4-6 4"/></g>';
     }
 
+    // lata de referência em pé sobre a pedra (alumínio liso, sem marca), com a própria cota
+    var lb = topo, lt = topo - lataH, pesc = lataW * 0.09, ombro = lataH * 0.07, aba = lataH * 0.025;
+    svg += '<g class="cx-lata" aria-hidden="true">' +
+      '<path d="M' + (lataX + 1.5).toFixed(1) + ' ' + lb + 'Q' + lataX.toFixed(1) + ' ' + lb + ' ' + lataX.toFixed(1) + ' ' + (lb - 3).toFixed(1) +
+        'V' + (lt + aba + ombro).toFixed(1) + 'L' + (lataX + pesc).toFixed(1) + ' ' + (lt + aba).toFixed(1) + 'V' + lt.toFixed(1) +
+        'H' + (lataX + lataW - pesc).toFixed(1) + 'V' + (lt + aba).toFixed(1) + 'L' + (lataX + lataW).toFixed(1) + ' ' + (lt + aba + ombro).toFixed(1) +
+        'V' + (lb - 3).toFixed(1) + 'Q' + (lataX + lataW).toFixed(1) + ' ' + lb + ' ' + (lataX + lataW - 1.5).toFixed(1) + ' ' + lb + 'Z" fill="' + url("cxpLata") + '" stroke="#4d535b" stroke-width=".8"/>' +
+      '<path d="M' + (lataX + pesc).toFixed(1) + ' ' + (lt + aba).toFixed(1) + 'H' + (lataX + lataW - pesc).toFixed(1) + '" stroke="#8a9098" stroke-width=".8"/>' +
+      '<path d="M' + lataX.toFixed(1) + ' ' + (lb - 3).toFixed(1) + 'H' + (lataX + lataW).toFixed(1) + '" stroke="#8a9098" stroke-width=".6"/>' +
+      '</g>';
+    // cota da lata na coluna das cotas, como as camadas
+    var dxL = x1 + 10;
+    svg += '<g class="cx-dim cx-dim-lata"><path d="M' + (dxL - 4) + ' ' + (lt + 1).toFixed(1) + 'h8M' + (dxL - 4) + ' ' + (lb - 1) + 'h8M' + dxL + ' ' + (lt + 1).toFixed(1) + 'V' + (lb - 1) + '"/>' +
+      '<text x="' + (dxL + 6) + '" y="' + (lt + lataH / 2 - 7).toFixed(1) + '" dominant-baseline="middle">' + (narrow ? "lata" : "lata 350 ml") + '</text>' +
+      '<text x="' + (dxL + 6) + '" y="' + (lt + lataH / 2 + 7).toFixed(1) + '" dominant-baseline="middle">12,2 cm</text></g>';
+
     // rótulos das camadas (curtos no desenho; a descrição acessível leva o nome completo)
-    var CURTO = { stone: narrow ? "Stone Dren" : "Stone Dren · pedra + resina", laje: "Laje com malha POP", brita: "Brita compactada", solo: "Solo compactado",
+    var CURTO = { stone: narrow ? "Stone Dren" : "Stone Dren · pedra + resina", laje: narrow ? "Laje + malha POP" : "Laje com malha POP", brita: "Brita compactada", solo: "Solo compactado",
       contrapiso: a.uso === "garagem" ? "Concreto ou asfalto" : "Contrapiso existente" };
     cam.forEach(function (o) {
       var txt = (CURTO[o.c.id] || o.c.rotulo).toUpperCase();
