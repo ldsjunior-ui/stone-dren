@@ -74,7 +74,6 @@
 .cx-opt.is-off > span{opacity:.45; border-style:dashed;}
 .cx-opt.is-off:hover > span{border-color:var(--cx-hair-2);}
 
-.cx-globais{display:grid; gap:4px; padding-bottom:6px; margin-bottom:18px; border-bottom:1px solid var(--cx-hair);}
 .cx-seg2{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
 .cx-cores{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px;}
 .cx-cor{position:relative; cursor:pointer;}
@@ -93,17 +92,47 @@
 .cx-count{font-size:12px; font-weight:600; color:var(--ink-dim); letter-spacing:.06em;}
 .cx-ambs{list-style:none; padding:0; margin:0; display:grid; gap:12px;}
 .cx-amb{position:relative; border:1px solid var(--cx-hair-2); border-radius:12px; padding:16px 16px 6px; background:rgba(6,11,20,.38); transition:border-color .25s, box-shadow .25s;}
+/* lista compacta: só um cartão aberto; os outros são uma linha de resumo (o botão ocupa o cartão) */
+.cx-amb:not(.is-aberto){padding:0; background:rgba(6,11,20,.26);}
+.cx-amb:not(.is-aberto):hover{border-color:rgba(217,174,94,.38);}
 .cx-amb::before{content:''; position:absolute; left:-1px; top:18px; bottom:18px; width:2px; border-radius:2px; background:var(--water); opacity:0; transform:scaleY(.4); transition:opacity .3s, transform .4s var(--ease-out);}
 .cx-amb.is-sel{border-color:rgba(156,199,216,.34); box-shadow:0 0 0 1px rgba(156,199,216,.08), 0 14px 34px rgba(0,0,0,.22);}
 .cx-amb.is-sel::before{opacity:1; transform:none;}
-/* linha 1: número, rótulo visível do nome e ações; linha 2: o campo do nome na largura toda
-   (o exemplo "ex.: Garagem, Quintal" cabe inteiro até em 320 px) */
-.cx-amb-top{display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:2px 10px; margin-bottom:14px;}
-.cx-amb-n{grid-column:1; grid-row:1;}
-.cx-amb-nl{grid-column:2; grid-row:1; margin:0; line-height:1.35;}
-.cx-amb-top .cx-amb-acts{grid-column:3; grid-row:1;}
-.cx-amb-top .cx-amb-nome{grid-column:1 / -1; grid-row:2;}
-.cx-amb-n{font-weight:800; font-size:.95rem; color:var(--gold-2); letter-spacing:.04em; font-variant-numeric:tabular-nums;}
+/* cartão aberto · linha 1: cabeçalho (número, uso, cor e resina) e as ações; depois o nome na
+   largura toda (o exemplo "ex.: Garagem, Quintal" cabe inteiro até em 320 px) */
+.cx-amb-top{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:10px; margin-bottom:10px;}
+.cx-amb-n{flex:none; font-weight:800; font-size:.95rem; color:var(--gold-2); letter-spacing:.04em; font-variant-numeric:tabular-nums;}
+/* cabeçalho do aberto: acordeão com um painel sempre aberto (aria-disabled), não parece clicável */
+.cx-amb-cab{display:flex; align-items:center; gap:12px; min-height:44px; width:100%; padding:0; border:0; background:transparent; color:var(--ink); text-align:left; font:inherit; cursor:default;}
+.cx-amb-cab:focus{outline:none;}
+.cx-amb-cab:focus-visible{outline:2px solid var(--gold-2); outline-offset:3px; border-radius:6px;}
+.cx-amb-ct{display:flex; flex-direction:column; gap:3px; min-width:0;}
+.cx-amb-ct b{font-size:.98rem; font-weight:700; line-height:1.2;}
+.cx-amb-ct small{display:flex; align-items:center; gap:7px; font-size:.8rem; line-height:1.3; color:var(--ink-dim);}
+.cx-f-nome{margin-bottom:16px;}
+.cx-amb-nl{margin:0; line-height:1.35;}
+/* linha de resumo do cartão fechado: número, uso e área (ou estado nomeado), nome livre, cor e
+   resina, e "Editar". Alvo de 44 px ou mais; nenhuma quantidade aqui. */
+.cx-amb-linha{display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:4px 12px; width:100%; min-height:56px; padding:10px 10px 10px 16px; border:0; border-radius:11px; background:transparent; color:var(--ink); text-align:left; font:inherit; cursor:pointer; transition:background-color .2s;}
+.cx-amb-linha:hover{background:rgba(198,138,46,.06);}
+.cx-amb-linha:focus{outline:none;}
+.cx-amb-linha:focus-visible{outline:2px solid var(--gold-2); outline-offset:2px;}
+.cx-amb-lt{display:flex; flex-direction:column; gap:3px; min-width:0;}
+.cx-amb-l1{display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 10px;}
+.cx-amb-l1 b{font-size:.95rem; font-weight:700; line-height:1.25;}
+.cx-amb-la{font-size:.86rem; font-weight:700; color:var(--gold-3); font-variant-numeric:tabular-nums;}
+.cx-amb-la.is-estado{color:#f1c7a4; font-weight:600;}
+.cx-amb-lnome{font-size:.8rem; color:var(--ink-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.cx-amb-lcr{display:flex; align-items:center; gap:7px; font-size:.8rem; line-height:1.3; color:var(--ink-dim);}
+.cx-amb-mini{flex:none; width:20px; height:20px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 1.5px rgba(6,11,20,.85), 0 0 0 2.5px rgba(239,231,214,.22);}
+.cx-amb-led{display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 12px; border:1px solid rgba(217,174,94,.4); border-radius:999px; color:var(--gold-2); font-size:12px; font-weight:700; letter-spacing:.04em; transition:background-color .2s, border-color .2s;}
+.cx-amb-led svg{width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
+.cx-amb-linha:hover .cx-amb-led{border-color:var(--gold-2); background:rgba(198,138,46,.12);}
+/* só o cartão que acabou de abrir entra com um leve deslize (sem movimento com movimento reduzido) */
+.cx-amb.is-abrindo .cx-amb-corpo{animation:cxAbrir .3s var(--ease-out) both;}
+@keyframes cxAbrir{from{opacity:0; transform:translateY(-6px);}}
+.cx-reduce .cx-amb.is-abrindo .cx-amb-corpo{animation:none;}
+@media (prefers-reduced-motion:reduce){ .cx-amb.is-abrindo .cx-amb-corpo{animation:none;} }
 .cx-amb-nome{width:100%; min-height:44px; background:transparent; border:0; border-bottom:1px solid var(--cx-hair-2); border-radius:0; padding:8px 2px; font-size:16px; font-weight:700; color:var(--ink); transition:border-color .2s;}
 .cx-amb-nome::placeholder{color:#8f887a; font-weight:600;}
 .cx-amb-nome:focus{outline:none; border-bottom-color:var(--gold-2);}
@@ -166,10 +195,19 @@
 .cx-undo-btn{min-height:44px; padding:0 16px; border:1px solid rgba(217,174,94,.55); border-radius:999px; background:transparent; color:var(--gold-2); font-size:13px; font-weight:700; letter-spacing:.04em; cursor:pointer; transition:background-color .2s, border-color .2s;}
 .cx-undo-btn:hover{background:rgba(198,138,46,.12); border-color:var(--gold-2);}
 .cx-undo-btn:focus-visible{outline:2px solid var(--gold-2); outline-offset:2px;}
-.cx-add{margin-top:12px; width:100%; min-height:52px; display:flex; align-items:center; justify-content:center; gap:10px; border:1px dashed rgba(217,174,94,.45); border-radius:12px; background:rgba(198,138,46,.05); color:var(--gold-2); font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:background-color .2s, border-color .2s;}
-.cx-add svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round;}
-.cx-add:hover:not(:disabled){background:rgba(198,138,46,.12); border-color:var(--gold-2);}
-.cx-add:disabled{opacity:.5; cursor:not-allowed;}
+/* "Adicionar outro ambiente": em destaque (preenchido, sem tracejado), logo abaixo da lista */
+.cx-add{margin-top:12px; width:100%; min-height:52px; display:flex; align-items:center; justify-content:center; gap:10px; border:1px solid transparent; border-radius:12px; background:linear-gradient(180deg, var(--gold-2), var(--gold)); color:#1a1206; font-size:13px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; box-shadow:0 10px 24px rgba(0,0,0,.28); transition:filter .2s, box-shadow .2s;}
+.cx-add svg{width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round;}
+.cx-add:hover:not(:disabled){filter:brightness(1.08); box-shadow:0 12px 28px rgba(0,0,0,.34);}
+.cx-add:focus{outline:none;}
+.cx-add:focus-visible{outline:2px solid var(--gold-3); outline-offset:3px;}
+.cx-add:disabled{opacity:.5; cursor:not-allowed; filter:saturate(.4); box-shadow:none;}
+/* atalho no fim do cartão aberto quando ele não é o último da lista (aciona o #cxAdd) */
+.cx-amb-mais{display:flex; align-items:center; gap:8px; min-height:44px; margin:2px 0 8px; padding:0 4px; border:0; border-radius:8px; background:transparent; color:var(--gold-3); font:inherit; font-size:13px; font-weight:700; line-height:1.35; text-align:left; text-decoration:underline; text-underline-offset:3px; cursor:pointer;}
+.cx-amb-mais svg{flex:none; width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round;}
+.cx-amb-mais:hover{color:var(--gold-2);}
+.cx-amb-mais:focus{outline:none;}
+.cx-amb-mais:focus-visible{outline:2px solid var(--gold-2); outline-offset:2px;}
 
 /* ---------- painel: indicadores ---------- */
 .cx-tiles{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-bottom:22px;}
@@ -188,7 +226,7 @@
 /* ---------- painel: gráficos ---------- */
 .cx-charts{display:grid; grid-template-columns:1fr; gap:14px; margin-bottom:14px;}
 @container cxpainel (min-width:600px){ .cx-charts{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);} }
-@container cxpainel (max-width:420px){ .cx-bars .cx-bar-row{grid-template-columns:1fr; gap:4px;} .cx-bars .cx-bar-lbl{display:flex; align-items:baseline; gap:8px;} .cx-bars .cx-bar-lbl b{min-width:0;} .cx-bars .cx-bar-lbl small{flex:none;} }
+@container cxpainel (max-width:420px){ .cx-bars .cx-bar-row{grid-template-columns:1fr; gap:4px;} .cx-bars .cx-bar-lbl{display:flex; flex-wrap:wrap; align-items:center; gap:2px 10px; min-height:0;} .cx-bars .cx-bar-lbl b{min-width:0;} }
 .cx-fig{margin:0; padding:16px; border:1px solid var(--cx-hair); border-radius:12px; background:rgba(6,11,20,.32); position:relative;}
 .cx-fig-t{font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:12px; letter-spacing:.01em;}
 .cx-fig-donut{container-type:inline-size; container-name:cxdonut;}
@@ -213,15 +251,25 @@
 .cx-lg-n{font-weight:600; color:var(--ink);}
 .cx-lg-v{text-align:right; color:var(--ink-dim); font-variant-numeric:tabular-nums;}
 .cx-legend li.is-na .cx-lg-n{color:var(--ink-dim);}
+.cx-lg-s{grid-column:2 / -1; margin-top:-3px; font-size:11px; line-height:1.35; color:#a39a86; font-variant-numeric:tabular-nums;}
 .cx-legend-inline{display:flex; gap:16px; margin:-4px 0 12px;}
 .cx-legend-inline li{display:flex;}
 .k-pedra{background:var(--cx-pedra);} .k-resina{background:var(--cx-resina);}
 
 .cx-bars{display:grid; gap:12px;}
-.cx-bar-row{display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.5fr); gap:10px; align-items:center; cursor:pointer; padding:2px 0;}
-.cx-bar-lbl b{display:block; font-size:12.5px; font-weight:700; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-.cx-bar-lbl small{display:block; font-size:11px; color:#8f887a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.cx-bar-row{display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.5fr); gap:10px; align-items:center; min-height:44px; cursor:pointer; padding:2px 0;}
+/* rótulo = botão (abre o ambiente no formulário): "01 Calçada" e, embaixo, amostra da cor +
+   "pedra branca · epóxi · 20 m²" quebrando em até 2 linhas, sem reticências cortando cor e resina */
+.cx-bar-lbl{position:relative; display:grid; gap:2px; width:100%; min-height:40px; align-content:center; padding:0; border:0; border-radius:6px; background:transparent; color:inherit; font:inherit; text-align:left; cursor:pointer;}
+.cx-bar-lbl:focus{outline:none;}
+.cx-bar-lbl:focus-visible{outline:2px solid var(--gold-2); outline-offset:3px;}
+.cx-bar-lbl b{display:block; font-size:12.5px; font-weight:700; color:var(--ink); line-height:1.25; overflow-wrap:anywhere;}
+.cx-bar-lbl small{display:flex; align-items:center; gap:6px; font-size:11px; line-height:1.3; color:#a39a86;}
+.cx-bar-lbl small span{min-width:0;}
+.cx-bar-row:hover .cx-bar-lbl b{color:var(--gold-3);}
 .cx-bar-row.is-sel .cx-bar-lbl b{color:var(--water);}
+/* amostra da cor da pedra (barras, chips do resumo fixo, "Por ambiente") */
+.cx-cor-mini{flex:none; width:14px; height:14px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 1px rgba(6,11,20,.85), 0 0 0 2px rgba(239,231,214,.22);}
 .cx-bar-track{display:flex; align-items:center; min-height:24px; position:relative;}
 .cx-bar-track::before{content:''; position:absolute; left:0; top:4px; bottom:4px; width:1px; background:rgba(239,231,214,.22);}
 .cx-bar{display:flex; gap:2px; height:14px; width:calc((100% - 74px) * var(--f,0)); min-width:6px; transform-origin:left center; transition:transform .65s var(--ease-out); container:cxbar / inline-size;}
@@ -265,15 +313,26 @@
 
 /* ---------- corte ---------- */
 .cx-corte{padding-bottom:12px;}
-.cx-corte-head{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 12px; margin-bottom:10px;}
+.cx-corte-head{display:grid; gap:4px; margin-bottom:10px;}
 .cx-corte-head .cx-fig-t{margin:0;}
-.cx-tabs{display:flex; flex-wrap:wrap; gap:6px;}
-.cx-tab{min-height:44px; padding:0 12px; border:1px solid var(--cx-hair-2); border-radius:999px; background:transparent; color:var(--ink-dim); font-size:12px; font-weight:600; cursor:pointer; transition:border-color .2s, color .2s, background-color .2s;}
-.cx-tab span:first-child{font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums;}
-.cx-tab[aria-pressed="true"]{border-color:rgba(156,199,216,.6); color:var(--ink); background:rgba(156,199,216,.1);}
-.cx-corte-body{display:grid; grid-template-columns:1fr; gap:12px; align-items:center;}
-.cx-corte-svg{min-height:120px;}
-.cx-corte-svg svg{display:block; max-width:100%; height:auto;}
+.cx-corte-body{display:grid; grid-template-columns:1fr; gap:12px; align-items:start;}
+/* todos os ambientes em cartões compactos: 1 coluna; 2 quando o contêiner passa de 440 px
+   (a classe is-2col vem do calc-ui.js, que usa a mesma conta para a largura de cada desenho) */
+.cx-corte-svg{display:grid; grid-template-columns:minmax(0,1fr); gap:10px; min-height:120px; align-items:start;}
+.cx-corte-svg.is-2col{grid-template-columns:repeat(2,minmax(0,1fr));}
+.cx-corte-svg svg{display:block; width:100%; max-width:100%; height:auto;}
+.cx-corte-c{min-width:0; padding:10px; border:1px solid var(--cx-hair); border-radius:10px; background:rgba(6,11,20,.3); transition:border-color .25s, box-shadow .25s;}
+.cx-corte-c.is-sel{border-color:rgba(156,199,216,.45); box-shadow:0 0 0 1px rgba(156,199,216,.1);}
+.cx-corte-c.is-incompleto{border-style:dashed;}
+.cx-corte-l{display:flex; align-items:flex-start; gap:8px; margin:0 0 8px; font-size:12px; line-height:1.35; color:var(--ink-dim);}
+.cx-corte-n{flex:none; font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums;}
+.cx-corte-c.is-sel .cx-corte-n{color:var(--water);}
+.cx-corte-lt{display:grid; gap:1px; min-width:0;}
+.cx-corte-lt b{font-weight:700; color:var(--ink);}
+.cx-corte-lt small{font-size:11px; color:#a39a86; overflow-wrap:anywhere;}
+.cx-corte-st{display:inline-block; margin:0 0 8px; padding:3px 10px; border-radius:999px; border:1px solid rgba(198,138,46,.32); background:rgba(198,138,46,.1); font-size:11px; font-weight:700; color:#f1c7a4;}
+.cx-corte-cn{margin-top:6px; font-size:.74rem; line-height:1.45; color:var(--ink-dim);}
+.cx-corte-cn:empty{display:none;}
 .cx-cl{font-size:10.5px; font-weight:700; letter-spacing:.12em; fill:var(--ink); paint-order:stroke; stroke:rgba(6,11,20,.72); stroke-width:2.4px; stroke-linejoin:round;}
 .cx-cl-stone{fill:#fff;}
 .cx-cl-fora{font-size:10px; font-weight:500; fill:#b9b1a0; paint-order:stroke; stroke:rgba(6,11,20,.7); stroke-width:3px;}
@@ -287,11 +346,41 @@
 @keyframes cxRain{0%{transform:translateY(-8px); opacity:0;} 20%{opacity:1;} 100%{transform:translateY(24px); opacity:0;}}
 .cx-drop{animation:cxDrop 2.4s cubic-bezier(.5,0,.8,.6) infinite; animation-delay:calc(var(--i) * -.62s);}
 @keyframes cxDrop{0%{transform:translateY(0); opacity:0;} 12%{opacity:.95;} 85%{opacity:.8;} 100%{transform:translateY(var(--fall,80px)); opacity:0;}}
-.cx-corte-nota{font-size:.78rem; color:var(--ink-dim); line-height:1.45; margin-top:10px;}
+.cx-corte-nota{font-size:.78rem; color:var(--ink-dim); line-height:1.45; margin:0;}
 .cx-corte-nota:empty{display:none;}
+/* chuva e gotas animadas só no corte do ambiente aberto; os outros ficam parados */
+.cx-corte-c:not(.is-sel) .cx-rain,.cx-corte-c:not(.is-sel) .cx-drop{animation:none;}
+.cx-corte-c:not(.is-sel) .cx-rain{opacity:.4;}
+.cx-corte-c:not(.is-sel) .cx-drop{opacity:.8; transform:translateY(calc(var(--fall,80px) * .45));}
+/* amostra 3D: uma célula por ambiente (a legenda é texto) e um canvas só por cima da grade inteira;
+   cada amostra é desenhada no retângulo de .cx-3d-vp da própria célula (o canvas é transparente) */
 .cx-3d{position:relative;}
-.cx-3d canvas{display:block; width:100%; aspect-ratio:4/3; min-height:220px; max-height:420px; border-radius:10px; background:radial-gradient(circle at 50% 40%, rgba(22,34,61,.9), rgba(6,11,20,.9)); border:1px solid var(--cx-hair);}
+.cx-3d-palco{position:relative;}
+.cx-3d-grid{display:grid; grid-template-columns:minmax(0,1fr); gap:10px;}
+.cx-3d-grid.is-multi{grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px;}
+@container cxpainel (min-width:720px){ .cx-3d-grid.is-multi{grid-template-columns:repeat(3,minmax(0,1fr));} }
+.cx-3d-palco > canvas{position:absolute; inset:0; display:block; width:100%; height:100%; pointer-events:none;}
+.cx-3d-c{min-width:0; display:grid; gap:6px; align-content:start; padding:8px; border:1px solid var(--cx-hair); border-radius:10px; background:rgba(6,11,20,.3); transition:border-color .25s, box-shadow .25s;}
+.cx-3d-c.is-sel{border-color:rgba(156,199,216,.45); box-shadow:0 0 0 1px rgba(156,199,216,.1);}
+.cx-3d-c.is-incompleto{border-style:dashed;}
+.cx-3d-vp{display:grid; place-items:center; width:100%; aspect-ratio:4/3; min-height:220px; max-height:420px; border-radius:8px; background:radial-gradient(circle at 50% 40%, rgba(22,34,61,.9), rgba(6,11,20,.9));}
+.cx-3d-grid.is-multi .cx-3d-vp{aspect-ratio:5/4; min-height:0; max-height:none;}
+.cx-3d-vazio{margin:0; padding:10px; font-size:11px; line-height:1.4; color:var(--ink-dim); text-align:center;}
+.cx-3d-l{display:flex; align-items:flex-start; gap:8px; margin:0; font-size:12px; line-height:1.35; color:var(--ink-dim);}
+.cx-3d-n{flex:none; font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums;}
+.cx-3d-c.is-sel .cx-3d-n{color:var(--water);}
+.cx-3d-lt{display:grid; gap:1px; min-width:0;}
+.cx-3d-lt b{font-weight:700; color:var(--ink);}
+/* na grade de 2 colunas do celular o uso quebra linha dentro da célula (nunca passa por cima da vizinha) */
+.cx-3d-grid.is-multi .cx-3d-lt .cx-nw{white-space:normal; overflow-wrap:anywhere;}
+.cx-3d-lt small{font-size:11px; color:#a39a86; overflow-wrap:anywhere;}
+.cx-3d-st{justify-self:start; margin:0; padding:3px 10px; border-radius:999px; border:1px solid rgba(198,138,46,.32); background:rgba(198,138,46,.1); font-size:11px; font-weight:700; color:#f1c7a4;}
 .cx-3d-cap{font-size:11px; color:#8f887a; margin-top:6px; text-align:center;}
+/* células estreitas (2 colunas no celular): selo do estado menor (se quebrar, fica um retângulo arredondado) */
+.cx-3d-grid.is-multi .cx-3d-st{padding:2px 8px; font-size:10.5px; border-radius:8px;}
+@media (max-width:380px){ .cx-3d-c{padding:6px;} .cx-3d-l{gap:6px; font-size:11.5px;} }
+/* no papel o canvas WebGL sai em branco: fica o corte em escala, que já mostra todos os ambientes */
+@media print{ .cx-3d{display:none !important;} }
 
 /* pausa fora da tela, com aba oculta e sem movimento */
 .cx-off .cx-rain,.cx-off .cx-drop,.cx-off .cx-live i{animation-play-state:paused;}
@@ -387,6 +476,9 @@
 .cx-mat-q strong{display:block; font-size:1.2rem; font-weight:800; color:var(--ink); line-height:1.2;}
 .cx-mat-q small{display:block; font-size:.78rem; color:var(--ink-dim); margin-top:2px; white-space:normal; max-width:210px; margin-left:auto;}
 .cx-mat-na{border-style:dashed; background:transparent;}
+/* obra mista: o total da compra (soma dos sacos por cor e dos kits por tipo) */
+.cx-mat-soma{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 14px; padding:11px 15px; border:1px solid rgba(217,174,94,.34); border-radius:11px; background:rgba(198,138,46,.07); font-size:.86rem; color:var(--ink); font-variant-numeric:tabular-nums;}
+.cx-mat-soma b{font-size:11.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-3);}
 .cx-mat-na .cx-mat-q strong{font-size:.95rem; color:var(--gold-3);}
 .cx-mat-na .cx-mat-ic svg{stroke:var(--ink-dim);}
 .cx-granel{display:inline-block; margin-top:7px; font-size:.76rem; font-weight:600; color:var(--water); padding:4px 9px; border-radius:6px; background:rgba(156,199,216,.1); border:1px solid rgba(156,199,216,.3);}
@@ -398,7 +490,17 @@
 .cx-det-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px;}
 .cx-det-c{padding:14px 15px; border:1px solid var(--cx-hair); border-radius:11px; background:rgba(6,11,20,.3);}
 .cx-det-c h5{font-size:.92rem; font-weight:700; margin:0 0 3px; text-transform:none; letter-spacing:0;}
+.cx-det-c.is-inc{border-style:dashed; background:transparent;}
+.cx-det-nome{font-size:.78rem; color:var(--ink-dim); margin:0 0 4px; overflow-wrap:anywhere;}
+/* identificação do ambiente: amostra da cor + "pedra branca" + "resina epóxi" */
+.cx-det-cr{display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; margin:2px 0 6px; font-size:.8rem; font-weight:600; color:var(--ink);}
+.cx-det-cr .cx-cor-mini{width:18px; height:18px;}
 .cx-det-m{font-size:.76rem; color:var(--ink-dim); margin-bottom:10px;}
+.cx-det-st b{color:var(--gold-3);}
+.cx-det-btn{position:relative; display:inline-flex; align-items:center; gap:7px; min-height:44px; margin-top:8px; padding:0 14px; border:1px solid rgba(217,174,94,.4); border-radius:999px; background:transparent; color:var(--gold-2); font-size:12px; font-weight:700; letter-spacing:.04em; cursor:pointer; transition:background-color .2s, border-color .2s;}
+.cx-det-btn svg{width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
+.cx-det-btn:hover{background:rgba(198,138,46,.12); border-color:var(--gold-2);}
+.cx-det-btn:focus-visible{outline:2px solid var(--gold-2); outline-offset:2px;}
 .cx-det-c dl{display:grid; gap:5px; margin:0;}
 .cx-det-c dl div{display:flex; justify-content:space-between; gap:12px; font-size:.82rem; border-top:1px solid var(--cx-hair); padding-top:5px;}
 .cx-det-c dt{color:var(--ink-dim);}
@@ -421,12 +523,31 @@
 /* ---------- resumo fixo no celular (dentro do formulário, some quando ele acaba) ---------- */
 .cx-dock{display:none;}
 @media (max-width:980px){
-  .cx-dock{position:sticky; bottom:20px; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:58px; margin:16px 0 0; padding:6px 6px 6px 14px; border:1px solid rgba(217,174,94,.38); border-radius:16px; background:rgba(8,15,28,.94); box-shadow:0 14px 36px rgba(0,0,0,.5), inset 0 1px 0 rgba(244,223,168,.06); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);}
+  .cx-dock{position:sticky; bottom:20px; z-index:5; display:grid; gap:6px; margin:16px 0 0; padding:6px; border:1px solid rgba(217,174,94,.38); border-radius:16px; background:rgba(8,15,28,.94); box-shadow:0 14px 36px rgba(0,0,0,.5), inset 0 1px 0 rgba(244,223,168,.06); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);}
+  .cx-dock-top{display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:46px; padding-left:8px;}
   .cx-dock-t{display:grid; min-width:0; line-height:1.2;}
-  .cx-dock-l{font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-dim); white-space:nowrap;}
+  .cx-dock-l{font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .cx-dock-t b{font-size:1.02rem; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .cx-dock-t b.is-longo{font-size:.92rem;}
-  .cx-dock-t small{font-size:11px; color:#a9a08c; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  /* sacos por cor e kits por tipo (ou, antes do lead, cores e resinas): largura toda, até 2 linhas */
+  .cx-dock-s{margin:-2px 0 0; padding:0 8px; font-size:11px; line-height:1.35; color:#b3aa96; overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;}
+  .cx-dock-s:empty{display:none;}
+  /* um chip por ambiente, numa linha só, com rolagem horizontal própria (a página não rola de lado) */
+  /* folga de 3 px em volta dos chips (compensada pela margem negativa, a altura não muda):
+     a faixa rola de lado e cortaria o contorno de foco, que passa 3 px para fora do chip */
+  .cx-dock-chips{position:relative; display:flex; gap:6px; margin:-3px -3px; padding:3px 3px 5px; scroll-padding-inline:3px; list-style:none; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x proximity; scrollbar-width:thin; scrollbar-color:rgba(217,174,94,.35) transparent; -webkit-overflow-scrolling:touch;}
+  .cx-dock-chips:empty{display:none;}
+  .cx-dock-chips li{flex:none; scroll-snap-align:start;}
+  .cx-dock-chip{position:relative; display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:3px 14px 3px 10px; border:1px solid var(--cx-hair-2); border-radius:12px; background:rgba(6,11,20,.55); color:var(--ink-dim); font:inherit; font-size:12px; font-weight:600; text-align:left; white-space:nowrap; cursor:pointer; transition:border-color .2s, background-color .2s, color .2s;}
+  .cx-chip-n{font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums;}
+  .cx-chip-t{display:grid; line-height:1.2;}
+  .cx-chip-t b{font-size:12px; font-weight:700; color:var(--ink);}
+  .cx-chip-t small{font-size:11px; font-weight:500; color:#b3aa96;}
+  .cx-dock-chip.is-inc .cx-chip-t small{color:#f1c7a4;}
+  .cx-dock-chip.is-sel{border-color:rgba(156,199,216,.7); background:rgba(156,199,216,.14);}
+  .cx-dock-chip.is-sel .cx-chip-n{color:var(--water);}
+  .cx-dock-chip:focus{outline:none;}
+  .cx-dock-chip:focus-visible{outline:2px solid var(--gold-2); outline-offset:1px;}
   .cx-dock-btn{flex:none; display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:0 12px; border:0; border-radius:11px; background:linear-gradient(180deg, var(--gold-2), var(--gold)); color:#1a1206; font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; cursor:pointer;}
   .cx-dock-btn svg{width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
   .cx-dock-btn:focus-visible{outline:2px solid var(--gold-3); outline-offset:2px;}
@@ -435,7 +556,7 @@
    Enquanto ele aparece, <html> leva .cx-dock-on e a página esconde o botão flutuante do WhatsApp. */
 @media (max-width:560px){ .cx-dock-btn{font-size:11.5px; letter-spacing:.04em;} }
 /* telas bem estreitas: "Ver números" quebra em duas linhas para a área caber inteira, com a unidade */
-@media (max-width:359px){ .cx-dock{gap:8px; padding-left:12px;} .cx-dock-btn{max-width:104px; padding:0 10px; line-height:1.1; text-align:left; white-space:normal;} }
+@media (max-width:359px){ .cx-dock-top{gap:8px; padding-left:6px;} .cx-dock-s{-webkit-line-clamp:3;} .cx-dock-btn{max-width:104px; padding:0 10px; line-height:1.1; text-align:left; white-space:normal;} }
 
 /* ---------- responsivo ---------- */
 @media (max-width:900px){
@@ -459,6 +580,19 @@
 @media (max-width:380px){
   .cx-usos,.cx-perfis{grid-template-columns:1fr 1fr;}
   .cx-opt > span{padding:9px 10px;}
+  /* 5 cores dentro do cartão: em 320 px sobram uns 47 px por coluna */
+  .cx-cores{gap:5px;}
+  .cx-cor > span{padding:7px 2px 6px;}
+  .cx-cor em{font-size:9px; letter-spacing:.02em;}
+  .cx-cor img{width:30px; height:30px;}
+  .cx-amb-linha{gap:4px 10px; padding-left:12px;}
+  .cx-amb-led{padding:0 10px;}
+}
+@media (max-width:359px){
+  /* em 320 px as 5 cores ficavam com 41,6 px de largura: menos vão e 3 px de cada lado do cartão
+     garantem o alvo de 44 px */
+  .cx-cores{gap:2px; margin-inline:-3px;}
+  .cx-cor{min-width:44px;}
 }
 
 /* ---------- impressão da página inteira (Ctrl+P, sem a classe) ----------
@@ -470,15 +604,19 @@
   #calculadora{background:#fff !important; color:#111 !important;}
   #calculadora::before,#calculadora::after{display:none !important;}
   .cx,.cx *{text-shadow:none !important; box-shadow:none !important;}
-  .cx-obra,.cx-painel,.cx-lead,.cx-result,.cx-amb,.cx-tile,.cx-fig,.cx-opt > span,.cx-cor > span,.cx-toggle,.cx-inp,.cx-lock,.cx-lock-row,.cx-priv,
-  .cx-base-nota,.cx-amb-estado,.cx-add,.cx-mat,.cx-mat-ic,.cx-recom,.cx-det-c,.cx-aviso,.cx-aviso-curto,.cx-granel,.cx-tip,.cx-3d canvas{background:#fff !important;}
+  .cx-obra,.cx-painel,.cx-lead,.cx-result,.cx-amb,.cx-amb-linha,.cx-tile,.cx-fig,.cx-opt > span,.cx-cor > span,.cx-toggle,.cx-inp,.cx-lock,.cx-lock-row,.cx-priv,
+  .cx-base-nota,.cx-amb-estado,.cx-add,.cx-mat,.cx-mat-ic,.cx-recom,.cx-det-c,.cx-aviso,.cx-aviso-curto,.cx-granel,.cx-tip,.cx-corte-c,.cx-mat-soma,.cx-corte-st{background:#fff !important;}
   .cx-opt input:checked + span{background:#f3efe6 !important;}
-  .cx-toggle button[aria-pressed="true"],.cx-tab[aria-pressed="true"]{background:#ece6d8 !important;}
+  .cx-toggle button[aria-pressed="true"]{background:#ece6d8 !important;}
   .cx-painel{position:static; max-height:none; overflow:visible;}
   .cx-painel::after,.cx-tile::after,.cx-dock,.cx-tip{display:none !important;}
   .cx-amb-nome::placeholder,.cx-inp::placeholder{color:#6b6b6b;}
-  .cx-opt input:checked + span small,.cx-base-nota,.cx-aviso,.cx-dock-t small{color:#333;}
-  .cx-tile-s,.cx-bar-lbl small,.cx-range-ends,.cx-det-nota,.cx-3d-cap{color:#555;}
+  .cx-opt input:checked + span small,.cx-base-nota,.cx-aviso,.cx-dock-s{color:#333;}
+  .cx-tile-s,.cx-bar-lbl small,.cx-range-ends,.cx-det-nota,.cx-3d-cap,.cx-lg-s,.cx-corte-lt small,.cx-corte-cn,.cx-det-nome{color:#555;}
+  .cx-corte-st,.cx-det-st b,.cx-dock-chip.is-inc .cx-chip-t{color:#6e3410;}
+  .cx-det-btn{display:none !important;}
+  /* no papel, a chuva e as gotas ficam paradas em todos os cortes */
+  .cx-rain,.cx-drop{animation:none !important;}
   .cx-esp-help.is-warn{color:#6e3410;}
   /* rótulos do corte ficam sobre as camadas coloridas do desenho: seguem claros com contorno escuro */
   .cx-cl{fill:#fff; stroke:rgba(6,11,20,.75);}
@@ -490,8 +628,12 @@
   .cx{--cx-resina:#3A2A0E;}
   .cx-aviso-curto svg{stroke:#555;}
   .cx-undo{display:none !important;}
+  .cx-amb-led{display:none !important;}
+  .cx-amb.is-abrindo .cx-amb-corpo{animation:none !important;}
   /* nada de figura, indicador ou cartão partido entre duas folhas */
-  .cx-fig,.cx-tile,.cx-det-c,.cx-mat,.cx-amb,.cx-recom,.cx-aviso,.cx-quim,.cx-aviso-curto,.cx-lock,.cx-priv,.cx-legend li,.cx-bar-row{break-inside:avoid; page-break-inside:avoid;}
+  .cx-tile,.cx-det-c,.cx-mat,.cx-mat-soma,.cx-amb,.cx-amb-linha,.cx-recom,.cx-aviso,.cx-quim,.cx-aviso-curto,.cx-lock,.cx-priv,.cx-legend li,.cx-bar-row,.cx-corte-c{break-inside:avoid; page-break-inside:avoid;}
+  /* a figura do corte com 8 ambientes passa de uma folha: ela pode quebrar entre os cartões, as outras não */
+  .cx-fig:not(.cx-corte){break-inside:avoid; page-break-inside:avoid;}
 }
 
 /* ---------- impressão pelo botão: só o resultado, em papel branco ---------- */
@@ -513,14 +655,19 @@
   html.cx-printing .cx-print-head{display:block; font-size:11pt; padding-bottom:6pt; margin-bottom:10pt; border-bottom:1pt solid #999;}
   html.cx-printing .cx-res-head{border-color:#bbb;}
   html.cx-printing .cx-res-head .eyebrow::before{background:#111;}
-  html.cx-printing .cx-aviso-curto,html.cx-printing .cx-mat,html.cx-printing .cx-recom,html.cx-printing .cx-det-c,html.cx-printing .cx-quim,html.cx-printing .cx-granel{background:#fff !important; border-color:#999 !important;}
+  html.cx-printing .cx-aviso-curto,html.cx-printing .cx-mat,html.cx-printing .cx-mat-soma,html.cx-printing .cx-recom,html.cx-printing .cx-det-c,html.cx-printing .cx-quim,html.cx-printing .cx-granel{background:#fff !important; border-color:#999 !important;}
+  html.cx-printing .cx-det-c.is-inc{border-style:dashed;}
+  html.cx-printing .cx-det-btn{display:none !important;}
+  html.cx-printing .cx-cor-mini{box-shadow:0 0 0 1px #999 !important;}
   html.cx-printing .cx-aviso{background:#f4f1ea !important; border-left-color:#8a6a2a !important;}
   html.cx-printing .cx-mat-ic{background:#fff !important; border-color:#bbb !important;}
   html.cx-printing .cx-mat-ic svg,html.cx-printing .cx-aviso-curto svg{stroke:#555 !important;}
   html.cx-printing .cx-quim::before{border-color:#555; color:#555 !important;}
   html.cx-printing .cx-acts,html.cx-printing .cx-acts-st,html.cx-printing .cx-envio{display:none !important;}
-  html.cx-printing .cx-mat,html.cx-printing .cx-det-c,html.cx-printing .cx-aviso{break-inside:avoid;}
-  html.cx-printing .cx-res-grid{grid-template-columns:1.4fr 1fr;}
+  html.cx-printing .cx-mat,html.cx-printing .cx-mat-soma,html.cx-printing .cx-det-c,html.cx-printing .cx-aviso{break-inside:avoid; page-break-inside:avoid;}
+  /* lista de materiais na largura da folha (com uma linha por cor e por tipo, a coluna estreita
+     espremia o nome do material); os recomendados vêm logo abaixo */
+  html.cx-printing .cx-res-grid{grid-template-columns:1fr;}
   html.cx-printing .pending{border:0;}
 }
 
@@ -533,3 +680,6 @@
 .cx-refs thead th{color:var(--ink-dim); font-weight:600;}
 .cx-refs tbody th{color:var(--ink); font-weight:600;}
 .cx-refs .note{margin-top:10px;}
+
+/* item de identificação que não quebra por dentro ("pedra cinza ·", "20 mm"): a linha só quebra entre itens */
+.cx-nw{white-space:nowrap;}

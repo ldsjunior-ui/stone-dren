@@ -2,7 +2,12 @@
  *
  * Roda no navegador (window.StoneDrenCalc) e no Node (module.exports), para os
  * testes em tests/calc.test.js. Nenhuma função daqui mexe na página: recebe a
- * obra (ambientes + resina + cor) e devolve números, estados nomeados e textos.
+ * obra (ambientes, cada um com a própria resina e a própria cor de pedra; a
+ * resina e a cor da obra valem só como padrão para o ambiente que não trouxer
+ * as suas) e devolve números, estados nomeados e textos.
+ *
+ * Embalagens: o saco de pedra arredonda por cor (não se mistura cor num saco) e
+ * o kit de resina por tipo; brita e malha arredondam pela obra toda.
  *
  * Todos os coeficientes moram em TABELA, versionada. A versão 2026-09 é
  * PROVISÓRIA: os valores são referências de mercado até a Stone Dren confirmar
@@ -107,6 +112,27 @@
   };
 
   var EPS = 1e-9;
+
+  // Busca segura por chave vinda de fora (página, servidor, estado salvo): só chaves próprias
+  // da tabela, em texto. "toString", "constructor", "__proto__" e "valueOf" não passam.
+  function temChave(obj, k) {
+    return obj != null && typeof k === "string" && Object.prototype.hasOwnProperty.call(obj, k);
+  }
+  // Kit de referência de cada tipo de resina (hoje um só para os dois tipos).
+  function kitKgDe(tipo) {
+    var t = temChave(TABELA.resina.tipos, tipo) ? TABELA.resina.tipos[tipo] : null;
+    return t && typeof t.kitKg === "number" && t.kitKg > 0 ? t.kitKg : TABELA.resina.kitKg;
+  }
+  // Ordem canônica dos grupos: a ordem das chaves em TABELA (estável quando a pessoa troca a cor).
+  var ORDEM_CORES = Object.keys(TABELA.cores);
+  var ORDEM_RESINAS = Object.keys(TABELA.resina.tipos);
+  function resinaDe(v, padrao) {
+    return temChave(TABELA.resina.tipos, v) ? v : (temChave(TABELA.resina.tipos, padrao) ? padrao : "epoxi");
+  }
+  function corDe(v, padrao) {
+    return temChave(TABELA.cores, v) ? v : (temChave(TABELA.cores, padrao) ? padrao : "branca");
+  }
+
   function ceilPack(kg, packKg) { return Math.ceil(kg / packKg - EPS); }
   function r2(n) { return Math.round(n * 100) / 100; }
   // Tira o ruído de ponto flutuante antes de arredondar: 18 x 0,15 x 1,15 dá 3,1049999999999995
@@ -178,7 +204,7 @@
 
   /* ---------- perfis ---------- */
 
-  function perfil(uso) { return TABELA.perfis[uso] || null; }
+  function perfil(uso) { return temChave(TABELA.perfis, uso) ? TABELA.perfis[uso] : null; }
 
   function graoRotulo(p) {
     return p.graoMinMm ? "de " + p.graoMinMm + " a " + p.graoMaxMm + " mm" : "até " + p.graoMaxMm + " mm";
@@ -260,14 +286,22 @@
 
   /* ---------- cálculo de um ambiente ---------- */
 
-  // opts: { resina: "epoxi" | "pu" }
+  // opts: { resina: "epoxi" | "pu", cor: "branca" | ... } = só o PADRÃO da obra.
+  // A resina e a cor do próprio ambiente (amb.resina, amb.cor), se válidas, vencem.
+  // A cor não muda nenhuma conta: identifica o ambiente e agrupa os sacos de pedra.
   function calcularAmbiente(amb, opts) {
     amb = amb || {};
     opts = opts || {};
-    var resinaTipo = TABELA.resina.tipos[opts.resina] ? opts.resina : "epoxi";
+    var resinaTipo = resinaDe(amb.resina, opts.resina);
+    var cor = corDe(amb.cor, opts.cor);
+    var tipoR = TABELA.resina.tipos[resinaTipo];
     var p = perfil(amb.uso);
     var v = validarAmbiente(amb);
-    var base = { id: amb.id != null ? amb.id : null, nome: String(amb.nome || "").trim(), uso: amb.uso };
+    var base = {
+      id: amb.id != null ? amb.id : null, nome: String(amb.nome || "").trim(), uso: amb.uso,
+      resinaTipo: resinaTipo, resinaRotulo: tipoR.rotulo, resinaCurto: tipoR.curto,
+      cor: cor, corRotulo: TABELA.cores[cor]
+    };
     if (!v.ok) {
       base.estado = "incompleto";
       base.erros = v.erros;
@@ -276,7 +310,7 @@
 
     var area = v.areaM2;
     var lim = espessuraLimites(amb.uso);
-    var baseId = amb.base === "solo" || amb.base === "contrapiso" || amb.base === "brita" ? amb.base : "contrapiso";
+    var baseId = temChave(TABELA.bases, amb.base) ? amb.base : "contrapiso";
     var baseForcada = false, motivoBase = "";
     if (!p.bases[baseId] && !(p.consulte && p.consulte[baseId])) {
       motivoBase = (p.baseBloqueada && p.baseBloqueada[baseId]) || "Base não disponível para este uso.";
@@ -307,7 +341,8 @@
       abaixoDoMinimo: esp < lim.minimoMm,
       espessuraAjustada: espAjustada,
       graoMaxMm: p.graoMaxMm, graoMinMm: p.graoMinMm, graoRotulo: graoRotulo(p),
-      resinaTipo: resinaTipo,
+      resinaTipo: resinaTipo, resinaRotulo: base.resinaRotulo, resinaCurto: base.resinaCurto,
+      cor: cor, corRotulo: base.corRotulo,
       pedra: null, resina: null, brita: null, laje: null, malha: null,
       caimentoPct: p.bases[baseId] && p.bases[baseId].caimentoPct || null,
       camadas: []
@@ -330,14 +365,16 @@
     var pedraKg = limpo(pedraSemPerda * (1 + T.pedra.perda));
     r.pedra = {
       kg: pedraKg, kgSemPerda: pedraSemPerda, perdaPct: T.pedra.perda * 100,
-      sacos: ceilPack(pedraKg, T.pedra.sacoKg), sacoKg: T.pedra.sacoKg, sacoProvisorio: T.pedra.sacoProvisorio
+      sacos: ceilPack(pedraKg, T.pedra.sacoKg), sacoKg: T.pedra.sacoKg, sacoProvisorio: T.pedra.sacoProvisorio,
+      cor: cor, corRotulo: base.corRotulo
     };
 
     var pct = p.resinaPct[resinaTipo];
     var resinaKg = limpo(pedraKg * pct);
+    var kitKg = kitKgDe(resinaTipo);
     r.resina = {
-      tipo: resinaTipo, rotulo: T.resina.tipos[resinaTipo].rotulo, curto: T.resina.tipos[resinaTipo].curto, pct: pct,
-      kg: resinaKg, kits: ceilPack(resinaKg, T.resina.kitKg), kitKg: T.resina.kitKg, kitProvisorio: T.resina.kitProvisorio
+      tipo: resinaTipo, rotulo: tipoR.rotulo, curto: tipoR.curto, pct: pct,
+      kg: resinaKg, kits: ceilPack(resinaKg, kitKg), kitKg: kitKg, kitProvisorio: T.resina.kitProvisorio
     };
 
     var cfgBase = p.bases[baseId] || {};
@@ -375,15 +412,37 @@
 
   /* ---------- a obra inteira ---------- */
 
-  // obra: { ambientes:[...], resina, cor }
+  // Chave do grupo de compra da pedra. Hoje só a cor; numa função só para um dia poder ser
+  // cor + granulometria, se a Stone Dren vender grãos diferentes em produtos diferentes.
+  function chaveGrupoPedra(a) { return a.cor; }
+  function ordemCor(a) { return ORDEM_CORES.indexOf(a.cor); }
+  function ordemResina(a) { return ORDEM_RESINAS.indexOf(a.resinaTipo); }
+
+  // Agrupa os ambientes calculados ("ok") por chave, na ordem canônica da TABELA.
+  // ambientes = índices em r.ambientes (contando os incompletos, como a numeração da tela).
+  function agrupar(res, chaveDe, ordemDe) {
+    var mapa = Object.create(null), lista = [];
+    res.forEach(function (a, i) {
+      if (a.estado !== "ok") return;
+      var k = chaveDe(a);
+      if (!temChave(mapa, k)) { mapa[k] = { primeiro: a, itens: [], ambientes: [] }; lista.push(mapa[k]); }
+      mapa[k].itens.push(a);
+      mapa[k].ambientes.push(i);
+    });
+    return lista.sort(function (x, y) { return (ordemDe(x.primeiro) - ordemDe(y.primeiro)) || (x.ambientes[0] - y.ambientes[0]); });
+  }
+  function somaDe(itens, f) { return limpo(itens.reduce(function (s, a) { return s + f(a); }, 0)); }
+
+  // obra: { ambientes:[{ ..., resina?, cor? }], resina?, cor? } (resina e cor da obra = padrão)
   function calcularObra(obra) {
     obra = obra || {};
-    var resina = TABELA.resina.tipos[obra.resina] ? obra.resina : "epoxi";
-    var cor = TABELA.cores[obra.cor] ? obra.cor : "branca";
-    var lista = (obra.ambientes || []).slice(0, TABELA.limites.ambientesMax);
-    var res = lista.map(function (a) { return calcularAmbiente(a, { resina: resina }); });
+    var padrao = { resina: resinaDe(obra.resina), cor: corDe(obra.cor) };
+    var lista = (Array.isArray(obra.ambientes) ? obra.ambientes : []).slice(0, TABELA.limites.ambientesMax);
+    var res = lista.map(function (a) { return calcularAmbiente(a, padrao); });
     var ok = res.filter(function (a) { return a.estado === "ok"; });
     var consulte = res.filter(function (a) { return a.estado === "consulte"; });
+    var porCor = agrupar(res, function (a) { return a.cor; }, ordemCor);
+    var porResina = agrupar(res, function (a) { return a.resinaTipo; }, ordemResina);
 
     var tot = null;
     if (ok.length) {
@@ -399,11 +458,35 @@
         if (a.aConfirmar) aConfirmar = true;
       });
       area = limpo(area); pedraKg = limpo(pedraKg); resinaKg = limpo(resinaKg); britaKg = limpo(britaKg); britaM3 = limpo(britaM3);
-      // A compra é da obra toda: as embalagens arredondam sobre o total.
+      // A compra é da obra toda, mas não se mistura cor num saco nem tipo de resina num kit:
+      // o saco arredonda sobre o total de CADA cor e o kit sobre o total de CADA tipo.
+      // Com um grupo só, o número é o mesmo de arredondar sobre o total da obra.
+      var gPedra = agrupar(res, chaveGrupoPedra, ordemCor).map(function (g) {
+        var kg = somaDe(g.itens, function (a) { return a.pedra.kg; });
+        return {
+          cor: g.primeiro.cor, rotulo: g.primeiro.corRotulo, kg: kg, sacos: ceilPack(kg, T.pedra.sacoKg), sacoKg: T.pedra.sacoKg,
+          areaM2: somaDe(g.itens, function (a) { return a.areaM2; }), ambientes: g.ambientes
+        };
+      });
+      var gResina = porResina.map(function (g) {
+        var tipo = g.primeiro.resinaTipo, kitKg = kitKgDe(tipo);
+        var kg = somaDe(g.itens, function (a) { return a.resina.kg; });
+        return {
+          tipo: tipo, rotulo: T.resina.tipos[tipo].rotulo, curto: T.resina.tipos[tipo].curto, kg: kg, kits: ceilPack(kg, kitKg), kitKg: kitKg,
+          areaM2: somaDe(g.itens, function (a) { return a.areaM2; }), ambientes: g.ambientes
+        };
+      });
+      var somaG = function (gs, k) { return gs.reduce(function (s, g) { return s + g[k]; }, 0); };
+      var tipoTot = gResina.length === 1 ? gResina[0].tipo : "misto";
       tot = {
         areaM2: area,
-        pedra: { kg: pedraKg, sacos: ceilPack(pedraKg, T.pedra.sacoKg), sacoKg: T.pedra.sacoKg },
-        resina: { tipo: resina, rotulo: T.resina.tipos[resina].rotulo, curto: T.resina.tipos[resina].curto, kg: resinaKg, kits: ceilPack(resinaKg, T.resina.kitKg), kitKg: T.resina.kitKg },
+        pedra: { kg: pedraKg, sacos: somaG(gPedra, "sacos"), sacoKg: T.pedra.sacoKg, grupos: gPedra },
+        resina: {
+          tipo: tipoTot,
+          rotulo: listaE(gResina.map(function (g) { return g.rotulo; })),
+          curto: listaE(gResina.map(function (g) { return g.curto; })),
+          kg: resinaKg, kits: somaG(gResina, "kits"), kitKg: kitKgDe(tipoTot), grupos: gResina
+        },
         brita: temBrita ? { kg: britaKg, m3: britaM3, sacos: ceilPack(britaKg, T.brita.sacoKg), sacoKg: T.brita.sacoKg, granel: britaM3 > T.brita.granelAcimaM3 } : null,
         malha: temMalha ? { paineis: ceilPack(malhaArea, T.malha.m2PorPainel), painelRotulo: T.malha.painelRotulo, areaM2: malhaArea } : null,
         laje: temLaje,
@@ -411,9 +494,13 @@
         massaKg: limpo(pedraKg + resinaKg + britaKg)
       };
     }
+    // Sem r.resina, r.cor e r.corRotulo únicos: cada ambiente tem os seus. As listas abaixo
+    // contam só os ambientes calculados, na ordem canônica da TABELA.
+    var cores = porCor.map(function (g) { return { cor: g.primeiro.cor, rotulo: g.primeiro.corRotulo, ambientes: g.ambientes }; });
+    var resinas = porResina.map(function (g) { return { tipo: g.primeiro.resinaTipo, rotulo: g.primeiro.resinaRotulo, curto: g.primeiro.resinaCurto, ambientes: g.ambientes }; });
     return {
       versao: TABELA.versao, tabela: TABELA.rotulo, provisorio: TABELA.provisorio,
-      resina: resina, cor: cor, corRotulo: TABELA.cores[cor],
+      cores: cores, resinas: resinas, misto: { cor: cores.length > 1, resina: resinas.length > 1 },
       ambientes: res,
       calculados: ok.length,
       consulte: consulte.length,
@@ -429,9 +516,88 @@
     return a.nome || ("Ambiente " + (i + 1));
   }
 
+  // Nome livre que vale a pena mostrar ao lado do número: some quando repete o uso ou quando
+  // tem a forma "Ambiente N" (qualquer N: "Ambiente 3" no ambiente 1 criaria dois "Ambiente 3").
+  var NOME_POSICIONAL = /^ambiente\s*\d+$/i;
+  function nomeLivreValido(a, i) {
+    var nome = String((a && a.nome) || "").trim();
+    var uso = (a && (a.usoRotulo || (perfil(a.uso) ? perfil(a.uso).rotulo : ""))) || "";
+    if (!nome || nome.toLowerCase() === String(uso).toLowerCase() || NOME_POSICIONAL.test(nome)) return "";
+    return nome;
+  }
+
   function listaE(itens) {
     if (itens.length <= 1) return itens.join("");
     return itens.slice(0, -1).join(", ") + " e " + itens[itens.length - 1];
+  }
+
+  // Número do ambiente = posição na lista + 1, contando os incompletos (igual à tela).
+  function rotuloPosicional(i) { return "Ambiente " + ((typeof i === "number" && i >= 0 ? Math.floor(i) : 0) + 1); }
+
+  // Identificação única de um ambiente, usada pela página, pelo e-mail e pelos textos.
+  // Aceita o ambiente da entrada (resina e cor em texto) ou o do resultado (resinaTipo, cor).
+  // padrao (opcional): { resina, cor } da obra, para o ambiente sem valor próprio.
+  // Nunca leva o nome livre: ele fica a cargo de quem mostra (e nunca vai para o WhatsApp).
+  function rotuloAmbiente(a, i, padrao) {
+    a = a || {};
+    padrao = padrao || {};
+    var n = (typeof i === "number" && i >= 0 ? Math.floor(i) : 0) + 1;
+    var num = n < 10 ? "0" + n : String(n);
+    var p = perfil(a.uso);
+    var uso = p ? p.rotulo : "";
+    var cor = corDe(a.cor, padrao.cor);
+    var tipo = temChave(TABELA.resina.tipos, a.resinaTipo) ? a.resinaTipo : resinaDe(a.resina, padrao.resina);
+    var corRotulo = TABELA.cores[cor];
+    var resina = TABELA.resina.tipos[tipo].curto;
+    var posicional = "Ambiente " + n;
+    return {
+      num: num, n: n, posicional: posicional, uso: uso,
+      cor: cor, corRotulo: corRotulo, resina: resina, resinaTipo: tipo,
+      curto: num + (uso ? " " + uso : ""),
+      completo: [posicional, uso, "pedra " + corRotulo.toLowerCase(), resina].filter(Boolean).join(" · ")
+    };
+  }
+
+  // Cores e resinas dos ambientes calculados: "branca", "branca e preta", "branca, palha e preta".
+  function rotuloCores(r) {
+    return listaE(((r && r.cores) || []).map(function (c) { return c.rotulo.toLowerCase(); }));
+  }
+  function rotuloResinas(r) {
+    return listaE(((r && r.resinas) || []).map(function (x) { return x.curto; }));
+  }
+  // Composição da obra numa forma só (tela, lista copiada, WhatsApp e e-mail): pedra antes da
+  // resina, como nos cartões, e no plural quando há mais de uma. sep = " · " (padrão) ou ", ".
+  // "pedra branca · resina epóxi" / "pedras branca e palha · resinas epóxi e PU"
+  function composicaoObra(r, sep) {
+    var cor = rotuloCores(r), res = rotuloResinas(r);
+    var partes = [];
+    if (cor) partes.push(((r.cores || []).length > 1 ? "pedras " : "pedra ") + cor);
+    if (res) partes.push(((r.resinas || []).length > 1 ? "resinas " : "resina ") + res);
+    return partes.join(sep == null ? " · " : sep);
+  }
+  // Contagem dos ambientes numa forma só: "3 ambientes" quando todos entram na conta e
+  // "6 de 8 ambientes calculados" quando algum ficou fora (incompleto ou a consultar), para o
+  // número bater com o "Por ambiente", que lista todos. curto = true tira o "calculados" (resumo fixo).
+  function contagemAmbientes(r, curto) {
+    var n = ((r && r.ambientes) || []).length, c = (r && r.calculados) || 0;
+    var total = n + (n === 1 ? " ambiente" : " ambientes");
+    if (!c || c === n) return total;
+    return c + " de " + total + (curto ? "" : " calculados");
+  }
+  // "ambiente 2" / "ambientes 1 e 3" (índices em r.ambientes)
+  function rotuloIndices(idx) {
+    return (idx.length === 1 ? "ambiente " : "ambientes ") + listaE(idx.map(function (i) { return String(i + 1); }));
+  }
+
+  // Estado nomeado do ambiente, nunca "0 m²": "" (calculado), "Consulte a equipe",
+  // "Área a informar" (campo vazio) ou "Confira a área" (número fora do aceito).
+  function estadoNomeado(a) {
+    if (!a || a.estado === "ok") return "";
+    if (a.estado === "consulte") return "Consulte a equipe";
+    var e = a.erros || {};
+    var msgs = ["area", "comprimento", "largura"].filter(function (k) { return temChave(e, k); }).map(function (k) { return String(e[k]); });
+    if (!msgs.length) return temChave(e, "uso") ? "Tipo de uso a escolher" : "Área a informar";
+    return msgs.some(function (m) { return /^Informe/.test(m); }) ? "Área a informar" : "Confira a área";
   }
 
   // Tipos de uso por estado: "ok" (calculados) ou "consulte" (fora do cálculo).
@@ -504,16 +670,18 @@
     }
     var ok = r.ambientes.filter(function (a) { return a.estado === "ok"; });
     var premissas = [];
-    var fim = "margem de perda de " + fmtAuto(T.pedra.perda * 100) + "% e arredondamento para embalagens inteiras (sacos de " + T.pedra.sacoKg + " kg e kits de referência).";
+    var variosGrupos = t.pedra.grupos.length > 1 || t.resina.grupos.length > 1;
+    var fim = "margem de perda de " + fmtAuto(T.pedra.perda * 100) + "% e arredondamento para embalagens inteiras" +
+      (variosGrupos ? " de cada cor de pedra e de cada tipo de resina" : "") + " (sacos de " + T.pedra.sacoKg + " kg e kits de referência).";
     if (ok.length === 1) {
       p1 += "As quantidades foram calculadas para " + fmtAuto(t.areaM2) + " m² considerando " + premissaAmbiente(ok[0]) + ", " + fim;
     } else {
       p1 += "As quantidades foram calculadas para " + fmtAuto(t.areaM2) + " m², com as premissas de cada ambiente listadas abaixo, " + fim;
       premissas = ok.map(function (a) {
+        // sempre o número da lista ("Ambiente 1"), com o nome livre depois, como na tela e na lista
         var i = r.ambientes.indexOf(a);
-        var nome = nomeAmbiente(a, i);
-        var rot = nome.toLowerCase() === a.usoRotulo.toLowerCase() ? "" : a.usoRotulo.toLowerCase() + ", ";
-        return nome + " (" + rot + fmtAuto(a.areaM2) + " m²): " + premissaAmbiente(a) + ".";
+        var nome = nomeLivreValido(a, i);
+        return rotuloPosicional(i) + (nome ? " · " + nome : "") + " (" + a.usoRotulo.toLowerCase() + ", " + fmtAuto(a.areaM2) + " m²): " + premissaAmbiente(a) + ".";
       });
     }
     if (r.consulte) p1 += " Ficaram fora do cálculo " + fraseConsulte(r) + ", que dependem de avaliação da equipe técnica.";
@@ -538,28 +706,49 @@
   }
 
   // Linhas da lista de materiais (texto puro, para copiar e para o WhatsApp).
+  // Uma linha por cor de pedra e uma por tipo de resina. Com um grupo só, o texto de sempre;
+  // com vários, cada linha diz de quais ambientes é (pelo número, nunca pelo nome livre).
   function linhasMateriais(r) {
     var t = r.totais;
     if (!t) return [];
     var L = [];
-    L.push("• Pedra " + r.corRotulo.toLowerCase() + ": " + qtd(t.pedra.sacos, "saco", "sacos") + " de " + t.pedra.sacoKg + " kg (" + fmtKg(t.pedra.kg) + ")");
-    L.push("• Resina " + t.resina.curto + ": " + qtd(t.resina.kits, "kit", "kits") + " de referência (" + fmtKg(t.resina.kg) + " de resina já misturada com o endurecedor)");
+    var gp = t.pedra.grupos, gr = t.resina.grupos;
+    gp.forEach(function (g) {
+      var quem = gp.length > 1 ? " (" + rotuloIndices(g.ambientes) + ")" : "";
+      L.push("• Pedra " + g.rotulo.toLowerCase() + quem + ": " + qtd(g.sacos, "saco", "sacos") + " de " + g.sacoKg + " kg (" + fmtKg(g.kg) + ")");
+    });
+    gr.forEach(function (g) {
+      var quem = gr.length > 1 ? " (" + rotuloIndices(g.ambientes) + ")" : "";
+      L.push("• Resina " + g.curto + quem + ": " + qtd(g.kits, "kit", "kits") + " de referência (" + fmtKg(g.kg) + " de resina já misturada com o endurecedor)");
+    });
     if (t.brita) L.push("• Brita: " + qtd(t.brita.sacos, "saco", "sacos") + " de " + t.brita.sacoKg + " kg (" + fmtKg(t.brita.kg) + ", " + fmtM3(t.brita.m3) + " de brita solta" + (t.brita.granel ? ", vale comprar a granel" : "") + ")");
     if (t.malha) L.push("• Malha POP: " + qtd(t.malha.paineis, "painel", "painéis") + " de " + t.malha.painelRotulo);
     if (t.laje) L.push("• Laje de concreto da garagem: não calculada");
     return L;
   }
 
+  // Uma linha por ambiente, SEMPRE com o número ("Ambiente 2 · "), para duas partes do mesmo
+  // uso não ficarem iguais. comNome = true (lista copiada) acrescenta o nome livre depois do
+  // número; o WhatsApp chama com false e não leva nome. Cor e resina vêm depois dos dois pontos.
+  // Por ambiente só os quilos: os sacos e kits arredondam por cor e por tipo, na lista de materiais.
+  // O ambiente incompleto também aparece, com o estado nomeado, para a numeração bater com a tela.
   function linhasAmbientes(r, comNome) {
     var L = [];
     r.ambientes.forEach(function (a, i) {
-      var titulo = comNome ? nomeAmbiente(a, i) + " · " : "";
+      var nome = comNome ? nomeLivreValido(a, i) : "";
+      var uso = a.usoRotulo || (perfil(a.uso) ? perfil(a.uso).rotulo : "");
+      var titulo = rotuloPosicional(i) + (nome ? " · " + nome : "") + " · ";
+      var ident = "pedra " + String(a.corRotulo || "").toLowerCase();
       if (a.estado === "ok") {
         L.push("- " + titulo + a.usoRotulo + ", " + fmtAuto(a.areaM2) + " m², " + a.baseRotulo.toLowerCase() + ", " + fmtMm(a.espessuraMm) + notaAbaixo(a) +
-          (a.aConfirmar ? " (consumo de referência a confirmar)" : "") + ": pedra " + fmtKg(a.pedra.kg) + ", resina " + fmtKg(a.resina.kg) +
+          (a.aConfirmar ? " (consumo de referência a confirmar)" : "") + ": " + ident + " " + fmtKg(a.pedra.kg) + ", resina " + a.resinaCurto + " " + fmtKg(a.resina.kg) +
           (a.brita ? ", brita " + fmtKg(a.brita.kg) + " (camada de " + a.brita.cm + " cm)" : "") + (a.malha ? ", malha " + qtd(a.malha.paineis, "painel", "painéis") : ""));
       } else if (a.estado === "consulte") {
-        L.push("- " + titulo + a.usoRotulo + ", " + fmtAuto(a.areaM2) + " m², " + a.baseRotulo.toLowerCase() + ": consulte a equipe técnica");
+        L.push("- " + titulo + a.usoRotulo + ", " + fmtAuto(a.areaM2) + " m², " + a.baseRotulo.toLowerCase() + ": " + ident + ", resina " + a.resinaCurto + ", consulte a equipe técnica");
+      } else {
+        // o incompleto também leva a cor e a resina escolhidas: duas calçadas sem área continuam distinguíveis
+        var idInc = a.corRotulo && a.resinaCurto ? ident + ", resina " + a.resinaCurto + ", " : "";
+        L.push("- " + titulo + (uso ? uso + ": " : "") + idInc + estadoNomeado(a).toLowerCase());
       }
     });
     return L;
@@ -599,7 +788,7 @@
       L = ["Stone Dren · estimativa de materiais", fraseConsulte(r) + " · a consultar com a equipe técnica", ""];
     } else {
       var mais = r.consulte ? " mais " + fraseConsulte(r) + " a avaliar com a equipe técnica" : "";
-      L = ["Stone Dren · estimativa de materiais", fmtAuto(t.areaM2) + " m²" + mais + " · resina " + t.resina.curto + " · pedra " + r.corRotulo.toLowerCase(), ""];
+      L = ["Stone Dren · estimativa de materiais", fmtAuto(t.areaM2) + " m²" + mais + " · " + composicaoObra(r), ""];
       L = L.concat(linhasMateriais(r));
       L.push("");
     }
@@ -614,17 +803,24 @@
 
   // Entrada crua da obra (o que a pessoa digitou), para o servidor refazer a conta com este mesmo motor.
   // Só os campos que o cálculo usa, cada um curto e em texto; nada de número pronto vindo da página.
+  // Cada ambiente leva a própria resina e cor; o topo continua com resina e cor como padrão
+  // (as do ambiente 1 quando a obra não trouxer as suas), para um motor antigo que só lê o topo.
   function entradaDaObra(obra) {
     obra = obra || {};
-    var curto = function (v, n) { return v == null ? "" : String(v).slice(0, n); };
+    // objeto ou lista vindos da rede viram vazio (String({toString:null}) lançaria erro)
+    var curto = function (v, n) { return v == null || typeof v === "object" || typeof v === "function" ? "" : String(v).slice(0, n); };
+    var lista = (Array.isArray(obra.ambientes) ? obra.ambientes : []).slice(0, TABELA.limites.ambientesMax);
+    var primeiro = lista[0] || {};
+    var padrao = function (topo, doPrimeiro) { return curto(topo != null && topo !== "" ? topo : doPrimeiro, 12); };
     return {
-      resina: curto(obra.resina, 12), cor: curto(obra.cor, 12),
-      ambientes: (obra.ambientes || []).slice(0, TABELA.limites.ambientesMax).map(function (a) {
+      resina: padrao(obra.resina, primeiro.resina), cor: padrao(obra.cor, primeiro.cor),
+      ambientes: lista.map(function (a) {
         a = a || {};
         return {
           nome: curto(a.nome, 60).trim(), uso: curto(a.uso, 16), modo: a.modo === "medidas" ? "medidas" : "area",
           area: curto(a.area, 16), comprimento: curto(a.comprimento, 16), largura: curto(a.largura, 16),
-          base: curto(a.base, 16), espessuraMm: a.espessuraMm == null ? null : curto(a.espessuraMm, 8)
+          base: curto(a.base, 16), espessuraMm: a.espessuraMm == null ? null : curto(a.espessuraMm, 8),
+          resina: curto(a.resina, 12), cor: curto(a.cor, 12)
         };
       })
     };
@@ -632,9 +828,14 @@
 
   // Payload do lead para o webhook. extra (opcional): { email, id, pagina, teste, site }.
   // Sem extra o formato é o de sempre (a página principal manda fire and forget).
+  // formato 2: resina e cor em cada ambiente (em todos os estados), listas obra.resinas e
+  // obra.cores no lugar da resina e da cor únicas, e as embalagens por cor e por tipo nos totais.
+  // Nenhum estado de tela (ambiente aberto, selecionado): o reenvio reusa o id pela assinatura.
   function montarPayload(lead, obra, r, optin, extra) {
+    var t = r.totais;
     var p = {
       origem: "calculadora-stone-dren",
+      formato: 2,
       tabela: TABELA.versao, tabelaProvisoria: TABELA.provisorio,
       lead: {
         nome: String(lead && lead.nome || ""),
@@ -644,9 +845,10 @@
       },
       optinNovidades: !!optin,
       obra: {
-        resina: r.resina, cor: r.cor,
+        resinas: (r.resinas || []).map(function (x) { return x.tipo; }),
+        cores: (r.cores || []).map(function (x) { return x.cor; }),
         ambientes: r.ambientes.map(function (a, i) {
-          var o = { nome: nomeAmbiente(a, i), uso: a.uso, estado: a.estado };
+          var o = { nome: nomeAmbiente(a, i), uso: a.uso, estado: a.estado, resina: a.resinaTipo, cor: a.cor };
           if (a.estado === "ok" || a.estado === "consulte") {
             o.areaM2 = r2(a.areaM2); o.base = a.base; o.espessuraMm = a.espessuraMm;
           }
@@ -658,14 +860,16 @@
           return o;
         })
       },
-      totais: r.totais ? {
-        areaM2: r2(r.totais.areaM2),
-        pedraKg: r2(r.totais.pedra.kg), pedraSacos: r.totais.pedra.sacos,
-        resinaKg: r2(r.totais.resina.kg), resinaKits: r.totais.resina.kits,
-        britaKg: r.totais.brita ? r2(r.totais.brita.kg) : null,
-        britaM3: r.totais.brita ? r2(r.totais.brita.m3) : null,
-        britaSacos: r.totais.brita ? r.totais.brita.sacos : null,
-        malhaPaineis: r.totais.malha ? r.totais.malha.paineis : null
+      totais: t ? {
+        areaM2: r2(t.areaM2),
+        pedraKg: r2(t.pedra.kg), pedraSacos: t.pedra.sacos,
+        resinaKg: r2(t.resina.kg), resinaKits: t.resina.kits,
+        britaKg: t.brita ? r2(t.brita.kg) : null,
+        britaM3: t.brita ? r2(t.brita.m3) : null,
+        britaSacos: t.brita ? t.brita.sacos : null,
+        malhaPaineis: t.malha ? t.malha.paineis : null,
+        pedraPorCor: t.pedra.grupos.map(function (g) { return { cor: g.cor, kg: r2(g.kg), sacos: g.sacos }; }),
+        resinaPorTipo: t.resina.grupos.map(function (g) { return { tipo: g.tipo, kg: r2(g.kg), kits: g.kits }; })
       } : null,
       enviadoEm: new Date().toISOString()
     };
@@ -696,8 +900,12 @@
     textoLista: textoLista,
     montarPayload: montarPayload,
     entradaDaObra: entradaDaObra,
-    nomeAmbiente: nomeAmbiente,
-    tiposDaObra: tiposDaObra
+    nomeAmbiente: nomeAmbiente, nomeLivreValido: nomeLivreValido,
+    tiposDaObra: tiposDaObra,
+    temChave: temChave, kitKgDe: kitKgDe,
+    rotuloAmbiente: rotuloAmbiente, rotuloPosicional: rotuloPosicional, composicaoObra: composicaoObra, contagemAmbientes: contagemAmbientes,
+    rotuloCores: rotuloCores, rotuloResinas: rotuloResinas,
+    estadoNomeado: estadoNomeado
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (root) root.StoneDrenCalc = api;

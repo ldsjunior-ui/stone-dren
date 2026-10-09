@@ -91,7 +91,9 @@
       stCon.textContent = "Conferindo.";
       bTestar.disabled = true;
       conferir(u2).then(function (j) {
-        stCon.textContent = "O envio respondeu: serviço no ar, " + (j.ligado ? "ligado" : "desligado") + (j.teste ? ", em modo de teste" : "") + ".";
+        // formato 2 = código com a cor e a resina de cada ambiente; sem ele, o código publicado é antigo
+        stCon.textContent = "O envio respondeu: serviço no ar, " + (j.ligado ? "ligado" : "desligado") + (j.teste ? ", em modo de teste" : "") + "." +
+          (Number(j.formato) >= 2 ? " Código atualizado (formato 2)." : " O código publicado é antigo: cole o código desta página e publique uma nova versão.");
       }).catch(function () {
         stCon.textContent = "O envio não respondeu como esperado. Confira na implantação se \"Quem pode acessar\" está como Qualquer pessoa e se a URL termina em /exec.";
       }).then(function () { bTestar.disabled = false; });

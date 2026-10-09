@@ -153,6 +153,40 @@ export function frameWatchdog(opts) {
   };
 }
 
+/* Resolução adaptativa (a mesma do hero em scenes.js): abaixa o pixel ratio se o quadro passa do
+ * orçamento e sobe devagar se sobra folga. onChange(dpr) aplica o valor novo no renderer.
+ * limit(c): teto novo (a escada do vigia baixou o DPR); o governador não volta acima dele.
+ * set(c): teto novo e DPR já no teto (troca de modo, por exemplo de uma amostra para várias).
+ * Com window.STONE_DREN_3D.fixedDpr o valor fica fixo (testes). */
+export function dprGovernor(cap, onChange) {
+  var dpr = cap, ema = 16.7, slow = 0, fast = 0, floor = Math.min(cap, 0.75);
+  var fixed = window.STONE_DREN_3D && window.STONE_DREN_3D.fixedDpr;
+  return {
+    get dpr() { return dpr; },
+    get cap() { return cap; },
+    limit: function (c) { cap = c; floor = Math.min(cap, 0.75); if (dpr > cap) dpr = cap; },
+    set: function (c) { cap = c; floor = Math.min(cap, 0.75); dpr = c; ema = 16.7; slow = 0; fast = 0; },
+    sample: function (dtMs) {
+      if (fixed || !(dtMs > 0) || dtMs > 3000) return;
+      ema += (dtMs - ema) * 0.08;
+      if (ema > 24) { slow++; fast = 0; } else if (ema < 13) { fast++; slow = 0; } else { slow = 0; fast = 0; }
+      if (slow > 45 && dpr > floor) { dpr = Math.max(floor, dpr * 0.85); slow = 0; ema = 16.7; onChange(dpr); }
+      else if (fast > 240 && dpr < cap) { dpr = Math.min(cap, dpr * 1.08); fast = 0; onChange(dpr); }
+    }
+  };
+}
+
+/* Degrau de resolução antes de desistir (a regra da sonda do hero, scenes.js stepDown): tela retina
+ * com GPU modesta reprova no teto cheio e passa com menos pixels. Primeiro o DPR estimado para caber
+ * em alvoMs (os pixels crescem com o quadrado do DPR), depois 1x. Devolve o DPR novo, ou 0 quando não
+ * há mais degrau (já em 1x, dois degraus dados ou DPR fixo por teste). */
+export function dprStepDown(cur, medianMs, passos, alvoMs) {
+  var alvo = alvoMs || 30;
+  if (cur <= 1.01 || passos >= 2 || (window.STONE_DREN_3D && window.STONE_DREN_3D.fixedDpr)) return 0;
+  var est = passos ? 1 : cur * Math.sqrt(alvo / Math.max(medianMs || alvo, alvo));
+  return Math.max(1, Math.min(cur * 0.85, Math.round(est * 20) / 20));
+}
+
 /* ---------- números aleatórios reprodutíveis ---------- */
 
 export function rng(seed) {
@@ -595,30 +629,49 @@ export async function bakeStoneMaps(renderer, opts) {
 
 /* Camada de pedrinhas instanciadas (casca do topo e das laterais + miolo escuro).
  * Origem do grupo = superfície de cima; a camada cresce para baixo (y negativo).
- * setHeight(h) mostra só as fileiras laterais que cabem na espessura; setColors troca a paleta. */
-export function pebbleSlab(opts) {
-  var w = opts.w, d = opts.d, maxH = opts.maxH, sp = opts.spacing, size = opts.size;
-  var group = new THREE.Group();
-  // a casca entra um pouco nas laterais: a face externa das pedrinhas fica rente ao bloco de baixo
-  var inset = size * (opts.inset == null ? 0.75 : opts.inset);
-  var box = new THREE.Box3(new THREE.Vector3(-w / 2 + inset, 0, -d / 2 + inset), new THREE.Vector3(w / 2 - inset, maxH, d / 2 - inset));
-  var pts = shellPoints(box, sp, opts.seed || 1, { layers: 2 });
-  var geos = opts.geos;
-  var core = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ color: opts.core || 0x1a130c, roughness: 0.9 }));
-  core.receiveShadow = true;
-  group.add(core);
-  var buckets = geos.map(function () { return []; });
+ * setHeight(h) mostra só as fileiras laterais que cabem na espessura; setColors troca a paleta.
+ * Opcionais (a amostra da calculadora usa; o hero e o corte explodido não):
+ *   reuse: true  os pontos da casca (e a ordem) ficam guardados e são reaproveitados por outra camada
+ *                com os mesmos parâmetros, sem refazer os milhares de pontos e rotações;
+ *   trim: true   as pedrinhas ficam em ordem de profundidade e mesh.count desenha só as que aparecem
+ *                na espessura atual (as de escala zero nem passam pela GPU). O desenho é o mesmo. */
+var slabCache = new Map();
+function slabBuckets(opts, box, inset) {
+  var maxH = opts.maxH, size = opts.size, n = opts.geos.length;
+  var key = opts.reuse ? [opts.w, opts.d, maxH, opts.spacing, size, opts.seed || 1, inset, !!opts.flatTop, n, !!opts.trim].join("|") : "";
+  if (key && slabCache.has(key)) return slabCache.get(key);
+  var pts = shellPoints(box, opts.spacing, opts.seed || 1, { layers: 2 });
+  var buckets = [];
+  for (var b = 0; b < n; b++) buckets.push([]);
   pts.forEach(function (p, i) {
     p.s = size * (0.72 + p.u * 0.6);
     p.top = p.ny > 0;
     p.dep = maxH - p.y;
     p.ci = Math.floor(p.u * 997 + p.v * 131);
     p.bright = 0.85 + p.w * 0.3;
+    // visível quando a espessura passa desta marca (a mesma conta de setHeight: k > 0)
+    p.vis = p.top ? -Infinity : p.dep - p.s * 0.6;
     p.q = new THREE.Quaternion().setFromEuler(p.top && opts.flatTop
       ? new THREE.Euler((p.v - 0.5) * 0.5, p.w * 6.28, (p.u - 0.5) * 0.5)
       : new THREE.Euler(p.v * 6.28, p.w * 6.28, p.u * 6.28));
-    buckets[i % geos.length].push(p);
+    buckets[i % n].push(p);
   });
+  if (opts.trim) buckets.forEach(function (list) { list.sort(function (a, c) { return a.vis - c.vis; }); });
+  if (key) slabCache.set(key, buckets);
+  return buckets;
+}
+export function pebbleSlab(opts) {
+  var w = opts.w, d = opts.d, maxH = opts.maxH, sp = opts.spacing, size = opts.size;
+  var group = new THREE.Group();
+  // a casca entra um pouco nas laterais: a face externa das pedrinhas fica rente ao bloco de baixo
+  var inset = size * (opts.inset == null ? 0.75 : opts.inset);
+  var box = new THREE.Box3(new THREE.Vector3(-w / 2 + inset, 0, -d / 2 + inset), new THREE.Vector3(w / 2 - inset, maxH, d / 2 - inset));
+  var geos = opts.geos;
+  var trim = !!opts.trim;
+  var core = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ color: opts.core || 0x1a130c, roughness: 0.9 }));
+  core.receiveShadow = true;
+  group.add(core);
+  var buckets = slabBuckets(opts, box, inset);
   var meshes = buckets.map(function (list, gi) {
     var m = new THREE.InstancedMesh(geos[gi], opts.mat, list.length);
     m.userData.list = list;
@@ -635,7 +688,15 @@ export function pebbleSlab(opts) {
     if (Math.abs(h - lastH) < 1e-5) return;
     lastH = h;
     meshes.forEach(function (m) {
-      m.userData.list.forEach(function (p, i) {
+      var list = m.userData.list;
+      if (trim) {
+        // em ordem de profundidade: as que aparecem vêm primeiro e o resto nem é desenhado
+        var c = 0;
+        while (c < list.length && list[c].vis < h) c++;
+        m.count = c;
+      }
+      list.forEach(function (p, i) {
+        if (trim && i >= m.count) return;
         var s = p.s, k = 1;
         ps.set(p.x, 0, p.z);
         if (p.top) {

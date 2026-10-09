@@ -65,44 +65,87 @@
       '</td></tr>';
   }
 
+  function listaE(itens) {
+    if (itens.length <= 1) return itens.join("");
+    return itens.slice(0, -1).join(", ") + " e " + itens[itens.length - 1];
+  }
+  // "Para o Ambiente 2" / "Para os Ambientes 1 e 3": índices em r.ambientes, a mesma numeração
+  // da tela e do "Por ambiente" (conta os incompletos). Nunca o nome livre.
+  function paraAmbientes(idx) {
+    var nums = (idx || []).map(function (i) { return String(i + 1); });
+    if (!nums.length) return "";
+    return nums.length === 1 ? "Para o Ambiente " + nums[0] + ". " : "Para os Ambientes " + listaE(nums) + ". ";
+  }
+  // Composição da obra, na mesma forma da tela e da lista copiada (C.composicaoObra):
+  // "pedra branca · resina epóxi" ou, mista, "pedras branca e palha · resinas epóxi e PU"
+  function composicao(C, r) {
+    var c = C.composicaoObra(r);
+    return c ? " · " + c : "";
+  }
+
+  // Uma linha por cor de pedra e uma por tipo de resina (o saco não mistura cor e o kit não
+  // mistura tipo). Com um grupo só, a linha de sempre; com vários, cada uma diz para quais ambientes é.
   function tabelaMateriais(C, r) {
     var t = r.totais, T = C.TABELA;
     var h = "";
     if (t) {
-      var cor = r.corRotulo.toLowerCase();
-      h += linhaMaterial("Pedra natural " + cor, "Sacos de " + t.pedra.sacoKg + " kg (peso do saco a confirmar), perda de " + C.fmtAuto(T.pedra.perda * 100) + "% incluída", C.qtd(t.pedra.sacos, "saco", "sacos"), C.fmtKg(t.pedra.kg));
-      h += linhaMaterial("Resina " + t.resina.curto + " com endurecedor", cap(T.resina.kitPremissa) + ".", C.qtd(t.resina.kits, "kit", "kits"), C.fmtKg(t.resina.kg) + " misturada");
+      var gp = t.pedra.grupos || [], gr = t.resina.grupos || [];
+      var detPedra = "Sacos de " + t.pedra.sacoKg + " kg (peso do saco a confirmar), perda de " + C.fmtAuto(T.pedra.perda * 100) + "% incluída";
+      gp.forEach(function (g) {
+        h += linhaMaterial("Pedra natural " + String(g.rotulo || "").toLowerCase(), (gp.length > 1 ? paraAmbientes(g.ambientes) : "") + detPedra, C.qtd(g.sacos, "saco", "sacos"), C.fmtKg(g.kg));
+      });
+      gr.forEach(function (g) {
+        h += linhaMaterial("Resina " + g.curto + " com endurecedor", (gr.length > 1 ? paraAmbientes(g.ambientes) : "") + cap(T.resina.kitPremissa) + ".", C.qtd(g.kits, "kit", "kits"), C.fmtKg(g.kg) + " misturada");
+      });
       if (t.brita) h += linhaMaterial("Brita para a base", "Base sobre solo, sacos de " + t.brita.sacoKg + " kg" + (t.brita.granel ? ". Acima de " + T.brita.granelAcimaM3 + " m³, vale comprar a granel" : ""), C.qtd(t.brita.sacos, "saco", "sacos"), C.fmtKg(t.brita.kg) + " · " + C.fmtM3(t.brita.m3));
       if (t.malha) h += linhaMaterial("Malha POP " + t.malha.painelRotulo, cap(T.malha.premissa) + ".", C.qtd(t.malha.paineis, "painel", "painéis"), "para " + C.fmtAuto(t.malha.areaM2) + " m² de laje");
       if (t.laje) h += linhaMaterial("Laje de concreto armado de " + T.laje.cm + " cm", "Garagem sobre solo. O concreto depende do projeto da base", "Não calculada", "consulte a equipe técnica");
     }
-    if (r.consulte) h += linhaMaterial("Ambientes a consultar", "Garagem direto sobre brita não entra nesta versão do cálculo. A equipe técnica indica a base e as quantidades", "Consulte a equipe", C.fmtAuto(r.areaConsulteM2) + " m² fora do cálculo");
+    var idxConsulte = [];
+    (r.ambientes || []).forEach(function (a, i) { if (a.estado === "consulte") idxConsulte.push(i); });
+    if (r.consulte) h += linhaMaterial("Ambientes a consultar", ((r.ambientes || []).length > 1 ? paraAmbientes(idxConsulte) : "") + "Garagem direto sobre brita não entra nesta versão do cálculo. A equipe técnica indica a base e as quantidades", "Consulte a equipe", C.fmtAuto(r.areaConsulteM2) + " m² fora do cálculo");
     return '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">' + h + '</table>';
   }
 
+  // Cada ambiente na posição da lista, contando os incompletos (a numeração bate com a tela,
+  // com o WhatsApp e com o "Para os Ambientes" da lista de materiais). Título pelo rotuloAmbiente
+  // do motor ("Ambiente 1 · Calçada"); o nome livre, se houver, vem numa 2ª linha (só na cópia do
+  // comercial: no e-mail da pessoa ele já chega apagado). Por ambiente só os quilos: os sacos e os
+  // kits arredondam por cor e por tipo, na lista de materiais.
   function porAmbiente(C, r) {
     var itens = [];
     r.ambientes.forEach(function (a, i) {
-      if (a.estado === "incompleto") return;
-      var nome = C.nomeAmbiente(a, i);
-      var meta = a.usoRotulo + " · " + a.baseRotulo.toLowerCase() + " · " + C.fmtAuto(a.areaM2) + " m² · " + C.fmtMm(a.espessuraMm);
-      var det;
+      var rot = C.rotuloAmbiente(a, i);
+      var cab = rot.posicional + (rot.uso ? " · " + rot.uso : "");
+      var nome = C.nomeLivreValido(a, i);
+      var ident = "pedra " + rot.corRotulo.toLowerCase() + " · resina " + rot.resina;
+      var meta, det;
+      if (a.estado === "ok" || a.estado === "consulte") {
+        meta = ident + " · " + a.baseRotulo.toLowerCase() + " · " + C.fmtAuto(a.areaM2) + " m² · " + C.fmtMm(a.espessuraMm);
+      } else {
+        meta = ident;
+      }
       if (a.estado === "consulte") det = a.motivo;
-      else {
-        det = "Pedra " + C.fmtKg(a.pedra.kg) + " (" + C.qtd(a.pedra.sacos, "saco", "sacos") + "), resina " + C.fmtKg(a.resina.kg) +
+      else if (a.estado === "ok") {
+        det = "Pedra " + C.fmtKg(a.pedra.kg) + ", resina " + C.fmtKg(a.resina.kg) +
           (a.brita ? ", brita " + C.fmtKg(a.brita.kg) + " em camada de " + a.brita.cm + " cm" : "") +
           (a.malha ? ", malha " + C.qtd(a.malha.paineis, "painel", "painéis") : "") +
           (a.laje ? ", laje de " + C.TABELA.laje.cm + " cm não calculada" : "") + "." +
           (a.abaixoDoMinimo ? " Espessura abaixo da referência de " + a.espessuraMinimaMm + " mm." : "") +
           (a.aConfirmar ? " Consumo de referência a confirmar." : "");
+      } else {
+        det = C.estadoNomeado(a) + ". Este ambiente ficou fora da conta.";
       }
       itens.push('<tr><td style="padding:10px 0;border-top:1px solid ' + COR.linha + ';font-family:' + FONTE + ';">' +
-        '<b style="display:block;font-size:14px;color:' + COR.texto + ';">' + e(nome) + '</b>' +
+        '<b style="display:block;font-size:14px;color:' + COR.texto + ';">' + e(cab) + '</b>' +
+        (nome ? '<span style="display:block;font-size:13px;color:' + COR.texto + ';margin:1px 0 0;">' + e(nome) + '</span>' : '') +
         '<span style="display:block;font-size:12px;color:' + COR.suave + ';margin:2px 0 4px;">' + e(meta) + '</span>' +
         '<span style="display:block;font-size:13px;line-height:1.5;color:' + COR.texto + ';">' + e(det) + '</span></td></tr>');
     });
     if (!itens.length) return "";
-    return titulo("Por ambiente") + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">' + itens.join("") + '</table>';
+    var nota = r.calculados > 1 ? '<p style="margin:8px 0 0;font-family:' + FONTE + ';font-size:12px;line-height:1.5;color:' + COR.suave + ';">' +
+      e("Na lista de materiais, as embalagens são arredondadas por cor de pedra e por tipo de resina. Por ambiente aparecem só os quilos.") + '</p>' : "";
+    return titulo("Por ambiente") + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">' + itens.join("") + '</table>' + nota;
   }
 
   function blocoAviso(C, r) {
@@ -171,13 +214,16 @@
    * calculadora para mandar um texto próprio a terceiros pela conta da Stone Dren. Os nomes
    * seguem só na cópia do comercial. */
 
-  function semTextoLivre(r) {
+  // Tira o nome de cada ambiente e o tipo de uso que não está na lista (um ambiente incompleto
+  // guarda o uso do jeito que chegou; o motor nunca o mostra, e aqui ele nem chega ao modelo).
+  function semTextoLivre(r, C) {
     var c = {};
     for (var k in r) if (Object.prototype.hasOwnProperty.call(r, k)) c[k] = r[k];
     c.ambientes = (r.ambientes || []).map(function (a) {
       var x = {};
       for (var j in a) if (Object.prototype.hasOwnProperty.call(a, j)) x[j] = a[j];
       x.nome = "";
+      if (!C.perfil(x.uso)) x.uso = "";
       return x;
     });
     return c;
@@ -187,14 +233,15 @@
     var C = motor();
     opts = opts || {};
     lead = lead || {};
-    var r = semTextoLivre(rOriginal);
+    var r = semTextoLivre(rOriginal, C);
     var t = r.totais;
     var area = t ? C.fmtAuto(t.areaM2) + " m²" : C.fmtAuto(r.areaConsulteM2) + " m² a avaliar";
     var assunto = (opts.teste ? "[Teste] " : "") + "Seu cálculo Stone Dren: " + area;
     var wa = linkWhats(opts.whatsapp, C.mensagemWhatsApp(r));
 
+    // obra mista: as resinas e as cores distintas, nunca uma só (cada ambiente tem as suas abaixo)
     var sub = t
-      ? C.fmtAuto(t.areaM2) + " m² · " + r.calculados + (r.calculados === 1 ? " ambiente" : " ambientes") + " · resina " + t.resina.curto + " · pedra " + r.corRotulo.toLowerCase()
+      ? C.fmtAuto(t.areaM2) + " m² · " + C.contagemAmbientes(r) + composicao(C, r)
       : C.fmtAuto(r.areaConsulteM2) + " m² · " + r.consulte + (r.consulte === 1 ? " ambiente" : " ambientes") + " a consultar com a equipe técnica";
 
     var h = "";
@@ -243,6 +290,8 @@
       linhaDado("Perfil", e(lead.perfil || "")) +
       linhaDado("Novidades", e(lead.optin ? "Aceitou receber" : "Não marcou")) +
       linhaDado("Área", e(area)) +
+      (t && C.rotuloCores(r) ? linhaDado((r.cores || []).length > 1 ? "Pedras" : "Pedra", e(C.rotuloCores(r))) : "") +
+      (t && C.rotuloResinas(r) ? linhaDado((r.resinas || []).length > 1 ? "Resinas" : "Resina", e(C.rotuloResinas(r))) : "") +
       (opts.quando ? linhaDado("Quando", e(opts.quando)) : "") +
       (opts.pagina ? linhaDado("Página", e(opts.pagina)) : "") +
       '</table>';

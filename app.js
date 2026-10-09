@@ -92,12 +92,26 @@
   if (reduceMotion || !("IntersectionObserver" in window)) {
     reveals.forEach(function (el) { el.classList.add("is-visible"); });
   } else {
+    var revelar = function (el) { el.classList.add("is-visible"); io.unobserve(el); };
+    // 8% da altura não serve para um bloco mais alto que a tela (a calculadora com 8 ambientes
+    // passa de 7.000 px no celular e nunca chegaria a 8% visível): com o limiar 0 o observador
+    // também avisa quando qualquer pedaço entra, e aí vale uma faixa em pixels (um quarto da janela).
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add("is-visible"); io.unobserve(en.target); }
+        if (!en.isIntersecting) return;
+        var vh = window.innerHeight || document.documentElement.clientHeight || 800;
+        if (en.intersectionRatio >= 0.08 || en.intersectionRect.height >= vh * 0.25 || en.boundingClientRect.height * 0.08 > vh * 0.92) revelar(en.target);
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08] });
     reveals.forEach(function (el) { io.observe(el); });
+    // foco por teclado nunca cai num bloco ainda transparente: o bloco aparece na hora
+    document.addEventListener("focusin", function (e) {
+      var el = e.target && e.target.closest ? e.target.closest("[data-reveal]") : null;
+      while (el) {
+        if (!el.classList.contains("is-visible")) revelar(el);
+        el = el.parentElement ? el.parentElement.closest("[data-reveal]") : null;
+      }
+    }, true);
   }
 
   /* ---------- cores da pedra na loja modelo ---------- */

@@ -51,35 +51,14 @@
   <noscript><p class="cx-noscript">A calculadora precisa do JavaScript ativado no navegador. Se preferir, fale com o comercial pelo WhatsApp.</p></noscript>
 
   <div class="cx-shell" data-reveal>
-    <!-- 1 · a obra: escolhas globais + ambientes (os cartões de ambiente são montados por calc-ui.js) -->
+    <!-- 1 · a obra: lista de ambientes, cada um com a própria medida, cor da pedra e resina (os cartões são montados por calc-ui.js; só um fica aberto por vez) -->
     <form class="cx-obra" id="cxObra" novalidate aria-labelledby="cxObraTitulo" autocomplete="off">
       <div class="cx-step">
         <span class="cx-step-n" aria-hidden="true">1</span>
         <div>
           <h3 id="cxObraTitulo">Sua obra</h3>
-          <p class="cx-step-sub">Até 8 ambientes. Aceita vírgula: 12,5.</p>
+          <p class="cx-step-sub" id="cxObraSub">Até 8 ambientes. Aceita vírgula: 12,5.</p>
         </div>
-      </div>
-
-      <div class="cx-globais">
-        <fieldset class="cx-f">
-          <legend class="cx-lbl">Resina</legend>
-          <div class="cx-seg2">
-            <label class="cx-opt"><input type="radio" name="cxResina" value="epoxi" checked><span><b>Epóxi</b><small>Resina epóxi</small></span></label>
-            <label class="cx-opt"><input type="radio" name="cxResina" value="pu"><span><b>PU</b><small>Poliuretano</small></span></label>
-          </div>
-        </fieldset>
-
-        <fieldset class="cx-f">
-          <legend class="cx-lbl">Cor da pedra</legend>
-          <div class="cx-cores">
-            <label class="cx-cor"><input type="radio" name="cxCor" value="branca" checked><span><img src="img/pedra-branca-192.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Branca</em></span></label>
-            <label class="cx-cor"><input type="radio" name="cxCor" value="palha"><span><img src="img/pedra-palha-192.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Palha</em></span></label>
-            <label class="cx-cor"><input type="radio" name="cxCor" value="cinza"><span><img src="img/pedra-cinza-192.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Cinza</em></span></label>
-            <label class="cx-cor"><input type="radio" name="cxCor" value="preta"><span><img src="img/pedra-preta-192.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Preta</em></span></label>
-            <label class="cx-cor"><input type="radio" name="cxCor" value="ouro"><span><img src="img/pedra-ouro-192.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><em>Ouro</em></span></label>
-          </div>
-        </fieldset>
       </div>
 
       <div class="cx-ambs-head">
@@ -90,15 +69,21 @@
       <!-- desfazer a remoção: região viva sempre presente (vazia até alguém remover um ambiente) -->
       <div class="cx-undo" id="cxUndo" role="status" aria-live="polite" aria-atomic="true"></div>
 
+      <!-- um só botão, logo depois da lista: o ambiente novo entra no fim e abre (herda cor e resina do último) -->
       <button type="button" class="cx-add" id="cxAdd">
         <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 4v12M4 10h12"/></svg>
-        <span>Adicionar ambiente</span>
+        <span>Adicionar outro ambiente</span>
       </button>
 
-      <!-- resumo fixo no celular: acompanha a digitação enquanto o painel está mais abaixo -->
+      <!-- resumo fixo no celular: acompanha a digitação enquanto o painel está mais abaixo. Cabeçalho com a
+           obra inteira e, abaixo, um chip por ambiente (tocar no chip abre o ambiente no formulário) -->
       <div class="cx-dock" id="cxDock">
-        <p class="cx-dock-t"><span class="cx-dock-l">Área total</span><b id="cxDockV">A informar</b><small id="cxDockS"></small></p>
-        <button type="button" class="cx-dock-btn" id="cxDockBtn"><span>Ver números</span><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 4v12M5 11l5 5 5-5"/></svg></button>
+        <div class="cx-dock-top">
+          <p class="cx-dock-t"><span class="cx-dock-l" id="cxDockL">Sua obra</span><b id="cxDockV">A informar</b></p>
+          <button type="button" class="cx-dock-btn" id="cxDockBtn"><span>Ver números</span><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 4v12M5 11l5 5 5-5"/></svg></button>
+        </div>
+        <p class="cx-dock-s" id="cxDockS"></p>
+        <ul class="cx-dock-chips" id="cxDockChips" aria-label="Ambientes da obra"></ul>
       </div>
     </form>
 
@@ -142,19 +127,23 @@
         </figure>
       </div>
 
+      <!-- corte em escala: um cartão por ambiente, todos ao mesmo tempo (montados por calc-ui.js) -->
       <figure class="cx-fig cx-corte" id="cxCorteFig">
         <div class="cx-corte-head">
           <figcaption class="cx-fig-t" id="cxCorteTitulo">Corte em escala</figcaption>
-          <div class="cx-tabs" id="cxCorteTabs" role="group" aria-label="Ambiente mostrado no corte"></div>
+          <p class="cx-corte-nota" id="cxCorteNota"></p>
         </div>
         <div class="cx-corte-body">
-          <div class="cx-corte-svg" id="cxCorte"></div>
+          <div class="cx-corte-svg" id="cxCorte" role="list" aria-label="Corte de cada ambiente"></div>
+          <!-- amostra 3D: uma célula por ambiente (legenda em texto na célula) e UM canvas por cima da grade -->
           <div class="cx-3d" id="cx3dWrap" hidden>
-            <canvas id="calcPreview3d" aria-hidden="true"></canvas>
-            <p class="cx-3d-cap">Amostra 3D da camada, ilustrativa</p>
+            <div class="cx-3d-palco">
+              <div class="cx-3d-grid" id="cx3dGrid" role="list" aria-label="Amostra 3D de cada ambiente"></div>
+              <canvas id="calcPreview3d" aria-hidden="true"></canvas>
+            </div>
+            <p class="cx-3d-cap" id="cx3dCap">Amostra 3D da camada, ilustrativa, em escala real. A lata em cima é de refrigerante, 350 ml (12 cm de altura), para comparar o tamanho e a espessura.</p>
           </div>
         </div>
-        <p class="cx-corte-nota" id="cxCorteNota"></p>
       </figure>
     </div>
   </div>
