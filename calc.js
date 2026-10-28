@@ -107,7 +107,7 @@
     ],
 
     cores: {
-      branca: "Branca", palha: "Palha", cinza: "Cinza", preta: "Preta", ouro: "Ouro"
+      "branco-neve": "Branco Neve", "algodao-egipcio": "Algodão Egípcio", "gelo-pantone": "Gelo Pantone", "crepe": "Crepe", "dubai": "Dubai", "areia": "Areia", "parisi": "Parisi", "camurca": "Camurça", "fullgray": "Fullgray", "madri": "Madri", "submarino": "Submarino", "fullblack": "Fullblack", "ouro-negro": "Ouro Negro"
     }
   };
 
@@ -130,7 +130,7 @@
     return temChave(TABELA.resina.tipos, v) ? v : (temChave(TABELA.resina.tipos, padrao) ? padrao : "epoxi");
   }
   function corDe(v, padrao) {
-    return temChave(TABELA.cores, v) ? v : (temChave(TABELA.cores, padrao) ? padrao : "branca");
+    return temChave(TABELA.cores, v) ? v : (temChave(TABELA.cores, padrao) ? padrao : "branco-neve");
   }
 
   function ceilPack(kg, packKg) { return Math.ceil(kg / packKg - EPS); }

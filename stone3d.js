@@ -11,7 +11,7 @@
 import * as THREE from "three";
 import { mergeVertices } from "three/addons/utils/BufferGeometryUtils.js";
 
-export const CORES = ["branca", "palha", "cinza", "preta", "ouro"];
+export const CORES = ["branco-neve", "algodao-egipcio", "gelo-pantone", "crepe", "dubai", "areia", "parisi", "camurca", "fullgray", "madri", "submarino", "fullblack", "ouro-negro"];
 
 // Quantis de luminância das fotos (escuro para claro), usados quando a foto ainda não carregou.
 export const PALETAS = {
@@ -19,7 +19,20 @@ export const PALETAS = {
   palha: ["#725938", "#a58b64", "#c4b08f", "#e4d1a9"],
   cinza: ["#5a595d", "#7e7d80", "#afadae", "#e0dad9"],
   preta: ["#353132", "#636062", "#888585", "#aea8a5"],
-  ouro: ["#75451d", "#9c6a3c", "#bf925f", "#ecc68d"]
+  ouro: ["#75451d", "#9c6a3c", "#bf925f", "#ecc68d"],
+  "branco-neve": ["#b7b9b5", "#c7cac6", "#d2d6d3", "#e2e6e4"],
+  "algodao-egipcio": ["#bfbbac", "#cac6ba", "#d2cfc4", "#dfddd4"],
+  "gelo-pantone": ["#7a7e7e", "#a5a9a9", "#bcc0c0", "#d4d8d8"],
+  "crepe": ["#a1a7a4", "#b5bab7", "#c1c6c3", "#d0d6d2"],
+  "dubai": ["#abaaa2", "#b6b7b2", "#bec0bc", "#c8cac7"],
+  "areia": ["#c6ac79", "#d4bb8b", "#dec798", "#ecd6a9"],
+  "parisi": ["#6b675c", "#908c80", "#a9a598", "#c3beb1"],
+  "camurca": ["#7d6146", "#a18469", "#b99c81", "#d5ba9e"],
+  "fullgray": ["#7b8183", "#9da3a5", "#b3b9bb", "#ced4d5"],
+  "madri": ["#3f4142", "#696b6a", "#858684", "#a7a9a5"],
+  "submarino": ["#313438", "#55595c", "#6a6d70", "#8a8e91"],
+  "fullblack": ["#12151a", "#33363b", "#525559", "#888c8f"],
+  "ouro-negro": ["#020206", "#0f0f13", "#28272c", "#505054"]
 };
 
 export function fotoUrl(cor) {

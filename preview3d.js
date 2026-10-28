@@ -85,7 +85,7 @@ function texto(v, max) { return v == null ? "" : String(v).slice(0, max || 40); 
 
 function norm(st, i) {
   st = st && typeof st === "object" ? st : {};
-  var cor = S.CORES.indexOf(st.cor) >= 0 ? st.cor : "palha";
+  var cor = S.CORES.indexOf(st.cor) >= 0 ? st.cor : "areia";
   var esp = Math.max(10, Math.min(40, Number(st.espessuraMm) || 15));
   var base = st.base === "contrapiso" ? "contrapiso" : "solo";
   var brita = base === "solo" ? Math.max(0, Math.min(30, Number(st.britaCm) || 0)) : 0;
@@ -159,7 +159,7 @@ export function mountPreview(canvas, opts) {
   var greys = cols(["#4a4c52", "#5d6068", "#6f727a", "#80838a", "#90939a", "#3c3e44", "#a3a5aa"]);
   // com pedra cinza ou preta, a brita fica mais escura e azulada: as duas camadas não se confundem
   var greysCool = cols(["#2c323c", "#363d48", "#414955", "#4c5563", "#586271", "#262b33", "#66707f"]);
-  function britaFor(cor) { return cor === "cinza" || cor === "preta" ? greysCool : greys; }
+  function britaFor(cor) { return cor === "cinza" || cor === "preta" || cor === "madri" || cor === "submarino" || cor === "fullblack" || cor === "ouro-negro" ? greysCool : greys; }
 
   var soilTex = S.soilTexture(256), concTex = S.concreteTexture(256), contraTex = S.concreteTexture(256);
   var soilMat = new THREE.MeshStandardMaterial({ map: soilTex, roughness: 0.96, color: 0xd9bfa3 });

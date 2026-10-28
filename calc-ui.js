@@ -82,7 +82,7 @@
 
   function novoId() { uid += 1; return "a" + uid; }
   function novoAmbiente(over) {
-    var a = { id: novoId(), nome: "", modo: "area", area: "", comprimento: "", largura: "", uso: "calcada", base: "solo", espessuraMm: null, resina: "epoxi", cor: "branca" };
+    var a = { id: novoId(), nome: "", modo: "area", area: "", comprimento: "", largura: "", uso: "calcada", base: "solo", espessuraMm: null, resina: "epoxi", cor: "branco-neve" };
     if (over) for (var k in over) if (Object.prototype.hasOwnProperty.call(over, k) && k !== "id") a[k] = over[k];
     return a;
   }
@@ -112,7 +112,7 @@
   // Resina e cor só entram se forem chaves próprias da tabela ("toString", "__proto__" e
   // companhia caem no padrão).
   function resinaOk(v, padrao) { return C.temChave(T.resina.tipos, v) ? v : (C.temChave(T.resina.tipos, padrao) ? padrao : "epoxi"); }
-  function corOk(v, padrao) { return C.temChave(T.cores, v) ? v : (C.temChave(T.cores, padrao) ? padrao : "branca"); }
+  function corOk(v, padrao) { return C.temChave(T.cores, v) ? v : (C.temChave(T.cores, padrao) ? padrao : "branco-neve"); }
   // Um ambiente salvo, saneado campo a campo. padrao = { resina, cor } da obra v2 (migração).
   function ambienteSalvo(a, padrao) {
     if (!a || typeof a !== "object") return null;
