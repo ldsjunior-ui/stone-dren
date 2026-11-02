@@ -183,7 +183,7 @@
   }
 
   function moldura(conteudo, preheader, opts) {
-    var logo = opts.siteUrl ? '<img src="' + esc(opts.siteUrl.replace(/\/?$/, "/") + "img/stone-mark-128.png") + '" width="36" height="36" alt="" style="display:inline-block;vertical-align:middle;border:0;margin-right:10px;">' : "";
+    var logo = opts.siteUrl ? '<img src="' + esc(opts.siteUrl.replace(/\/?$/, "/") + "img/stone-mark-s-128.png") + '" width="36" height="36" alt="" style="display:inline-block;vertical-align:middle;border:0;margin-right:10px;">' : "";
     return '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Stone Dren</title></head>' +
       '<body style="margin:0;padding:0;background:' + COR.fundo + ';">' +
       '<div style="display:none;max-height:0;overflow:hidden;opacity:0;">' + esc(preheader) + '</div>' +

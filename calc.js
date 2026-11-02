@@ -820,7 +820,7 @@
           nome: curto(a.nome, 60).trim(), uso: curto(a.uso, 16), modo: a.modo === "medidas" ? "medidas" : "area",
           area: curto(a.area, 16), comprimento: curto(a.comprimento, 16), largura: curto(a.largura, 16),
           base: curto(a.base, 16), espessuraMm: a.espessuraMm == null ? null : curto(a.espessuraMm, 8),
-          resina: curto(a.resina, 12), cor: curto(a.cor, 12)
+          resina: curto(a.resina, 12), cor: curto(a.cor, 20)
         };
       })
     };
