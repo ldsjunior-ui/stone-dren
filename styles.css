@@ -414,3 +414,24 @@ dialog.priv .x{background:none; border:0; cursor:pointer; color:var(--ink); font
   html:not(.cx-printing) .piso .layers-fb .layers-legend :is(b,span){color:#EFE7D6 !important;}
   @media (max-width:560px){ html:not(.cx-printing) .piso .layers-fb .layers-legend :is(b,span){color:#1a1a1a !important;} }
 }
+
+/* LOJA POR SUPERFÍCIE · grupos lado a lado no desktop (5 colunas no total) */
+.prod-groups{display:grid; gap:34px 16px;}
+.pg{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; align-content:start;}
+.pg-h{grid-column:1/-1; font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); padding-bottom:10px; border-bottom:1px solid var(--line); margin:0;}
+@media (min-width:1100px){ .prod-groups{grid-template-columns:repeat(5,minmax(0,1fr));} .pg{grid-column:span var(--n); grid-template-columns:repeat(var(--n),minmax(0,1fr));} }
+@media (max-width:560px){ .pg{grid-template-columns:1fr;} }
+.prod .art-reservada{margin:14px; padding:14px; border:1px dashed rgba(217,174,94,.35); border-radius:8px; background:radial-gradient(ellipse 70% 80% at 50% 40%, rgba(217,174,94,.12), rgba(10,21,38,.85) 70%), url(img/textura-pedra-preta.jpg) center/300px auto;}
+.prod .art-reservada span{font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-dim); text-align:center;}
+.prod .prod-cores{margin-top:8px; font-size:.82rem;}
+/* INOVAÇÃO */
+.inovacao{background:linear-gradient(180deg,var(--navy-2) 0%, var(--navy-deep) 100%);}
+.inovacao .tec{margin-bottom:0;}
+/* MATEMÁTICA DO NEGÓCIO */
+.metricas{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px;}
+@media (max-width:900px){ .metricas{grid-template-columns:repeat(2,minmax(0,1fr));} }
+@media (max-width:420px){ .metricas{grid-template-columns:1fr;} }
+.metrica{border:1px solid var(--line); border-radius:12px; padding:24px 22px; background:rgba(10,21,38,.72);}
+.metrica .k{font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;}
+.metrica b{display:block; font-size:clamp(1.7rem,3vw,2.3rem); line-height:1.1; color:var(--ink); font-weight:700;}
+.metrica span{display:block; margin-top:4px; font-size:.85rem; color:var(--ink-dim);}
