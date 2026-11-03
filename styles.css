@@ -435,3 +435,6 @@ dialog.priv .x{background:none; border:0; cursor:pointer; color:var(--ink); font
 .metrica .k{font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;}
 .metrica b{display:block; font-size:clamp(1.7rem,3vw,2.3rem); line-height:1.1; color:var(--ink); font-weight:700;}
 .metrica span{display:block; margin-top:4px; font-size:.85rem; color:var(--ink-dim);}
+.prod .art-foto{position:relative; padding:0; background:none;}
+.prod .art-foto img{object-fit:cover;}
+.prod .ia-tag{position:absolute; left:10px; bottom:10px; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#EFE7D6; background:rgba(10,21,38,.78); border:1px solid rgba(239,231,214,.25); padding:4px 8px; border-radius:6px;}
